@@ -1,4 +1,4 @@
-import { withBase } from 'src/lib/asset'
+import { withBase } from '../lib/asset'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
