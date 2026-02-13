@@ -15,10 +15,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+    build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Pull LFS files
+        run: |
+          git lfs install
+          git lfs pull
 
       - uses: actions/setup-node@v4
         with:
@@ -31,6 +38,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
 
   deploy:
     needs: build
