@@ -54,7 +54,7 @@ const projects: Project[] = [
     description:
       'AI-powered videos combine multiple models with ComfyUI high-definition upscaling, watermark removal, and image quality restoration.',
     category: 'ai',
-    image: '/images/uiaosdyhulaksjhd.jpg',
+    image: withBase('images/uiaosdyhulaksjhd.jpg'),
     tags: ['ComfyUI', 'Stable Diffusion', 'AdobeFirefly'],
     link: 'https://carltonshi0209.my.canva.site/aigc'
   },
