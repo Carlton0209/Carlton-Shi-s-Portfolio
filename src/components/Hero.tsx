@@ -1,4 +1,5 @@
 'use client'
+import { withBase } from "../lib/asset"
 
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -29,17 +30,20 @@ export function Hero() {
     <div className="relative min-h-screen w-full overflow-hidden bg-foreground flex items-center">
       {/* Background video */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/hero.mp4"
-          poster="/images/hero-poster.jpg"
-        />
-        <div className="absolute inset-0 bg-foreground/70" />
-      </div>
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+    className="absolute inset-0 w-full h-full object-cover"
+    poster={withBase("images/hero-poster.jpg")}
+  >
+    <source src={withBase("videos/hero.mp4")} type="video/mp4" />
+  </video>
+
+  <div className="absolute inset-0 bg-foreground/70" />
+</div>
 
       {/* Navbar */}
       <motion.nav
