@@ -64,7 +64,7 @@ const projects: Project[] = [
     description:
       "The tools used to create these works include Adobe software, Unreal Engine, Nuke, Houdini, Maya, Blender, and others.",
     category: 'film',
-    image: withBase('images/img.png')
+    image: withBase('images/img.png'),
     tags: ['Narrative', 'Unreal Engine', 'Houdini', 'Blender'],
     link: 'https://carltonshi0209.my.canva.site'
   },
