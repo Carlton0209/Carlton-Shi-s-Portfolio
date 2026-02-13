@@ -23,3 +23,7 @@ export default defineConfig({
   plugins: [react()],
   base: 'Carlton-Shi-s-Portfolio',
 })
+export default defineConfig({
+  base: '/Carlton-Shi-s-Portfolio/',
+  plugins: [react()],
+})
