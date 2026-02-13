@@ -37,7 +37,6 @@ export function Hero() {
     playsInline
     preload="auto"
     className="absolute inset-0 w-full h-full object-cover"
-    poster={withBase("images/hero-poster.jpg")}
   >
     <source src={withBase("videos/hero.mp4")} type="video/mp4" />
   </video>
