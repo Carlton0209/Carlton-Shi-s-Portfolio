@@ -27,63 +27,71 @@ export function Hero() {
   ]
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-foreground flex items-center">
+    <div className="relative min-h-screen w-full overflow-hidden bg-foreground flex items-end pb-20 lg:pb-28">
       {/* Background video */}
       <div className="absolute inset-0">
-  <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    preload="auto"
-    className="absolute inset-0 w-full h-full object-cover"
-  >
-    <source src={withBase("videos/hero.mp4")} type="video/mp4" />
-  </video>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src={withBase("videos/hero.mp4")} type="video/mp4" />
+        </video>
 
-  <div className="absolute inset-0 bg-foreground/70" />
-</div>
+        {/* Multi-layer gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
+      </div>
 
       {/* Navbar */}
       <motion.nav
-        initial={{ opacity: 0, y: -30 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
         className="fixed top-0 left-0 right-0 w-full z-[110]"
       >
-        <div className={`w-full px-6 sm:px-8 lg:px-12 py-4 transition-all duration-300 ${
+        <div className={`w-full px-6 sm:px-8 lg:px-12 py-5 transition-all duration-300 ${
           isScrolled ? 'bg-foreground/90 backdrop-blur-xl border-b border-background/10' : 'bg-transparent'
         }`}>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between max-w-[96rem] mx-auto">
             <motion.div
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.03 }}
               className="cursor-pointer"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <span className="font-bagel text-background text-zinc-300/80 hover:text-zinc-200 text-xl tracking-wider">Jingchuan (Carlton) Shi</span>
+              <span className="font-display text-background text-lg tracking-[0.15em] uppercase font-bold">
+                Carlton Shi<span className="text-red-500">.</span>
+              </span>
             </motion.div>
 
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-10">
               {navLinks.map(link => (
-                <a key={link.href} href={link.href} className="text-zinc-400/80 hover:text-zinc-300">
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-zinc-400 hover:text-background text-sm font-medium tracking-wider uppercase gentle-animation"
+                >
                   {link.label}
                 </a>
               ))}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <motion.a
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 href="#contact"
-                className="hidden sm:block bg-accent-purple text-background font-semibold text-background hover:bg-background/20 px-6 py-3 rounded-md hover:opacity-90 gentle-animation"
+                className="hidden sm:block bg-red-500 text-white text-sm font-semibold px-6 py-2.5 rounded-sm hover:opacity-90 gentle-animation tracking-wide uppercase"
               >
-                Get in Touch
+                Hire Me
               </motion.a>
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden glass-effect p-3 rounded-full text-background hover:bg-background/20 gentle-animation cursor-pointer z-[120] relative"
+                className="md:hidden p-2.5 text-background hover:text-red-500 gentle-animation cursor-pointer z-[120] relative"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -92,12 +100,12 @@ export function Hero() {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="md:hidden fixed inset-0 bg-foreground/80 backdrop-blur-md z-[80]"
+          className="md:hidden fixed inset-0 bg-foreground/90 backdrop-blur-md z-[80]"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -107,59 +115,99 @@ export function Hero() {
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         className="md:hidden fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-foreground/95 backdrop-blur-xl border-l border-background/10 z-[90]"
       >
-        <div className="flex flex-col pt-20 px-6 space-y-4 text-background">
+        <div className="flex flex-col pt-24 px-8 space-y-2">
           {navLinks.map(link => (
-            <a key={link.href} href={link.href} className="px-4 py-3 hover:bg-background/10 rounded-lg font-medium text-lg" onClick={() => setIsMobileMenuOpen(false)}>
+            <a
+              key={link.href}
+              href={link.href}
+              className="px-4 py-4 text-zinc-400 hover:text-background hover:bg-background/10 rounded-sm font-medium text-sm tracking-wider uppercase gentle-animation"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               {link.label}
             </a>
           ))}
+          <a
+            href="#contact"
+            className="mt-4 bg-red-500 text-white text-center text-sm font-semibold px-6 py-3 rounded-sm tracking-wide uppercase"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Hire Me
+          </a>
         </div>
       </motion.div>
 
-      {/* Hero Content */}
-      <div className="relative z-40 container mx-auto px-6 sm:px-8 lg:px-12 pt-24">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="max-w-4xl"
-        >
-          <div className="inline-flex items-center gap-2 mb-6 bg-background/10 backdrop-blur-sm rounded-full px-4 py-2">
-            <span className="text-sm font-medium text-background/80"></span>
-          </div>
-          
-          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black leading-[0.95] text-background mb-8">
-            <span className="block">Creative</span>
-            <span className="block text-accent-purple">Storyteller</span>
-            <span className="block text-background/60">&amp; Designer</span>
-          </h1>
-          
-          <p className="text-xl lg:text-2xl text-zinc-400 max-w-2xl leading-relaxed mb-10">
-            I craft AI-generated videos, direct traditional films, and design intuitive digital experiences. Blending technology with artistry.
-          </p>
-
-          <div className="flex flex-wrap text-zinc-400 gap-4">
-            {['Film & Video', 'AI Visuals', 'Interactive Design'].map(tag => (
-              <span key={tag} className="bg-background/10 backdrop-blur-sm border border-background/20 text-background/90 px-4 py-2 rounded-full text-sm font-medium">
-                {tag}
+      {/* Hero Content — asymmetric grid layout */}
+      <div className="relative z-40 w-full max-w-[96rem] mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+          {/* Main title — spans 8 columns */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="lg:col-span-8"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full" />
+              <span className="text-sm font-mono font-medium text-cyan-400/90 tracking-widest uppercase">
+                Available for freelance
               </span>
-            ))}
-          </div>
-        </motion.div>
+            </div>
+
+            <h1 className="text-[clamp(3rem,8vw,7.5rem)] font-display leading-[0.9] tracking-[-0.04em] text-background mb-8">
+              Creative
+              <br />
+              <span className="text-red-500">Story</span>teller
+              <br />
+              <span className="text-zinc-400">&amp; Designer</span>
+            </h1>
+          </motion.div>
+
+          {/* Right column — 4 cols, description + tags */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="lg:col-span-4 lg:pb-4"
+          >
+            <p className="text-zinc-400 text-base leading-relaxed mb-8 max-w-sm">
+              I craft AI-generated videos, direct traditional films, and design intuitive digital experiences. Blending technology with artistry.
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {['AIGC', 'Film & Video', 'Interactive Design'].map(tag => (
+                <span
+                  key={tag}
+                  className="border border-background/20 text-zinc-400 px-4 py-1.5 rounded-sm text-xs font-medium tracking-wider uppercase backdrop-blur-sm bg-background/5"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Grid reference line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1.2, delay: 1 }}
+          className="mt-12 h-px bg-gradient-to-r from-red-500 via-background/20 to-transparent origin-left"
+        />
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - Branded mouse */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40"
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3"
       >
-        <div className="w-6 h-10 border-2 border-background/30 rounded-full flex justify-center">
+        <span className="text-[10px] font-mono text-zinc-500 tracking-[0.3em] uppercase">Scroll</span>
+        <div className="w-6 h-10 border-2 border-zinc-600/40 rounded-full flex justify-center relative">
           <motion.div
             animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-1.5 h-1.5 bg-background/50 rounded-full mt-2"
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1.5 h-1.5 bg-cyan-400/80 rounded-full mt-2"
           />
         </div>
       </motion.div>
