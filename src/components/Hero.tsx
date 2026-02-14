@@ -131,7 +131,7 @@ export function Hero() {
             className="mt-4 bg-red-500 text-white text-center text-sm font-semibold px-6 py-3 rounded-sm tracking-wide uppercase"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Hire Me
+            Contact Me
           </a>
         </div>
       </motion.div>
