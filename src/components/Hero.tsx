@@ -86,7 +86,7 @@ export function Hero() {
                 href="#contact"
                 className="hidden sm:block bg-red-500 text-white text-sm font-semibold px-6 py-2.5 rounded-sm hover:opacity-90 gentle-animation tracking-wide uppercase"
               >
-                Hire Me
+                Contact Me
               </motion.a>
 
               <button
