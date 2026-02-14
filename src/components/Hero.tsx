@@ -1,4 +1,5 @@
 'use client'
+import { withBase } from "../lib/asset"
 
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -34,19 +35,16 @@ export function Hero() {
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/hero.mp4"
-          poster="/images/hero-poster.jpg"
         >
           <source src={withBase("videos/hero.mp4")} type="video/mp4" />
         </video>
+
         {/* Multi-layer gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground/85 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
       </div>
-
-
-      {/* Geometric accents removed as per user request */}
 
       {/* Navbar */}
       <motion.nav
@@ -65,7 +63,7 @@ export function Hero() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <span className="font-display text-background text-lg tracking-[0.15em] uppercase font-bold">
-                Carlton Shi<span className="text-red-500">.</span>
+                Jingchuan<span className="text-red-500">.</span>
               </span>
             </motion.div>
 
@@ -138,10 +136,10 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Hero Content — asymmetric Brockmann layout */}
+      {/* Hero Content — asymmetric grid layout */}
       <div className="relative z-40 w-full max-w-[96rem] mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          {/* Main title — spans 8 columns, breaks grid */}
+          {/* Main title — spans 8 columns */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -188,7 +186,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Grid reference line — Brockmann homage */}
+        {/* Grid reference line */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -197,7 +195,7 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll indicator removed as per user request */}
+      {/* Scroll indicator removed for cleaner design */}
     </div>
   )
 }
