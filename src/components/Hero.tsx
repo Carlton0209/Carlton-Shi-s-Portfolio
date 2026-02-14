@@ -63,7 +63,7 @@ export function Hero() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <span className="font-display text-background text-lg tracking-[0.15em] uppercase font-bold">
-                Jingchuan<span className="text-red-500">.</span>
+                Carlton Shi<span className="text-red-500">.</span>
               </span>
             </motion.div>
 
@@ -174,7 +174,7 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-2">
-              {['AI Video', 'Film & Video', 'UI/UX Design'].map(tag => (
+              {['AIGC', 'Film & Video', 'Interactive Design'].map(tag => (
                 <span
                   key={tag}
                   className="border border-background/20 text-zinc-400 px-4 py-1.5 rounded-sm text-xs font-medium tracking-wider uppercase backdrop-blur-sm bg-background/5"
