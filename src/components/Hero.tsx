@@ -63,7 +63,7 @@ export function Hero() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <span className="font-display text-background text-lg tracking-[0.15em] uppercase font-bold">
-                Carlton Shi<span className="text-red-500">.</span>
+                Jingchuan<span className="text-red-500">.</span>
               </span>
             </motion.div>
 
@@ -174,7 +174,7 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-2">
-              {['AIGC', 'Film & Video', 'Interactive Design'].map(tag => (
+              {['AI Video', 'Film & Video', 'UI/UX Design'].map(tag => (
                 <span
                   key={tag}
                   className="border border-background/20 text-zinc-400 px-4 py-1.5 rounded-sm text-xs font-medium tracking-wider uppercase backdrop-blur-sm bg-background/5"
@@ -195,7 +195,22 @@ export function Hero() {
         />
       </div>
 
-      {/* Scroll indicator removed for cleaner design */}
+      {/* Scroll indicator - Branded mouse */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3"
+      >
+        <span className="text-[10px] font-mono text-zinc-500 tracking-[0.3em] uppercase">Scroll</span>
+        <div className="w-6 h-10 border-2 border-zinc-600/40 rounded-full flex justify-center relative">
+          <motion.div
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1.5 h-1.5 bg-cyan-400/80 rounded-full mt-2"
+          />
+        </div>
+      </motion.div>
     </div>
   )
 }
