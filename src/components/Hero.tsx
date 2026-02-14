@@ -37,7 +37,9 @@ export function Hero() {
           className="absolute inset-0 w-full h-full object-cover"
           src="/videos/hero.mp4"
           poster="/images/hero-poster.jpg"
-        />
+        >
+          <source src={withBase("videos/hero.mp4")} type="video/mp4" />
+        </video>
         {/* Multi-layer gradient overlay for depth */}
         <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground/85 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
