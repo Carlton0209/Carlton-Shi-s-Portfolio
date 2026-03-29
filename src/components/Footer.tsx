@@ -30,14 +30,14 @@ export function Footer() {
             </div>
 
             {/* Tagline */}
-            <p className="text-background/60 text-sm">
+            <p className="font-mono text-background/60 text-sm">
               AIGC · Film & Video · Interactive Design
             </p>
 
             {/* Optional: direct email line (remove if you want it cleaner) */}
             <a
               href="mailto:your@email.com" // TODO: replace
-              className="inline-block mt-3 text-sm text-background/60 hover:text-background transition gentle-animation"
+              className="font-mono inline-block mt-3 text-sm text-background/60 hover:text-background transition gentle-animation"
             >
               sjc2213968315@gmail.com
             </a>
