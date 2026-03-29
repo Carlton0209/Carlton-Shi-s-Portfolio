@@ -41,9 +41,9 @@ const projects: Project[] = [
   },
   {
     id: '3',
-    title: 'Fintech Dashboard',
+    title: 'REALLIFE AI',
     description:
-      'A comprehensive trading dashboard with real-time data visualization and dark mode aesthetics.',
+      'Upload your photo, hit enhance — RealLife AI delivers cinematic realism in one click, without ever touching your face.',
     category: 'interactive',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
     tags: ['Figma', 'React', 'D3.js'],
@@ -70,8 +70,8 @@ const projects: Project[] = [
   },
   {
     id: '6',
-    title: 'Wellness App',
-    description: 'A mindfulness and meditation app with calming UI patterns and habit-tracking features.',
+    title: 'Multi-source Dashboard',
+    description: 'One dashboard, every source. Tech Pulse aggregates multi-channel news into a single, clean React interface.',
     category: 'interactive',
     image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop',
     tags: ['Mobile Design', 'Prototyping', 'User Research'],
