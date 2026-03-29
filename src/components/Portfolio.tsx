@@ -46,7 +46,7 @@ const projects: Project[] = [
       'Upload your photo, hit enhance. RealLife AI delivers cinematic realism in one click, without ever touching your face.',
     category: 'interactive',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-    tags: ['Figma', 'React', 'D3.js'],
+    tags: ['Figma', 'React', 'Prototyping', 'AI Pipelines'],
   },
   {
     id: '4',
