@@ -75,6 +75,7 @@ const projects: Project[] = [
     category: 'interactive',
     image: withBase('images/ScreenShot_2026-03-29_141024_206.png'),
     tags: ['Mobile Design', 'Prototyping', 'User Research'],
+    link: 'https://carlton0209.github.io/Multi-source-Content-Dashboard/'
   },
 ]
 
