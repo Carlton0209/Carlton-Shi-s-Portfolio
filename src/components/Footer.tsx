@@ -45,6 +45,10 @@ export function Footer() {
             <a>
               jshi77@syr.edu
             </a>
+            <br />
+            <a>
+              315-395-2313
+            </a>
           </div>
 
           {/* Social Icons */}
