@@ -74,7 +74,7 @@ const projects: Project[] = [
     description: 'One dashboard, every source. Tech Pulse aggregates multi-channel news into a single, clean React interface.',
     category: 'interactive',
     image: withBase('images/ScreenShot_2026-03-29_141024_206.png'),
-    tags: ['Mobile Design', 'Prototyping', 'User Research'],
+    tags: ['Web-based Application', 'Prototyping', 'Content Aggregation', 'Dashboard UI'],
     link: 'https://carlton0209.github.io/Multi-source-Content-Dashboard/'
   },
 ]
