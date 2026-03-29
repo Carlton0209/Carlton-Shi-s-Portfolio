@@ -42,11 +42,11 @@ export function Footer() {
               sjc2213968315@gmail.com
             </a>
             <br />
-            <a>
+            <a className="font-mono text-sm text-background/60 hover:text-background transition gentle-animation">
               jshi77@syr.edu
             </a>
             <br />
-            <a>
+            <a className="font-mono text-sm text-background/60 hover:text-background transition gentle-animation">
               315-395-2313
             </a>
           </div>
