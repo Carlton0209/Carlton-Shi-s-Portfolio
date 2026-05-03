@@ -74,7 +74,7 @@ export function Contact() {
                 onChange={event => setFormData(previous => ({ ...previous, name: event.target.value }))}
                 className={`h-11 w-full rounded-full border bg-white px-5 text-[17px] outline-none transition-all ${
                   focusedField === 'name'
-                    ? 'border-[#0071e3] ring-4 ring-[#0071e3]/12'
+                    ? 'border-[#0071e3] ring-4 ring-[#0071e3]/15'
                     : 'border-[#e0e0e0] hover:border-[#b8b8bd]'
                 }`}
                 placeholder="Your name"
@@ -90,7 +90,7 @@ export function Contact() {
                 onChange={event => setFormData(previous => ({ ...previous, email: event.target.value }))}
                 className={`h-11 w-full rounded-full border bg-white px-5 text-[17px] outline-none transition-all ${
                   focusedField === 'email'
-                    ? 'border-[#0071e3] ring-4 ring-[#0071e3]/12'
+                    ? 'border-[#0071e3] ring-4 ring-[#0071e3]/15'
                     : 'border-[#e0e0e0] hover:border-[#b8b8bd]'
                 }`}
                 placeholder="you@example.com"
@@ -108,7 +108,7 @@ export function Contact() {
               rows={6}
               className={`w-full resize-none rounded-[18px] border bg-white px-5 py-4 text-[17px] leading-[1.47] outline-none transition-all ${
                 focusedField === 'message'
-                  ? 'border-[#0071e3] ring-4 ring-[#0071e3]/12'
+                  ? 'border-[#0071e3] ring-4 ring-[#0071e3]/15'
                   : 'border-[#e0e0e0] hover:border-[#b8b8bd]'
               }`}
               placeholder="Tell me about your project..."
