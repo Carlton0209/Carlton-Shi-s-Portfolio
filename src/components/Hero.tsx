@@ -1,216 +1,174 @@
 'use client'
-import { withBase } from "../lib/asset"
 
+import { withBase } from '../lib/asset'
 import { motion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { ArrowRight, Menu, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+const navLinks = [
+  { href: '#portfolio', label: 'Work' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+]
 
 export function Hero() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50)
+    const handleScroll = () => setIsScrolled(window.scrollY > 24)
+    handleScroll()
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset'
-    return () => { document.body.style.overflow = 'unset' }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
   }, [isMobileMenuOpen])
 
-  const navLinks = [
-    { href: '#portfolio', label: 'Work' },
-    { href: '#about', label: 'About' },
-    { href: '#contact', label: 'Contact' },
-  ]
-
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-foreground flex items-end pb-20 lg:pb-28">
-      {/* Background video */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src={withBase("videos/hero.mp4")} type="video/mp4" />
-        </video>
+    <div className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+      <nav className="fixed left-0 right-0 top-0 z-[120] h-11 bg-black text-white">
+        <div className="mx-auto flex h-full max-w-[90rem] items-center justify-between px-5 sm:px-8 lg:px-12">
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-xs font-normal text-white/[0.92] transition-opacity active:scale-95"
+          >
+            Carlton Shi
+          </button>
 
-        {/* Multi-layer gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground/85 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/60 to-transparent" />
-      </div>
+          <div className="hidden items-center gap-9 md:flex">
+            {navLinks.map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-xs font-normal text-white/[0.72] transition-colors hover:text-white"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
 
-      {/* Navbar */}
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="fixed top-0 left-0 right-0 w-full z-[110]"
-      >
-        <div className={`w-full px-6 sm:px-8 lg:px-12 py-5 transition-all duration-300 ${
-          isScrolled ? 'bg-foreground/90 backdrop-blur-xl border-b border-background/10' : 'bg-transparent'
-        }`}>
-          <div className="flex items-center justify-between max-w-[96rem] mx-auto">
-            <motion.div
-              whileHover={{ scale: 1.03 }}
-              className="cursor-pointer"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="hidden min-h-8 items-center rounded-full bg-[#0066cc] px-4 text-xs font-normal text-white transition-transform active:scale-95 sm:inline-flex"
             >
-              <span className="font-display text-background text-lg tracking-[0.15em] uppercase font-bold">
-                Carlton Shi<span className="text-red-500">.</span>
-              </span>
-            </motion.div>
-
-            <div className="hidden md:flex items-center space-x-10">
-              {navLinks.map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-zinc-400 hover:text-background text-sm font-medium tracking-wider uppercase gentle-animation"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-4">
-              <motion.a
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                href="#contact"
-                className="hidden sm:block bg-red-500 text-white text-sm font-semibold px-6 py-2.5 rounded-sm hover:opacity-90 gentle-animation tracking-wide uppercase"
-              >
-                Contact Me
-              </motion.a>
-
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2.5 text-background hover:text-red-500 gentle-animation cursor-pointer z-[120] relative"
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
-            </div>
+              Contact
+            </a>
+            <button
+              type="button"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setIsMobileMenuOpen(value => !value)}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-white/80 transition-colors hover:text-white md:hidden"
+            >
+              {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
-      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed left-0 right-0 top-11 z-[110] h-[52px] border-b border-black/5 bg-[#f5f5f7]/90 text-[#1d1d1f] backdrop-blur-xl transition-colors ${
+          isScrolled ? 'bg-[#f5f5f7]/95' : 'bg-[#f5f5f7]/[0.82]'
+        }`}
+      >
+        <div className="mx-auto flex h-full max-w-[90rem] items-center justify-between px-5 sm:px-8 lg:px-12">
+          <a href="#hero" className="text-[21px] font-semibold leading-none">
+            Portfolio
+          </a>
+          <div className="hidden items-center gap-6 sm:flex">
+            <a href="#portfolio" className="text-sm text-[#1d1d1f]/70 hover:text-[#1d1d1f]">
+              Selected Work
+            </a>
+            <a href="#about" className="text-sm text-[#1d1d1f]/70 hover:text-[#1d1d1f]">
+              About
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex min-h-8 items-center rounded-full bg-[#0066cc] px-4 text-sm text-white transition-transform active:scale-95"
+            >
+              Hire Me
+            </a>
+          </div>
+          <a
+            href="#contact"
+            className="inline-flex min-h-8 items-center rounded-full bg-[#0066cc] px-4 text-sm text-white transition-transform active:scale-95 sm:hidden"
+          >
+            Hire Me
+          </a>
+        </div>
+      </div>
+
       {isMobileMenuOpen && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="md:hidden fixed inset-0 bg-foreground/90 backdrop-blur-md z-[80]"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] bg-black/70 pt-24 backdrop-blur-xl md:hidden"
+        >
+          <div className="mx-5 rounded-[18px] border border-white/10 bg-black p-4">
+            {navLinks.map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex min-h-11 items-center justify-between border-b border-white/10 px-3 text-[17px] text-white last:border-b-0"
+              >
+                {link.label}
+                <ArrowRight className="h-4 w-4 text-[#2997ff]" />
+              </a>
+            ))}
+          </div>
+        </motion.div>
       )}
-      <motion.div
-        initial={{ x: '100%' }}
-        animate={{ x: isMobileMenuOpen ? '0%' : '100%' }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="md:hidden fixed top-0 right-0 h-full w-72 max-w-[85vw] bg-foreground/95 backdrop-blur-xl border-l border-background/10 z-[90]"
-      >
-        <div className="flex flex-col pt-24 px-8 space-y-2">
-          {navLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="px-4 py-4 text-zinc-400 hover:text-background hover:bg-background/10 rounded-sm font-medium text-sm tracking-wider uppercase gentle-animation"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            className="mt-4 bg-red-500 text-white text-center text-sm font-semibold px-6 py-3 rounded-sm tracking-wide uppercase"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Contact Me
-          </a>
-        </div>
-      </motion.div>
 
-      {/* Hero Content — asymmetric grid layout */}
-      <div className="relative z-40 w-full max-w-[96rem] mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          {/* Main title — spans 8 columns */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-8"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-2 h-2 bg-cyan-400 rounded-full" />
-              <span className="text-sm font-mono font-medium text-cyan-400/90 tracking-widest uppercase">
-                Available for freelance
-              </span>
-            </div>
-
-            <h1 className="text-[clamp(3rem,8vw,7.5rem)] font-display leading-[0.9] tracking-[-0.04em] text-background mb-8">
-              Creative
-              <br />
-              <span className="text-red-500">Story</span>teller
-              <br />
-              <span className="text-zinc-400">&amp; Designer</span>
-            </h1>
-          </motion.div>
-
-          {/* Right column — 4 cols, description + tags */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="lg:col-span-4 lg:pb-4"
-          >
-            <p className="text-zinc-400 text-base leading-relaxed mb-8 max-w-sm">
-              I craft AI-generated videos, direct traditional films, and design intuitive digital experiences. Blending technology with artistry.
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {['AIGC', 'Film & Video', 'Interactive Design'].map(tag => (
-                <span
-                  key={tag}
-                  className="border border-background/20 text-zinc-400 px-4 py-1.5 rounded-sm text-xs font-medium tracking-wider uppercase backdrop-blur-sm bg-background/5"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Grid reference line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.2, delay: 1 }}
-          className="mt-12 h-px bg-gradient-to-r from-red-500 via-background/20 to-transparent origin-left"
-        />
+      <div className="absolute inset-0">
+        <video autoPlay muted loop playsInline preload="auto" className="h-full w-full object-cover">
+          <source src={withBase('videos/hero.mp4')} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/[0.48]" />
       </div>
 
-      {/* Scroll indicator - Branded mouse */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3"
-      >
-        <span className="text-[10px] font-mono text-zinc-500 tracking-[0.3em] uppercase">Scroll</span>
-        <div className="w-6 h-10 border-2 border-zinc-600/40 rounded-full flex justify-center relative">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1.5 h-1.5 bg-cyan-400/80 rounded-full mt-2"
-          />
-        </div>
-      </motion.div>
+      <section className="relative z-10 flex min-h-screen items-center justify-center px-5 pb-16 pt-36 text-center sm:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="mx-auto max-w-5xl"
+        >
+          <p className="mb-4 text-[21px] font-semibold leading-[1.19] text-white/[0.88]">
+            Film, AI visuals, and interactive design.
+          </p>
+          <h1 className="text-5xl font-semibold leading-[1.03] text-white sm:text-6xl lg:text-7xl">
+            Jingchuan (Carlton) Shi
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-[22px] font-light leading-[1.45] text-white/[0.82] sm:text-[28px] sm:leading-[1.18]">
+            Cinematic work built with a story-first eye and an AI-native production toolkit.
+          </p>
+
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href="#portfolio"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#0066cc] px-[22px] text-[17px] text-white transition-transform active:scale-95"
+            >
+              View Work
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#2997ff] px-[22px] text-[17px] text-[#2997ff] transition-transform active:scale-95"
+            >
+              Start a Project
+              <ArrowRight className="h-4 w-4" />
+            </a>
+          </div>
+        </motion.div>
+      </section>
     </div>
   )
 }

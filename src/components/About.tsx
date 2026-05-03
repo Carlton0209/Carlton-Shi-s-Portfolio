@@ -1,72 +1,91 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Sparkles, Film, Palette, Award, Calendar, MapPin } from 'lucide-react'
+import { Award, Calendar, Film, MapPin, Palette, Sparkles } from 'lucide-react'
 
 const skills = [
-  { icon: Sparkles, label: 'AI Video', tools: ['Runway Gen-3', 'Sora', 'Midjourney', 'Stable Diffusion', 'AdobeFirefly','Veo3','Sora','Nanobanana','SeeDance2.0'] },
-  { icon: Film, label: 'Film & Video', tools: ['Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Unreal Engine', 'Nuke', 'Maya', 'PhotoShop', 'Houdini'] },
-  { icon: Palette, label: 'Interactive Design', tools: ['Figma', 'Framer', 'React', 'Tailwind CSS', 'Prototyping'] },
+  {
+    icon: Sparkles,
+    label: 'AI Video',
+    tools: ['Runway Gen-3', 'Sora', 'Midjourney', 'Stable Diffusion', 'Adobe Firefly', 'Veo 3', 'Nanobanana', 'SeeDance 2.0'],
+  },
+  {
+    icon: Film,
+    label: 'Film & Video',
+    tools: ['Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Unreal Engine', 'Nuke', 'Maya', 'Photoshop', 'Houdini'],
+  },
+  {
+    icon: Palette,
+    label: 'Interactive Design',
+    tools: ['Figma', 'Framer', 'React', 'Tailwind CSS', 'Prototyping'],
+  },
 ]
 
-const stats = [
-  { value: 'Directing / Visual Storytelling', label: '' },
-  { value: 'Cinematography / Lighting', label: '' },
-  { value: 'AI Image & Video Generation', label: '' },
-  { value: 'Post / Editing / Color', label: '' },
+const disciplines = [
+  'Directing / Visual Storytelling',
+  'Cinematography / Lighting',
+  'AI Image & Video Generation',
+  'Post / Editing / Color',
+]
+
+const details = [
+  { icon: MapPin, label: 'Syracuse, NY' },
+  { icon: Calendar, label: 'Working since 2021' },
+  { icon: Award, label: 'Award-winning films' },
 ]
 
 export function About() {
   return (
-    <section id="about" className="relative py-32 bg-card/30">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
-        {/* Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="w-3 h-3 bg-accent-blue rounded-full animate-pulse" />
-            <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">About Me</span>
-            <div className="w-3 h-3 bg-accent-emerald rounded-full animate-pulse" />
-          </div>
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight mb-8">
-            Where Tech<br />Meets Craft
+    <section id="about" className="bg-[#f5f5f7] px-5 py-20 text-[#1d1d1f] sm:px-8 lg:py-24">
+      <div className="mx-auto max-w-[90rem]">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="mb-3 text-[21px] font-semibold leading-[1.19]">About</p>
+          <h2 className="text-4xl font-semibold leading-[1.07] sm:text-5xl lg:text-6xl">
+            Where technology learns cinematic restraint.
           </h2>
+          <p className="mx-auto mt-6 max-w-3xl text-[22px] font-light leading-[1.45] text-[#333] sm:text-[28px] sm:leading-[1.18]">
+            I work across AI production, cinematography, and interface design, shaping each project around atmosphere, clarity, and story tension.
+          </p>
         </div>
 
-        {/* Bio + Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-6xl mx-auto mb-24">
-          <div>
-            <p className="text-xl text-muted-foreground leading-relaxed mb-6">
-              I'm a multidisciplinary creative, working at the intersection of artificial intelligence, cinematography, and digital design.
+        <div className="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-[18px] border border-[#e0e0e0] bg-white p-6 sm:p-8">
+            <p className="text-[17px] leading-[1.47] text-[#1d1d1f]">
+              My work spans AI-generated short films, traditional production, commercial visuals, and digital products. I like tools that can disappear into the frame, leaving the viewer with a feeling instead of a process.
             </p>
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              My work spans from directing AI-generated short films to producing traditional films and commercials. On the design side, I craft user interfaces that feel as cinematic as the stories I tell on screen.
+            <p className="mt-5 text-[17px] leading-[1.47] text-[#333]">
+              The portfolio is organized around a simple idea: cinematic artifacts first, workflow second. Every image, reel, and interface should feel inspected, not decorated.
             </p>
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Syracuse, NY, 13210</span>
-              <span className="flex items-center gap-2"><Calendar className="w-4 h-4" /> Since 2021</span>
-              <span className="flex items-center gap-2"><Award className="w-4 h-4" /> Award Winner</span>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              {details.map(item => (
+                <span
+                  key={item.label}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#e0e0e0] px-4 text-sm text-[#333]"
+                >
+                  <item.icon className="h-4 w-4 text-[#0066cc]" />
+                  {item.label}
+                </span>
+              ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            {stats.map(stat => (
-              <div key={stat.label} className="bg-background clean-border rounded-2xl p-6 text-center subtle-shadow">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-1 tracking-tight leading-snug">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {disciplines.map(discipline => (
+              <div key={discipline} className="rounded-[18px] border border-[#e0e0e0] bg-white p-6">
+                <p className="text-[17px] font-semibold leading-[1.24]">{discipline}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Skills */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="mx-auto mt-6 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
           {skills.map(skill => (
-            <div key={skill.label} className="bg-background clean-border rounded-2xl p-8 subtle-shadow hover:elevated-shadow gentle-animation">
-              <skill.icon className="w-8 h-8 text-accent-purple mb-4" />
-              <h3 className="text-xl font-bold mb-4">{skill.label}</h3>
-              <div className="flex flex-wrap gap-2">
+            <div key={skill.label} className="rounded-[18px] border border-[#e0e0e0] bg-white p-6">
+              <skill.icon className="mb-5 h-7 w-7 text-[#0066cc]" />
+              <h3 className="text-[21px] font-semibold leading-[1.19]">{skill.label}</h3>
+              <div className="mt-5 flex flex-wrap gap-2">
                 {skill.tools.map(tool => (
-                  <span key={tool} className="text-xs bg-muted text-muted-foreground px-3 py-1.5 rounded-full">
+                  <span key={tool} className="rounded-full border border-[#e0e0e0] px-3 py-1.5 text-sm text-[#333]">
                     {tool}
                   </span>
                 ))}

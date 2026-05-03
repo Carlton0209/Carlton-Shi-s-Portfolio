@@ -12,7 +12,7 @@ export default function App() {
           <Hero />
         </section>
         <section id="portfolio" aria-label="Portfolio section">
-          <Portfolio />a
+          <Portfolio />
         </section>
         <section id="about" aria-label="About section">
           <About />
