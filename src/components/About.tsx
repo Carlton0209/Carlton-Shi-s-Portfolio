@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { Award, Calendar, Film, MapPin, Palette, Sparkles } from 'lucide-react'
 
 const skills = [
@@ -48,7 +49,11 @@ export function About() {
         </div>
 
         <div className="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-[18px] border border-[#e0e0e0] bg-white p-6 sm:p-8">
+          <motion.div
+            whileHover={{ y: -4 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+            className="rounded-[18px] border border-[#e0e0e0] bg-white p-6 transition-shadow hover:shadow-[0_18px_50px_rgba(0,0,0,0.08)] sm:p-8"
+          >
             <p className="text-[17px] leading-[1.47] text-[#1d1d1f]">
               My work spans AI-generated short films, traditional production, commercial visuals, and digital products. I like tools that can disappear into the frame, leaving the viewer with a feeling instead of a process.
             </p>
@@ -58,39 +63,54 @@ export function About() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               {details.map(item => (
-                <span
+                <motion.span
                   key={item.label}
+                  whileHover={{ y: -2 }}
                   className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#e0e0e0] px-4 text-sm text-[#333]"
                 >
                   <item.icon className="h-4 w-4 text-[#0066cc]" />
                   {item.label}
-                </span>
+                </motion.span>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {disciplines.map(discipline => (
-              <div key={discipline} className="rounded-[18px] border border-[#e0e0e0] bg-white p-6">
+              <motion.div
+                key={discipline}
+                whileHover={{ y: -4, borderColor: '#0066cc' }}
+                transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+                className="rounded-[18px] border border-[#e0e0e0] bg-white p-6 transition-shadow hover:shadow-[0_14px_36px_rgba(0,0,0,0.07)]"
+              >
                 <p className="text-[17px] font-semibold leading-[1.24]">{discipline}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         <div className="mx-auto mt-6 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
           {skills.map(skill => (
-            <div key={skill.label} className="rounded-[18px] border border-[#e0e0e0] bg-white p-6">
+            <motion.div
+              key={skill.label}
+              whileHover={{ y: -6 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+              className="rounded-[18px] border border-[#e0e0e0] bg-white p-6 transition-shadow hover:shadow-[0_18px_50px_rgba(0,0,0,0.08)]"
+            >
               <skill.icon className="mb-5 h-7 w-7 text-[#0066cc]" />
               <h3 className="text-[21px] font-semibold leading-[1.19]">{skill.label}</h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 {skill.tools.map(tool => (
-                  <span key={tool} className="rounded-full border border-[#e0e0e0] px-3 py-1.5 text-sm text-[#333]">
+                  <motion.span
+                    key={tool}
+                    whileHover={{ y: -2 }}
+                    className="rounded-full border border-[#e0e0e0] px-3 py-1.5 text-sm text-[#333] transition-colors hover:border-[#0066cc]/35 hover:text-[#0066cc]"
+                  >
                     {tool}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

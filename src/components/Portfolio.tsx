@@ -51,6 +51,7 @@ const projects: Project[] = [
     category: 'interactive',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
     tags: ['Figma', 'React', 'AI Pipelines'],
+    link: 'https://carlton0209.github.io/Reallife-AI/',
   },
   {
     id: '4',
@@ -140,21 +141,47 @@ export function Portfolio() {
         </div>
 
         <div className="mx-auto mt-10 flex max-w-5xl flex-wrap justify-center gap-3">
-          {categories.map(category => (
-            <button
-              key={category.id}
-              type="button"
-              onClick={() => setActiveCategory(category.id)}
-              className={`inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm transition-transform active:scale-95 ${
-                activeCategory === category.id
-                  ? 'bg-[#0066cc] text-white'
-                  : 'border border-[#e0e0e0] bg-white text-[#333] hover:text-[#0066cc]'
-              }`}
-            >
-              <category.icon className="h-4 w-4" />
-              {category.label}
-            </button>
-          ))}
+          {categories.map(category => {
+            const isActive = activeCategory === category.id
+            const count =
+              category.id === 'all'
+                ? projects.length
+                : projects.filter(project => project.category === category.id).length
+
+            return (
+              <motion.button
+                key={category.id}
+                type="button"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setActiveCategory(category.id)}
+                className={`relative inline-flex min-h-11 items-center overflow-hidden rounded-full border px-5 text-sm transition-colors ${
+                  isActive
+                    ? 'border-[#0066cc] text-white'
+                    : 'border-[#e0e0e0] bg-white text-[#333] hover:border-[#0066cc]/40 hover:text-[#0066cc]'
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="active-category-pill"
+                    className="absolute inset-0 rounded-full bg-[#0066cc]"
+                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10 inline-flex items-center gap-2">
+                  <category.icon className="h-4 w-4" />
+                  {category.label}
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs ${
+                      isActive ? 'bg-white/18 text-white' : 'bg-[#f5f5f7] text-[#7a7a7a]'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </span>
+              </motion.button>
+            )
+          })}
         </div>
       </div>
 
@@ -190,20 +217,23 @@ export function Portfolio() {
 
                     <div className="mt-7 flex flex-wrap justify-center gap-2 lg:justify-start">
                       {project.tags.map(tag => (
-                        <span
+                        <motion.span
                           key={tag}
+                          whileHover={{ y: -2 }}
                           className={`rounded-full border px-4 py-2 text-sm ${
-                            isDark ? 'border-white/[0.14] text-white/80' : 'border-[#e0e0e0] text-[#333]'
+                            isDark
+                              ? 'border-white/[0.14] text-white/80 hover:border-white/30 hover:text-white'
+                              : 'border-[#e0e0e0] text-[#333] hover:border-[#0066cc]/35 hover:text-[#0066cc]'
                           }`}
                         >
                           {tag}
-                        </span>
+                        </motion.span>
                       ))}
                     </div>
 
                     <SmartLink
                       to={project.link ?? `/projects/${project.id}`}
-                      className={`mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border px-[22px] text-[17px] transition-transform active:scale-95 ${
+                      className={`mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border px-[22px] text-[17px] transition-all hover:-translate-y-0.5 active:scale-95 ${
                         isDark ? 'border-[#2997ff]' : 'border-[#0066cc]'
                       } ${link}`}
                     >
@@ -216,15 +246,26 @@ export function Portfolio() {
                     to={project.link ?? `/projects/${project.id}`}
                     className="group block"
                   >
-                    <div className="rounded-lg bg-[#f5f5f7]" style={{ boxShadow: 'rgba(0, 0, 0, 0.22) 3px 5px 30px 0' }}>
-                      <div className="overflow-hidden rounded-lg">
+                    <motion.div
+                      whileHover={{ y: -8 }}
+                      transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+                      className="rounded-lg bg-[#f5f5f7]"
+                      style={{ boxShadow: 'rgba(0, 0, 0, 0.22) 3px 5px 30px 0' }}
+                    >
+                      <div className="relative overflow-hidden rounded-lg">
                         <img
                           src={project.image}
                           alt={project.title}
-                          className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+                          className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                         />
+                        <div className="absolute inset-0 flex items-end justify-end bg-gradient-to-t from-black/45 via-black/0 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                          <span className="inline-flex min-h-10 items-center gap-2 rounded-full bg-white/90 px-4 text-sm text-[#1d1d1f] backdrop-blur-xl">
+                            Open project
+                            <ArrowUpRight className="h-4 w-4" />
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
                   </SmartLink>
                 </div>
               </motion.article>
