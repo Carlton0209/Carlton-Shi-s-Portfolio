@@ -308,11 +308,10 @@ function HeroSection() {
         loop
         muted
         playsInline
-        poster={withBase('images/uiaosdyhulaksjhd.jpg')}
+        preload="auto"
         className="absolute left-0 top-[20%] z-0 h-auto w-full object-contain"
       >
         <source src={heroVideo} type="video/mp4" />
-        <source src={withBase('videos/hero.mp4')} type="video/mp4" />
       </video>
       <div className="absolute inset-0 z-0 bg-black/5" />
       <div className="pointer-events-none absolute bottom-0 z-0 h-[300px] w-full bg-gradient-to-b from-transparent to-black" />
