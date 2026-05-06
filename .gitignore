@@ -4,3 +4,4 @@ dist/
 .npm-cache/
 .codex-temp-index-*
 .codex-git-objects/
+resume-workspace-*/

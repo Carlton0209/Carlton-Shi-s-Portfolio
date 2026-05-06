@@ -26,6 +26,7 @@ declare global {
 const heroVideo = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
 const startVideo = 'https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8'
 const ctaVideo = 'https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8'
+const resumeUrl = withBase('resume/Carlton_Shi_Resume.docx')
 
 const featureGifs = [
   'https://motionsites.ai/assets/hero-finlytic-preview-CV9g0FHP.gif',
@@ -280,7 +281,19 @@ function Navbar() {
   return (
     <nav className="fixed left-0 right-0 top-4 z-50 px-5 py-3 sm:px-8 lg:px-16">
       <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <LogoMark />
+        <div className="flex items-center gap-2">
+          <LogoMark />
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noreferrer"
+            download
+            className="liquid-glass inline-flex h-12 items-center rounded-full px-4 text-sm font-medium text-white/90 transition-colors hover:text-white font-body"
+            aria-label="Download Carlton Shi resume"
+          >
+            <span className="relative z-10">Resume</span>
+          </a>
+        </div>
 
         <div className="liquid-glass hidden items-center gap-1 rounded-full px-1.5 py-1 md:flex">
           {navItems.map(item => (
