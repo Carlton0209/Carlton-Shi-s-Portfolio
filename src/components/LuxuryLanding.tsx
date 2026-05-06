@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowUpRight, BarChart3, Film, Monitor, Palette, Play, Shield, Sparkles, Zap } from 'lucide-react'
 import { withBase } from '../lib/asset'
 
@@ -26,7 +27,6 @@ declare global {
 const heroVideo = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
 const startVideo = 'https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8'
 const ctaVideo = 'https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8'
-const resumeUrl = withBase('resume/Carlton_Shi_Resume.docx')
 
 const featureGifs = [
   'https://motionsites.ai/assets/hero-finlytic-preview-CV9g0FHP.gif',
@@ -283,16 +283,13 @@ function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <div className="flex items-center gap-2">
           <LogoMark />
-          <a
-            href={resumeUrl}
-            target="_blank"
-            rel="noreferrer"
-            download
+          <Link
+            to="/resume"
             className="liquid-glass inline-flex h-12 items-center rounded-full px-4 text-sm font-medium text-white/90 transition-colors hover:text-white font-body"
-            aria-label="Download Carlton Shi resume"
+            aria-label="View Carlton Shi resume"
           >
             <span className="relative z-10">Resume</span>
-          </a>
+          </Link>
         </div>
 
         <div className="liquid-glass hidden items-center gap-1 rounded-full px-1.5 py-1 md:flex">
