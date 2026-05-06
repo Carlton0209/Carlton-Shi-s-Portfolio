@@ -38,7 +38,6 @@ const navItems = [
   { href: '#services', label: 'Services' },
   { href: '#work', label: 'Work' },
   { href: '#process', label: 'Process' },
-  { href: '#pricing', label: 'Pricing' },
 ]
 
 const works = [
@@ -634,48 +633,6 @@ function Testimonials() {
   )
 }
 
-function PricingSection() {
-  const packages = [
-    ['Visual Sprint', 'AI imagery, art direction, and short-form visual systems.'],
-    ['Film Package', 'Narrative edits, color, motion, and cinematic campaign assets.'],
-    ['Product Prototype', 'React interfaces, launch pages, and interactive proof-of-concepts.'],
-  ]
-
-  return (
-    <section id="pricing" className="bg-black px-5 py-24 text-white sm:px-8 lg:py-32">
-      <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-3xl text-center">
-          <SectionBadge>Pricing</SectionBadge>
-          <BlurText
-            text="Engagements shaped around the brief."
-            className="mt-6 text-4xl italic leading-[0.9] tracking-tight text-white font-heading md:text-5xl lg:text-6xl"
-          />
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {packages.map(([title, body]) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -6 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.55, ease: 'easeOut' }}
-              className="liquid-glass rounded-2xl p-8"
-            >
-              <h3 className="relative z-10 text-3xl italic leading-none text-white font-heading">{title}</h3>
-              <p className="relative z-10 mt-5 text-sm font-light leading-relaxed text-white/60 font-body">{body}</p>
-              <div className="relative z-10 mt-8">
-                <PrimaryCta href="#contact">Discuss scope</PrimaryCta>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 function CtaFooter() {
   return (
     <VideoSection id="contact" video={ctaVideo} minHeight="min-h-[760px]">
@@ -689,12 +646,6 @@ function CtaFooter() {
         </p>
         <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
           <PrimaryCta href="mailto:sjc2213968315@gmail.com">Book a Call</PrimaryCta>
-          <a
-            href="#pricing"
-            className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition-transform active:scale-95 font-body"
-          >
-            View Pricing
-          </a>
         </div>
 
         <footer className="mt-32 w-full border-t border-white/10 pt-8">
@@ -702,7 +653,7 @@ function CtaFooter() {
             <p>(c) 2026 Carlton Shi. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <a href="#home" className="transition-colors hover:text-white">Privacy</a>
-              <a href="#pricing" className="transition-colors hover:text-white">Terms</a>
+              <a href="#contact" className="transition-colors hover:text-white">Terms</a>
               <a href="mailto:sjc2213968315@gmail.com" className="transition-colors hover:text-white">Contact</a>
             </div>
           </div>
@@ -724,7 +675,6 @@ export function LuxuryLanding() {
         <FeaturesGrid />
         <StatsSection />
         <Testimonials />
-        <PricingSection />
         <CtaFooter />
       </main>
     </div>
