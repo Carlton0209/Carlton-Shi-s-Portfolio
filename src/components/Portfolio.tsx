@@ -51,7 +51,7 @@ const projects: Project[] = [
     category: 'interactive',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
     tags: ['Figma', 'React', 'AI Pipelines'],
-    link: 'https://carlton0209.github.io/Reallife-AI/',
+    link: 'https://reallife-ai-eib5.vercel.app/',
   },
   {
     id: '4',
