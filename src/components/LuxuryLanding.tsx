@@ -44,7 +44,7 @@ const works = [
     title: 'AI Generated Images',
     eyebrow: 'Commercial AI image system',
     body: 'A controllable image-generation workflow for consistent commercial visuals, concept frames, and campaign-ready art direction.',
-    image: 'https://framerusercontent.com/images/1fCFuJYrV7OzGwQPzUw42fGpcJQ.jpg?width=1024&height=1024',
+    image: withBase('images/clearcat-processed-image-2.png'),
     href: 'https://carltonshi0209.my.canva.site/aigc',
   },
   {
