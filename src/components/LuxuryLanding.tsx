@@ -25,7 +25,6 @@ declare global {
 
 const heroVideo = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
 const startVideo = 'https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8'
-const statsVideo = 'https://stream.mux.com/NcU3HlHeF7CUL86azTTzpy3Tlb00d6iF3BmCdFslMJYM.m3u8'
 const ctaVideo = 'https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8'
 
 const featureGifs = [
@@ -42,23 +41,44 @@ const navItems = [
 
 const works = [
   {
-    title: 'REALLIFE AI',
-    eyebrow: 'Interactive product prototype',
-    body: 'A one-click cinematic portrait enhancer shaped around realism, trust, and a frictionless upload-to-output flow.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
-    href: 'https://carlton0209.github.io/Reallife-AI/',
+    title: 'AI Generated Images',
+    eyebrow: 'Commercial AI image system',
+    body: 'A controllable image-generation workflow for consistent commercial visuals, concept frames, and campaign-ready art direction.',
+    image: 'https://framerusercontent.com/images/1fCFuJYrV7OzGwQPzUw42fGpcJQ.jpg?width=1024&height=1024',
+    href: 'https://carltonshi0209.my.canva.site/aigc',
   },
   {
     title: 'One-day Migration',
     eyebrow: 'Narrative short film',
-    body: 'A quiet film about motion, belonging, and urban change, built through cinematic restraint and precise visual rhythm.',
+    body: 'Three drifting people cross paths across one day, using migration as a quiet metaphor for belonging, speed, and urban change.',
     image: 'https://filmfreeway-production-storage-01-connector.filmfreeway.com/attachments/files/009/340/504/original/56.jpg?1746511266',
     href: 'https://filmfreeway.com/One-dayMigration',
   },
   {
+    title: 'REALLIFE AI',
+    eyebrow: 'Interactive product prototype',
+    body: 'A one-click cinematic portrait enhancer designed around trust, realism, and a clean user journey from upload to output.',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
+    href: 'https://carlton0209.github.io/Reallife-AI/',
+  },
+  {
+    title: 'AI Generated Videos',
+    eyebrow: 'AI video production',
+    body: 'A video pipeline combining generation models, ComfyUI restoration, upscaling, and post workflows for polished short-form pieces.',
+    image: withBase('images/uiaosdyhulaksjhd.jpg'),
+    href: 'https://carltonshi0209.my.canva.site/aigc',
+  },
+  {
+    title: 'Films and 3D Modeling',
+    eyebrow: 'Film craft and 3D work',
+    body: 'A broader archive of traditional film, CG, and post-production work across Adobe tools, Unreal Engine, Nuke, Houdini, Maya, and Blender.',
+    image: withBase('images/img.png'),
+    href: 'https://carltonshi0209.my.canva.site',
+  },
+  {
     title: 'Multi-source Dashboard',
     eyebrow: 'Web application interface',
-    body: 'A calm React dashboard for monitoring multi-channel news streams with speed, hierarchy, and editorial clarity.',
+    body: 'A React dashboard that gathers multi-channel news streams into a calm, scannable interface for quick content monitoring.',
     image: withBase('images/ScreenShot_2026-03-29_141024_206.png'),
     href: 'https://carlton0209.github.io/Multi-source-Content-Dashboard/',
   },
@@ -108,13 +128,6 @@ const whyCards = [
     title: 'Launch Ready',
     body: 'Clean implementation, responsive behavior, and production-minded details come standard from the first pass.',
   },
-]
-
-const stats = [
-  { value: '2021', label: 'Working since' },
-  { value: '6', label: 'Selected projects' },
-  { value: '3', label: 'Core disciplines' },
-  { value: '5 days', label: 'Prototype sprint' },
 ]
 
 const notes = [
@@ -578,25 +591,6 @@ function FeaturesGrid() {
   )
 }
 
-function StatsSection() {
-  return (
-    <VideoSection video={statsVideo} desaturated minHeight="min-h-[620px]">
-      <div className="mx-auto flex min-h-[620px] max-w-7xl items-center px-5 sm:px-8">
-        <div className="liquid-glass w-full rounded-3xl p-10 md:p-16">
-          <div className="relative z-10 grid grid-cols-2 gap-10 lg:grid-cols-4">
-            {stats.map(item => (
-              <div key={item.label} className="text-center">
-                <p className="text-4xl italic leading-none text-white font-heading md:text-5xl lg:text-6xl">{item.value}</p>
-                <p className="mt-3 text-sm font-light text-white/60 font-body">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </VideoSection>
-  )
-}
-
 function Testimonials() {
   return (
     <section className="bg-black px-5 py-24 text-white sm:px-8 lg:py-32">
@@ -673,7 +667,6 @@ export function LuxuryLanding() {
         <FeaturesChess />
         <WorkSection />
         <FeaturesGrid />
-        <StatsSection />
         <Testimonials />
         <CtaFooter />
       </main>
