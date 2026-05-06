@@ -638,7 +638,7 @@ function CtaFooter() {
     <VideoSection id="contact" video={ctaVideo} minHeight="min-h-[760px]">
       <div className="mx-auto flex min-h-[760px] max-w-7xl flex-col items-center justify-center px-5 text-center sm:px-8">
         <BlurText
-          text="Your next website starts here."
+          text="Your next creative chapter starts here."
           className="max-w-3xl text-5xl italic leading-[0.85] tracking-tight text-white font-heading md:text-6xl lg:text-7xl"
         />
         <p className="mt-8 max-w-2xl text-sm font-light leading-relaxed text-white/60 font-body md:text-base">
