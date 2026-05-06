@@ -58,7 +58,7 @@ const works = [
     title: 'REALLIFE AI',
     eyebrow: 'Interactive product prototype',
     body: 'A one-click cinematic portrait enhancer designed around trust, realism, and a clean user journey from upload to output.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
+    image: withBase('images/reallife-ai-preview.jpg'),
     href: 'https://reallife-ai-eib5.vercel.app/',
   },
   {

@@ -49,7 +49,7 @@ const projects: Project[] = [
     description:
       'A one-click cinematic portrait enhancer designed around trust, realism, and a clean user journey from upload to output.',
     category: 'interactive',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop',
+    image: withBase('images/reallife-ai-preview.jpg'),
     tags: ['Figma', 'React', 'AI Pipelines'],
     link: 'https://reallife-ai-eib5.vercel.app/',
   },
