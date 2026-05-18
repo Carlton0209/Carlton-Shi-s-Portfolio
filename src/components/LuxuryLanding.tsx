@@ -2,9 +2,9 @@
 
 import { motion, useInView } from 'framer-motion'
 import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, BarChart3, Film, Monitor, Palette, Shield, Sparkles, Zap } from 'lucide-react'
+import { ArrowUpRight, BarChart3, Film, Monitor, Palette, Play, Shield, Sparkles, Zap } from 'lucide-react'
 import { withBase } from '../lib/asset'
 
 interface HlsInstance {
@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-const heroVideo = withBase('videos/nature-motion-home.mp4')
+const heroVideo = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
 const startVideo = 'https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8'
 const ctaVideo = 'https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8'
 
@@ -322,37 +322,79 @@ function Navbar() {
   )
 }
 
-function ScrollAwareNavbar() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > Math.max(280, window.innerHeight * 0.72))
-    }
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  return isVisible ? <Navbar /> : null
-}
-
 function HeroSection() {
   return (
-    <section id="home" className="relative h-[100svh] min-h-[640px] overflow-hidden bg-black">
+    <section id="home" className="relative h-[1000px] overflow-visible bg-black">
       <video
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        aria-label="Animated homepage scene"
-        className="absolute inset-0 z-0 h-full w-full object-contain object-center"
+        className="absolute left-0 top-[20%] z-0 h-auto w-full object-contain"
       >
         <source src={heroVideo} type="video/mp4" />
       </video>
-      <h1 className="sr-only">Film, AI visuals, and interactive systems by Carlton Shi</h1>
+      <div className="absolute inset-0 z-0 bg-black/5" />
+      <div className="pointer-events-none absolute bottom-0 z-0 h-[300px] w-full bg-gradient-to-b from-transparent to-black" />
+
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center px-5 pt-[150px] text-center sm:px-8">
+        <motion.div
+          initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
+          animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="liquid-glass inline-flex items-center gap-2 rounded-full px-1 py-1"
+        >
+          <span className="relative z-10 rounded-full bg-white px-3 py-1 text-xs font-semibold text-black font-body">New</span>
+          <span className="relative z-10 pr-3 text-xs font-light text-white/80 font-body">
+            Introducing AI-powered cinematic portfolios.
+          </span>
+        </motion.div>
+
+        <BlurText
+          as="h1"
+          text="The Portfolio Your Brand Deserves"
+          delay={100}
+          className="mt-8 max-w-3xl text-6xl italic leading-[0.8] tracking-[-4px] text-white font-heading md:text-7xl lg:text-[5.5rem]"
+        />
+
+        <motion.p
+          initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
+          animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6, ease: 'easeOut' }}
+          className="mt-8 max-w-xl text-sm font-light leading-tight text-white font-body md:text-base"
+        >
+          Film, AI visuals, and interactive systems by Carlton Shi. Cinematic design built for attention, speed, and feeling.
+        </motion.p>
+
+        <motion.div
+          initial={{ filter: 'blur(10px)', opacity: 0, y: 20 }}
+          animate={{ filter: 'blur(0px)', opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.6, ease: 'easeOut' }}
+          className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
+        >
+          <PrimaryCta href="#contact">Get Started</PrimaryCta>
+          <a href="#work" className="inline-flex items-center gap-2 text-sm font-light text-white/85 transition-colors hover:text-white font-body">
+            <Play className="h-4 w-4 fill-white" />
+            Watch the Work
+          </a>
+        </motion.div>
+
+        <div className="mt-auto w-full pb-8 pt-16">
+          <div className="flex flex-col items-center justify-center gap-8">
+            <span className="liquid-glass rounded-full px-4 py-2 text-xs font-light text-white/70 font-body">
+              <span className="relative z-10">Built with the tools behind</span>
+            </span>
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+              {['Runway', 'ComfyUI', 'Figma', 'Unreal', 'React'].map(tool => (
+                <span key={tool} className="text-2xl italic text-white font-heading md:text-3xl">
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
@@ -628,7 +670,7 @@ function CtaFooter() {
 export function LuxuryLanding() {
   return (
     <div className="min-h-screen bg-black text-white">
-      <ScrollAwareNavbar />
+      <Navbar />
       <HeroSection />
       <main className="relative z-10 bg-black">
         <StartSection />
