@@ -17,6 +17,7 @@ import {
   Type,
   Wand2,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const backgroundVideo =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_150203_44a5bd32-516a-47ce-a077-8acbf9aa8991.mp4'
@@ -86,12 +87,24 @@ function ToolMarquee({ icons, direction }: { icons: LucideIcon[]; direction: 'le
 
 function ContactButton() {
   return (
-    <a
-      href="mailto:sjc2213968315@gmail.com"
-      className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
-    >
-      <span className="relative z-10">Let's Team Up Today</span>
-    </a>
+    <div className="flex flex-wrap items-center gap-3">
+      <Link
+        to="/works"
+        className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
+      >
+        <span className="relative z-10 inline-flex items-center gap-2">
+          Works Exhibition
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+        </span>
+      </Link>
+
+      <a
+        href="mailto:sjc2213968315@gmail.com"
+        className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
+      >
+        <span className="relative z-10">Let's Team Up Today</span>
+      </a>
+    </div>
   )
 }
 
