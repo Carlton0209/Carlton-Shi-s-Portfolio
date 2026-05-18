@@ -109,7 +109,7 @@ function ContactButton() {
       </Link>
 
       <a
-        href="mailto:sjc2213968315@gmail.com"
+        href="mailto:jshi77@syr.edu"
         className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
       >
         <span className="relative z-10">Contact Me</span>
@@ -196,7 +196,7 @@ function ReachMeCard() {
   return (
     <article className="noise-overlay relative overflow-hidden rounded-2xl bg-[#324444] p-5 md:p-6">
       <a
-        href="mailto:sjc2213968315@gmail.com"
+        href="mailto:jshi77@syr.edu"
         aria-label="Email Carlton Shi"
         className="liquid-glass absolute right-5 top-5 z-20 flex h-9 w-9 items-center justify-center rounded-full transition-transform hover:-translate-y-0.5 md:right-6 md:top-6"
       >
@@ -205,8 +205,8 @@ function ReachMeCard() {
 
       <SectionLabel align="start">Reach Me</SectionLabel>
       <div className="relative z-10 mt-12 space-y-3 pr-12">
-        <a href="mailto:sjc2213968315@gmail.com" className="block text-[19px] leading-tight text-white sm:text-2xl">
-          sjc2213968315@gmail.com
+        <a href="mailto:jshi77@syr.edu" className="block text-[19px] leading-tight text-white sm:text-2xl">
+          jshi77@syr.edu
         </a>
         <p className="text-sm text-white/65">Film / AI visuals / web-ready products</p>
       </div>
