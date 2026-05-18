@@ -153,7 +153,7 @@ function CreativeVoiceCard() {
         Story, atmosphere, and tool fluency sit together here. Every frame, interface, and AI system is shaped to feel clear before it feels technical.
       </p>
       <div className="relative z-10 mt-7 text-sm text-white/70">
-        <strong className="font-medium text-white">Carlton Shi</strong>, Film + AI Visual Creator
+        <strong className="font-medium text-white">Carlton Shi</strong>
       </div>
     </article>
   )
