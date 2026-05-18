@@ -29,9 +29,9 @@ const softwareVideo =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_153148_d7a3e1dd-e5d0-4ce6-8306-00d7522ecc44.mp4'
 
 const focusRows = [
-  ['Film', 'One-day Migration', 'Narrative Short'],
-  ['AI', 'Generated Images + Video', 'AIGC Workflows'],
-  ['Web', 'REALLIFE AI + Dashboard', 'React Products'],
+  'Film',
+  'AI',
+  'Web',
 ]
 
 const firstToolRow = [Figma, Framer, Palette, PenTool, Layers, Type, Aperture, Chrome]
@@ -128,15 +128,13 @@ function BackgroundCard() {
         <SectionLabel>Background</SectionLabel>
 
         <div className="space-y-4">
-          {focusRows.map(([year, role, studio]) => (
+          {focusRows.map(label => (
             <div
-              key={role}
-              className="grid grid-cols-[3rem_auto_minmax(0,1fr)] items-center gap-3 text-sm text-white/85 sm:grid-cols-[auto_auto_minmax(0,1fr)_auto]"
+              key={label}
+              className="flex items-center gap-3 text-2xl font-medium text-white/85"
             >
-              <span className="text-white/65">{year}</span>
+              <span className="text-white/65">{label}</span>
               <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-              <span className="min-w-0 truncate sm:whitespace-normal">{role}</span>
-              <span className="hidden text-right text-white/55 sm:block">{studio}</span>
             </div>
           ))}
         </div>
