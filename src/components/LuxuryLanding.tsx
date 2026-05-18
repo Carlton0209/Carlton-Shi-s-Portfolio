@@ -145,8 +145,8 @@ function MetricCard() {
       <VideoBackground src={metricVideo} />
       <div className="absolute inset-0 bg-black/25" />
       <div className="relative z-10 flex h-full min-h-[260px] flex-col items-center justify-center px-5 text-center md:min-h-0">
-        <p className="text-5xl font-light tracking-tight text-white drop-shadow sm:text-6xl md:text-7xl lg:text-[88px]">6+</p>
-        <p className="mt-3 text-sm text-white/85">Selected projects</p>
+        <p className="text-5xl font-light tracking-tight text-white drop-shadow sm:text-6xl md:text-7xl lg:text-[88px]">10K+</p>
+        <p className="mt-3 text-sm text-white/85">Likes on social media</p>
       </div>
     </article>
   )
