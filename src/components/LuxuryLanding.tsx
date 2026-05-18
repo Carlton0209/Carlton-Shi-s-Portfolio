@@ -98,11 +98,21 @@ function ContactButton() {
         </span>
       </Link>
 
+      <Link
+        to="/resume"
+        className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
+      >
+        <span className="relative z-10 inline-flex items-center gap-2">
+          Resume
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+        </span>
+      </Link>
+
       <a
         href="mailto:sjc2213968315@gmail.com"
         className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
       >
-        <span className="relative z-10">Let's Team Up Today</span>
+        <span className="relative z-10">Contact Me</span>
       </a>
     </div>
   )
