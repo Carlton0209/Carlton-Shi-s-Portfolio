@@ -204,11 +204,14 @@ function ReachMeCard() {
       </a>
 
       <SectionLabel align="start">Reach Me</SectionLabel>
-      <div className="relative z-10 mt-12 space-y-3 pr-12">
-        <a href="mailto:jshi77@syr.edu" className="block text-[19px] leading-tight text-white sm:text-2xl">
+      <div className="relative z-10 mt-12 space-y-2 pr-12">
+        <a href="mailto:jshi77@syr.edu" className="block text-[18px] leading-tight text-white sm:text-2xl">
           jshi77@syr.edu
         </a>
-        <p className="text-sm text-white/65">Film / AI visuals / web-ready products</p>
+        <a href="mailto:sjc2213968315@gmail.com" className="block text-[18px] leading-tight text-white sm:text-2xl">
+          sjc2213968315@gmail.com
+        </a>
+        <p className="pt-1 text-sm text-white/65">Film / AI visuals / AI products</p>
       </div>
     </article>
   )
