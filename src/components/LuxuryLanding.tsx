@@ -28,12 +28,6 @@ const metricVideo =
 const softwareVideo =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_153148_d7a3e1dd-e5d0-4ce6-8306-00d7522ecc44.mp4'
 
-const focusRows = [
-  'Film',
-  'AI',
-  'Web',
-]
-
 const firstToolRow = [Figma, Framer, Palette, PenTool, Layers, Type, Aperture, Chrome]
 const secondToolRow = [Camera, Brush, Box, Wand2, Figma, Framer, Type, Layers]
 
@@ -124,20 +118,8 @@ function BackgroundCard() {
       <VideoBackground src={backgroundVideo} />
       <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/80" />
 
-      <div className="relative z-10 flex h-full min-h-[420px] flex-col justify-between p-5 md:min-h-[520px] md:p-6 lg:min-h-0">
+      <div className="relative z-10 flex h-full min-h-[420px] flex-col p-5 md:min-h-[520px] md:p-6 lg:min-h-0">
         <SectionLabel>Background</SectionLabel>
-
-        <div className="space-y-4">
-          {focusRows.map(label => (
-            <div
-              key={label}
-              className="flex items-center gap-3 text-2xl font-medium text-white/85"
-            >
-              <span className="text-white/65">{label}</span>
-              <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-            </div>
-          ))}
-        </div>
       </div>
     </article>
   )
