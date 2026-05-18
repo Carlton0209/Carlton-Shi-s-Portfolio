@@ -227,7 +227,7 @@ export function LuxuryLanding() {
               Hi, I'm Carlton Shi!
             </h1>
             <p className="mt-4 max-w-3xl text-sm leading-[1.6] text-white/60 md:text-[15px]">
-              A film and AI visual creator shaping cinematic shorts, generative media systems, and web-ready interactive products. I help ideas move with focus, atmosphere, and intention.
+              A film and AI visual creator shaping cinematic shorts, generative media systems, and AI Products. I help ideas move with focus, atmosphere, and intention.
             </p>
           </div>
 
