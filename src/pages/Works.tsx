@@ -9,9 +9,10 @@ type WorkItem = {
   title: string
   category: Exclude<WorkCategory, 'All'>
   summary: string
-  image: string
-  href: string
+  image?: string
+  href?: string
   year: string
+  visual?: 'lineage'
 }
 
 const categories: WorkCategory[] = ['All', 'Film', 'AI Visuals', 'Web Products', '3D & Post']
@@ -50,11 +51,10 @@ const works: WorkItem[] = [
     year: '2026',
   },
   {
-    title: 'Multi-source Dashboard',
+    title: 'LINEAGE',
     category: 'Web Products',
-    summary: 'A scannable React dashboard for monitoring multi-channel content.',
-    image: withBase('images/ScreenShot_2026-03-29_141024_206.png'),
-    href: 'https://carlton0209.github.io/Multi-source-Content-Dashboard/',
+    summary: 'The homepage for LINEAGE, designed as a direct first screen for the project.',
+    visual: 'lineage',
     year: '2026',
   },
   {
@@ -100,20 +100,42 @@ function CategoryButton({
   )
 }
 
-function WorkCard({ work }: { work: WorkItem }) {
+function LineagePreview() {
   return (
-    <a
-      href={work.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group liquid-glass block overflow-hidden rounded-2xl p-2 transition-transform duration-300 hover:-translate-y-1"
-    >
+    <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#090909]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.18),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_42%),linear-gradient(180deg,#141414,#070707)]" />
+      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:44px_44px]" />
+      <div className="absolute inset-x-8 top-8 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/45">
+        <span>LINEAGE</span>
+        <span>Home</span>
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+        <span className="text-[11px] uppercase tracking-[0.34em] text-white/45">Homepage</span>
+        <strong className="mt-4 text-4xl font-normal tracking-[0.2em] text-white sm:text-5xl">LINEAGE</strong>
+      </div>
+    </div>
+  )
+}
+
+function WorkVisual({ work }: { work: WorkItem }) {
+  if (work.visual === 'lineage' || !work.image) {
+    return <LineagePreview />
+  }
+
+  return (
+    <img
+      src={work.image}
+      alt={work.title}
+      className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+    />
+  )
+}
+
+function WorkCard({ work }: { work: WorkItem }) {
+  const cardContent = (
+    <>
       <div className="relative z-10 overflow-hidden rounded-[1rem] bg-black">
-        <img
-          src={work.image}
-          alt={work.title}
-          className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-        />
+        <WorkVisual work={work} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/8 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-4">
           <div className="flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em] text-white/55">
@@ -122,12 +144,33 @@ function WorkCard({ work }: { work: WorkItem }) {
           </div>
           <div className="mt-3 flex items-end justify-between gap-4">
             <h2 className="text-2xl font-normal leading-none tracking-tight text-white">{work.title}</h2>
-            <ArrowUpRight className="h-5 w-5 shrink-0 text-white/75 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" strokeWidth={1.5} />
+            {work.href ? (
+              <ArrowUpRight className="h-5 w-5 shrink-0 text-white/75 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" strokeWidth={1.5} />
+            ) : null}
           </div>
         </div>
       </div>
 
       <p className="relative z-10 px-2 pb-2 pt-4 text-sm leading-[1.55] text-white/62">{work.summary}</p>
+    </>
+  )
+
+  if (!work.href) {
+    return (
+      <article className="group liquid-glass block overflow-hidden rounded-2xl p-2">
+        {cardContent}
+      </article>
+    )
+  }
+
+  return (
+    <a
+      href={work.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group liquid-glass block overflow-hidden rounded-2xl p-2 transition-transform duration-300 hover:-translate-y-1"
+    >
+      {cardContent}
     </a>
   )
 }
