@@ -114,14 +114,18 @@ function ContactButton() {
 
 function BackgroundCard() {
   return (
-    <article className="relative min-h-[420px] overflow-hidden rounded-2xl bg-black md:min-h-[520px] lg:min-h-0">
+    <Link
+      to="/works"
+      aria-label="Open Work Exhibition"
+      className="group relative block min-h-[420px] overflow-hidden rounded-2xl bg-black transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/80 md:min-h-[520px] lg:min-h-0"
+    >
       <VideoBackground src={backgroundVideo} />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/80 transition-colors duration-300 group-hover:from-black/25 group-hover:to-black/70" />
 
       <div className="relative z-10 flex h-full min-h-[420px] flex-col p-5 md:min-h-[520px] md:p-6 lg:min-h-0">
-        <SectionLabel>Background</SectionLabel>
+        <SectionLabel>Work Exhibition</SectionLabel>
       </div>
-    </article>
+    </Link>
   )
 }
 
