@@ -1,71 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowUpRight, Film, Monitor, Sparkle, Wand2 } from 'lucide-react'
-import { withBase } from '../lib/asset'
-
-type WorkCategory = 'All' | 'Film' | 'AI Visuals' | 'Web Products' | '3D & Post'
-
-type WorkItem = {
-  title: string
-  category: Exclude<WorkCategory, 'All'>
-  summary: string
-  image: string
-  href: string
-  year: string
-}
-
-const categories: WorkCategory[] = ['All', 'Film', 'AI Visuals', 'Web Products', '3D & Post']
-
-const works: WorkItem[] = [
-  {
-    title: 'One-day Migration',
-    category: 'Film',
-    summary: 'Narrative short film about movement, belonging, and urban rhythm.',
-    image: 'https://filmfreeway-production-storage-01-connector.filmfreeway.com/attachments/files/009/340/504/original/56.jpg?1746511266',
-    href: 'https://filmfreeway.com/One-dayMigration',
-    year: '2026',
-  },
-  {
-    title: 'AI Generated Images',
-    category: 'AI Visuals',
-    summary: 'Commercial image-generation workflow for consistent visual direction.',
-    image: withBase('images/clearcat-processed-image-2.png'),
-    href: 'https://carltonshi0209.my.canva.site/aigc',
-    year: '2026',
-  },
-  {
-    title: 'AI Generated Videos',
-    category: 'AI Visuals',
-    summary: 'Generated video pipeline shaped with restoration, upscaling, and post.',
-    image: withBase('images/uiaosdyhulaksjhd.jpg'),
-    href: 'https://carltonshi0209.my.canva.site/aigc',
-    year: '2026',
-  },
-  {
-    title: 'REALLIFE AI',
-    category: 'Web Products',
-    summary: 'A cinematic portrait enhancer built around realism and a clean flow.',
-    image: withBase('images/reallife-ai-preview.jpg'),
-    href: 'https://reallife-ai-eib5.vercel.app/',
-    year: '2026',
-  },
-  {
-    title: 'LINEAGE',
-    category: 'Web Products',
-    summary: 'The homepage for LINEAGE, designed as a direct first screen for the project.',
-    image: withBase('images/lineage-homepage.png'),
-    href: 'https://web-oj1ikahn5-carlton0209s-projects.vercel.app/',
-    year: '2026',
-  },
-  {
-    title: 'Films and 3D Modeling',
-    category: '3D & Post',
-    summary: 'Film craft, CG, post-production, and 3D work across production tools.',
-    image: withBase('images/img.png'),
-    href: 'https://carltonshi0209.my.canva.site',
-    year: '2026',
-  },
-]
+import { categories, type WorkCategory, type WorkProject, works } from '../data/works'
 
 const categoryIcon = {
   All: Sparkle,
@@ -100,12 +36,11 @@ function CategoryButton({
   )
 }
 
-function WorkCard({ work }: { work: WorkItem }) {
+function WorkCard({ work }: { work: WorkProject }) {
   return (
-    <a
-      href={work.href}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to={`/works/${work.slug}`}
+      aria-label={`Open ${work.title} detail page`}
       className="group liquid-glass block overflow-hidden rounded-2xl p-2 transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="relative z-10 overflow-hidden rounded-[1rem] bg-black">
@@ -128,7 +63,7 @@ function WorkCard({ work }: { work: WorkItem }) {
       </div>
 
       <p className="relative z-10 px-2 pb-2 pt-4 text-sm leading-[1.55] text-white/62">{work.summary}</p>
-    </a>
+    </Link>
   )
 }
 
