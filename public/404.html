@@ -9,7 +9,9 @@
       const path = window.location.pathname.startsWith(base)
         ? window.location.pathname.slice(base.length)
         : window.location.pathname.replace(/^\/+/, '')
-      window.location.replace(`${base}?redirect=${encodeURIComponent(path + window.location.search + window.location.hash)}`)
+      const separator = window.location.search ? '&' : '?'
+      const route = `${path + window.location.search}${separator}v=${Date.now()}${window.location.hash}`
+      window.location.replace(`${base}?redirect=${encodeURIComponent(route)}`)
     </script>
   </head>
   <body>
