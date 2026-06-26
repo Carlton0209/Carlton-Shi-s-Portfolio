@@ -1,27 +1,24 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { ArrowUpRight, Box, Film, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
 
 const backgroundVideoUrl =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4'
 
 const works = [
   {
-    title: 'AI Images',
-    label: 'AIGC / Stills',
-    description: 'Cinematic visual studies shaped with prompt direction, retouching, and controlled image systems.',
+    title: 'AIGC Works',
+    label: 'Images / Videos',
     icon: Sparkles,
-  },
-  {
-    title: 'AI Videos',
-    label: 'Motion / Pipeline',
-    description: 'Generated video experiments refined through restoration, upscaling, editing, and post workflows.',
-    icon: Film,
   },
   {
     title: 'Film & 3D',
     label: 'Cinema / Spatial',
-    description: 'Narrative film language, CG craft, 3D modeling, and post-production atmosphere studies.',
-    icon: Box,
+    icon: Film,
+  },
+  {
+    title: 'Product Design',
+    label: 'Interface / System',
+    icon: PanelsTopLeft,
   },
 ]
 
@@ -139,14 +136,13 @@ export function WorksPage() {
                     </div>
 
                     <p className="text-xs text-white/45 md:text-sm">0{index + 1}</p>
-                    <h2 className="mt-3 text-3xl font-normal leading-none tracking-tight text-white md:mt-4 md:text-[42px]">
+                    <h2 className="mt-3 text-3xl font-normal leading-none tracking-tight text-white md:mt-8 md:text-[42px]">
                       {work.title}
                     </h2>
                   </div>
 
                   <div>
-                    <p className="hidden max-w-sm text-sm leading-[1.65] text-white/68 md:block">{work.description}</p>
-                    <div className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-white/82 md:mt-6">
+                    <div className="inline-flex items-center gap-2 text-sm font-medium text-white/82">
                       View work
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
                     </div>
