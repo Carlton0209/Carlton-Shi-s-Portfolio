@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { ArrowUpRight, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
+import { ArrowUpRight, ChevronDown, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
@@ -226,6 +226,12 @@ function ExhibitionChrome({ title, children }: { title: string; children: ReactN
       </Link>
 
       <h1 className="sr-only">{title}</h1>
+      <div
+        className="liquid-glass pointer-events-none fixed bottom-6 left-1/2 z-30 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full text-white/78 animate-bounce"
+        aria-hidden="true"
+      >
+        <ChevronDown className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+      </div>
       <div className="relative z-10 h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth">
         {children}
       </div>
