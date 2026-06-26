@@ -83,6 +83,16 @@ function ContactButton() {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Link
+        to="/works"
+        className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
+      >
+        <span className="relative z-10 inline-flex items-center gap-2">
+          Works
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+        </span>
+      </Link>
+
+      <Link
         to="/resume"
         className="liquid-glass inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 sm:px-6 sm:py-3"
       >
@@ -104,14 +114,18 @@ function ContactButton() {
 
 function BackgroundCard() {
   return (
-    <article className="relative min-h-[420px] overflow-hidden rounded-2xl bg-black md:min-h-[520px] lg:min-h-0">
+    <Link
+      to="/works"
+      aria-label="Open Works"
+      className="group relative block min-h-[420px] overflow-hidden rounded-2xl bg-black transition-transform duration-300 hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/80 md:min-h-[520px] lg:min-h-0"
+    >
       <VideoBackground src={backgroundVideo} />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/80 transition-colors duration-300 group-hover:from-black/25 group-hover:to-black/70" />
 
       <div className="relative z-10 flex h-full min-h-[420px] flex-col p-5 md:min-h-[520px] md:p-6 lg:min-h-0">
-        <SectionLabel>Creative Focus</SectionLabel>
+        <SectionLabel>Works</SectionLabel>
       </div>
-    </article>
+    </Link>
   )
 }
 
