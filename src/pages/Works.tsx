@@ -41,6 +41,7 @@ const productWorks = [
     title: 'LINEAGE',
     label: 'AI production ledger',
     src: withBase('images/lineage-homepage.png'),
+    href: 'https://lineage-puce.vercel.app/',
     description:
       'A provenance product concept for AI-assisted media delivery. It records prompts, tools, source assets, model usage, output hashes, and operator history so production teams can package transparent delivery records for clients.',
     features: ['Production history capture', 'Signed delivery manifest', 'Buyer-readable AI usage summary'],
@@ -49,6 +50,7 @@ const productWorks = [
     title: 'RealLife AI',
     label: 'Cinematic portrait enhancer',
     src: withBase('images/reallife-ai-preview.jpg'),
+    href: 'https://reallife-ai-eib5.vercel.app/',
     description:
       'A face-aware enhancement product for cinematic portraits. The homepage frames a clear before-and-after experience, with emphasis on landmark tracking, natural skin detail, cleaner light, and a direct trial flow.',
     features: ['Before and after comparison', 'Face landmark aware enhancement', 'Simple trial-focused product flow'],
@@ -212,7 +214,7 @@ export function WorksPage() {
   )
 }
 
-function ExhibitionChrome({ title, children }: { title: string; children: ReactNode }) {
+function ExhibitionChrome({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
@@ -224,6 +226,7 @@ function ExhibitionChrome({ title, children }: { title: string; children: ReactN
       >
         <span className="relative z-10">Back to works</span>
       </Link>
+      {action}
 
       <h1 className="sr-only">{title}</h1>
       <div
@@ -241,7 +244,20 @@ function ExhibitionChrome({ title, children }: { title: string; children: ReactN
 
 export function AigcExhibitionPage() {
   return (
-    <ExhibitionChrome title="AIGC Works">
+    <ExhibitionChrome
+      title="AIGC Works"
+      action={
+        <a
+          href="https://canva.link/05ejtqofermnth7"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+        >
+          <span className="relative z-10">View more works</span>
+          <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+        </a>
+      }
+    >
       {aigcImages.map((image, index) => (
         <section
           key={image.src}
@@ -270,13 +286,25 @@ export function ProductDesignPage() {
       {productWorks.map((product, index) => (
         <section key={product.title} className="flex min-h-screen snap-start items-center justify-center px-5 py-20">
           <article className="grid w-full max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.68fr)] lg:items-center">
-            <div className="exhibition-glass-frame rounded-[30px] p-3 md:rounded-[38px] md:p-4">
+            <a
+              href={product.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${product.title} website`}
+              className="exhibition-glass-frame group block rounded-[30px] p-3 transition-transform duration-300 hover:-translate-y-1 md:rounded-[38px] md:p-4"
+            >
               <img
                 src={product.src}
                 alt={`${product.title} homepage`}
-                className="max-h-[72vh] w-full rounded-[22px] object-contain md:rounded-[28px]"
+                className="relative z-10 max-h-[72vh] w-full rounded-[22px] object-contain transition-transform duration-300 group-hover:scale-[1.01] md:rounded-[28px]"
               />
-            </div>
+              <span
+                className="absolute right-5 top-5 z-20 grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white shadow-lg backdrop-blur transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              >
+                <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
+              </span>
+            </a>
 
             <div className="exhibition-glass-frame rounded-[30px] p-6 md:rounded-[38px] md:p-8">
               <p className="text-xs uppercase tracking-[0.22em] text-white/45">
