@@ -36,6 +36,10 @@ const aigcImages = [
   { src: withBase('images/aigc/aigc-05.png'), title: 'AIGC Study 05' },
 ]
 
+const wesMedia = [
+  { src: withBase('images/Wes/120426_00001_.png'), title: 'Wes Anderson Collection 01' },
+]
+
 const productWorks = [
   {
     title: 'LINEAGE',
@@ -347,34 +351,29 @@ export function AigcExhibitionPage() {
               </h2>
             </div>
 
-            <div className="relative isolate overflow-hidden rounded-[26px] border border-[#f7d6c4]/45 bg-[#d98578] px-5 py-10 shadow-[0_28px_80px_rgba(57,25,26,0.38)] md:rounded-[36px] md:px-10 md:py-16">
-              <div
-                className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(117,58,66,0.18)_1px,transparent_1px),linear-gradient(rgba(117,58,66,0.14)_1px,transparent_1px)] bg-[size:48px_48px]"
-                aria-hidden="true"
-              />
-              <div className="absolute inset-x-0 top-0 h-3 bg-[#f5cdb7]" aria-hidden="true" />
-
-              <div className="mx-auto grid max-w-4xl grid-cols-[1fr_auto_1fr] items-stretch gap-3 md:gap-6" aria-hidden="true">
-                <div className="grid min-h-48 place-items-center rounded-t-full border-4 border-[#f4c7a7] bg-[#98b9b3] p-3 shadow-[inset_0_0_0_3px_rgba(85,91,84,0.25)] md:min-h-80 md:p-6">
-                  <div className="h-3/5 w-1/2 rounded-t-full border-4 border-[#f9e1c3] bg-[#764b53]" />
-                </div>
-
-                <div className="flex w-16 flex-col items-center justify-between rounded-full border-4 border-[#f4c7a7] bg-[#f2b85f] py-5 md:w-24 md:py-8">
-                  <span className="h-3 w-3 rounded-full bg-[#764b53] md:h-4 md:w-4" />
-                  <span className="h-14 w-px bg-[#764b53]/55 md:h-28" />
-                  <span className="h-3 w-3 rounded-full bg-[#764b53] md:h-4 md:w-4" />
-                </div>
-
-                <div className="grid min-h-48 place-items-center rounded-t-full border-4 border-[#f4c7a7] bg-[#98b9b3] p-3 shadow-[inset_0_0_0_3px_rgba(85,91,84,0.25)] md:min-h-80 md:p-6">
-                  <div className="h-3/5 w-1/2 rounded-t-full border-4 border-[#f9e1c3] bg-[#764b53]" />
-                </div>
-              </div>
-
-              <div className="mx-auto mt-6 flex max-w-4xl items-center gap-4 md:mt-8" aria-hidden="true">
-                <span className="h-px flex-1 bg-[#f9e1c3]/70" />
-                <span className="h-2 w-2 rotate-45 bg-[#f2b85f]" />
-                <span className="h-px flex-1 bg-[#f9e1c3]/70" />
-              </div>
+            <div className="grid grid-cols-1 gap-4 md:gap-5">
+              {wesMedia.map(media => (
+                <button
+                  key={media.src}
+                  type="button"
+                  onClick={() => setSelectedImage(media)}
+                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[36px] md:p-3"
+                  aria-label={`View ${media.title} full size`}
+                >
+                  <div className="relative aspect-video overflow-hidden rounded-[20px] md:rounded-[28px]">
+                    <img
+                      src={media.src}
+                      alt={media.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
+                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
+                      <span className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
             </div>
           </section>
         </section>
