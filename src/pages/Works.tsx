@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useRef } from 'react'
-import { ArrowLeft, ArrowUpRight, ChevronDown, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowUpRight, ChevronDown, Expand, Film, PanelsTopLeft, Sparkles, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
@@ -223,7 +223,19 @@ export function WorksPage() {
   )
 }
 
-function ExhibitionChrome({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
+function ExhibitionChrome({
+  title,
+  action,
+  snap = true,
+  children,
+}: {
+  title: string
+  action?: ReactNode
+  snap?: boolean
+  children: ReactNode
+}) {
+  const [showScrollHint, setShowScrollHint] = useState(true)
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
@@ -239,7 +251,9 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
 
       <h1 className="sr-only">{title}</h1>
       <div
-        className="liquid-glass pointer-events-none fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 md:bottom-6 md:px-5"
+        className={`liquid-glass pointer-events-none fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:bottom-6 md:px-5 ${
+          showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
+        }`}
         aria-label="Scroll down to view more works"
       >
         <span className="relative z-10 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.2em] md:text-xs">
@@ -247,7 +261,10 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
         </span>
         <ChevronDown className="relative z-10 h-4 w-4 animate-bounce" strokeWidth={1.7} aria-hidden="true" />
       </div>
-      <div className="relative z-10 h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth">
+      <div
+        className={`relative z-10 h-screen overflow-y-auto scroll-smooth ${snap ? 'snap-y snap-mandatory' : ''}`}
+        onScroll={event => setShowScrollHint(event.currentTarget.scrollTop < 48)}
+      >
         {children}
       </div>
     </main>
@@ -255,40 +272,103 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
 }
 
 export function AigcExhibitionPage() {
+  const [selectedImage, setSelectedImage] = useState<(typeof aigcImages)[number] | null>(null)
+
+  useEffect(() => {
+    if (!selectedImage) return undefined
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedImage(null)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedImage])
+
   return (
-    <ExhibitionChrome
-      title="AIGC Works"
-      action={
-        <a
-          href="https://canva.link/05ejtqofermnth7"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+    <>
+      <ExhibitionChrome
+        title="AIGC Works"
+        snap={false}
+        action={
+          <a
+            href="https://canva.link/05ejtqofermnth7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+          >
+            <span className="relative z-10">View more works</span>
+            <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+          </a>
+        }
+      >
+        <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
+          <div className="mb-6 md:mb-8">
+            <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments</p>
+            <h2 className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">AIGC Gallery</h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+            {aigcImages.map((image, index) => (
+              <button
+                key={image.src}
+                type="button"
+                onClick={() => setSelectedImage(image)}
+                className={`exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[32px] md:p-3 ${
+                  index === 0 ? 'md:col-span-2' : ''
+                }`}
+                aria-label={`View ${image.title} full size`}
+              >
+                <div className={`relative overflow-hidden rounded-[20px] md:rounded-[24px] ${index === 0 ? 'aspect-[21/7]' : 'aspect-video'}`}>
+                  <img
+                    src={image.src}
+                    alt={image.title}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent" aria-hidden="true" />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/55">
+                        {String(index + 1).padStart(2, '0')} / {String(aigcImages.length).padStart(2, '0')}
+                      </p>
+                      <h3 className="mt-1 text-base font-medium text-white md:text-lg">{image.title}</h3>
+                    </div>
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                      <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                    </span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+      </ExhibitionChrome>
+
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/88 p-4 backdrop-blur-xl md:p-10"
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedImage.title}
+          onClick={() => setSelectedImage(null)}
         >
-          <span className="relative z-10">View more works</span>
-          <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
-        </a>
-      }
-    >
-      {aigcImages.map((image, index) => (
-        <section
-          key={image.src}
-          className="flex min-h-screen snap-start items-center justify-center px-5 py-20"
-          aria-label={image.title}
-        >
-          <figure className="exhibition-glass-frame w-full max-w-5xl rounded-[30px] p-3 md:rounded-[38px] md:p-4">
-            <img
-              src={image.src}
-              alt={image.title}
-              className="max-h-[76vh] w-full rounded-[22px] object-contain md:rounded-[28px]"
-            />
-            <figcaption className="px-2 pb-2 pt-4 text-sm uppercase tracking-[0.22em] text-white/54">
-              {String(index + 1).padStart(2, '0')} / {String(aigcImages.length).padStart(2, '0')}
+          <button
+            type="button"
+            onClick={() => setSelectedImage(null)}
+            className="liquid-glass absolute right-5 top-5 z-10 grid h-11 w-11 place-items-center rounded-full text-white/82 transition-colors hover:text-white"
+            aria-label="Close image viewer"
+          >
+            <X className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+          </button>
+          <figure className="max-w-7xl" onClick={event => event.stopPropagation()}>
+            <img src={selectedImage.src} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
+            <figcaption className="pt-4 text-center text-sm uppercase tracking-[0.2em] text-white/60">
+              {selectedImage.title}
             </figcaption>
           </figure>
-        </section>
-      ))}
-    </ExhibitionChrome>
+        </div>
+      )}
+    </>
   )
 }
 
