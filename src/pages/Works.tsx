@@ -48,6 +48,12 @@ const aigcImages = [
 
 const wesMedia = [
   { src: withBase('images/Wes/120426_00001_.png'), title: 'Wes Anderson Collection 01' },
+  { src: withBase('images/Wes/131410_00001_.png'), title: 'Wes Anderson Collection 02' },
+  { src: withBase('images/Wes/134124_00001_.png'), title: 'Wes Anderson Collection 03' },
+  { src: withBase('images/Wes/134251_00001_.png'), title: 'Wes Anderson Collection 04' },
+  { src: withBase('images/Wes/134648_00001_.png'), title: 'Wes Anderson Collection 05' },
+  { src: withBase('images/Wes/140254_00001_.png'), title: 'Wes Anderson Collection 06' },
+  { src: withBase('images/Wes/140924_00001_.png'), title: 'Wes Anderson Collection 07' },
 ]
 
 const productWorks = [
@@ -363,7 +369,7 @@ export function AigcExhibitionPage() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:gap-5">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
               {wesMedia.map(media => (
                 <button
                   key={media.src}
@@ -372,10 +378,12 @@ export function AigcExhibitionPage() {
                   className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[36px] md:p-3"
                   aria-label={`View ${media.title} full size`}
                 >
-                  <div className="relative aspect-video overflow-hidden rounded-[20px] md:rounded-[28px]">
+                  <div className="relative aspect-[137/100] overflow-hidden rounded-[20px] md:rounded-[28px]">
                     <img
                       src={media.src}
                       alt={media.title}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                     <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
