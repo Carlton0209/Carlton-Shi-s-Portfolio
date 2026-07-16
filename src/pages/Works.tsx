@@ -326,13 +326,7 @@ export function AigcExhibitionPage() {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent" aria-hidden="true" />
-                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 md:p-5">
-                    <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/55">
-                        {String(index + 1).padStart(2, '0')} / {String(aigcImages.length).padStart(2, '0')}
-                      </p>
-                      <h3 className="mt-1 text-base font-medium text-white md:text-lg">{image.title}</h3>
-                    </div>
+                  <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
                       <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
                     </span>
@@ -362,9 +356,6 @@ export function AigcExhibitionPage() {
           </button>
           <figure className="max-w-7xl" onClick={event => event.stopPropagation()}>
             <img src={selectedImage.src} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
-            <figcaption className="pt-4 text-center text-sm uppercase tracking-[0.2em] text-white/60">
-              {selectedImage.title}
-            </figcaption>
           </figure>
         </div>
       )}
