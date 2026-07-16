@@ -34,6 +34,16 @@ const aigcImages = [
   { src: withBase('images/aigc/aigc-03.png'), title: 'AIGC Study 03' },
   { src: withBase('images/aigc/aigc-04.png'), title: 'AIGC Study 04' },
   { src: withBase('images/aigc/aigc-05.png'), title: 'AIGC Study 05' },
+  { src: withBase('images/aigc/120232_00001_.png'), title: 'AIGC Study 06' },
+  { src: withBase('images/aigc/121012_00001_.png'), title: 'AIGC Study 07' },
+  { src: withBase('images/aigc/121243_00001_.png'), title: 'AIGC Study 08' },
+  { src: withBase('images/aigc/121444_00001_.png'), title: 'AIGC Study 09' },
+  { src: withBase('images/aigc/121829_00001_.png'), title: 'AIGC Study 10' },
+  { src: withBase('images/aigc/122018_00001_.png'), title: 'AIGC Study 11' },
+  { src: withBase('images/aigc/122114_00001_.png'), title: 'AIGC Study 12' },
+  { src: withBase('images/aigc/122336_00001_.png'), title: 'AIGC Study 13' },
+  { src: withBase('images/aigc/122449_00001_.png'), title: 'AIGC Study 14' },
+  { src: withBase('images/aigc/122622_00001_.png'), title: 'AIGC Study 15' },
 ]
 
 const wesMedia = [
@@ -327,6 +337,8 @@ export function AigcExhibitionPage() {
                   <img
                     src={image.src}
                     alt={image.title}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent" aria-hidden="true" />
