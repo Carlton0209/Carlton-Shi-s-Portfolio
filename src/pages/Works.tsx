@@ -359,7 +359,7 @@ export function AigcExhibitionPage() {
                 id="wes-anderson-title"
                 className="mt-3 font-serif text-4xl font-normal tracking-[0.04em] text-[#fff3df] md:text-6xl"
               >
-                Wes Anderson
+                Skill: Wes Anderson Style
               </h2>
             </div>
 
