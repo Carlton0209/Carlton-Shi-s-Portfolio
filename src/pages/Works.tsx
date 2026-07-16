@@ -239,10 +239,13 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
 
       <h1 className="sr-only">{title}</h1>
       <div
-        className="liquid-glass pointer-events-none fixed bottom-6 left-1/2 z-30 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full text-white/78 animate-bounce"
-        aria-hidden="true"
+        className="liquid-glass pointer-events-none fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 md:bottom-6 md:px-5"
+        aria-label="Scroll down to view more works"
       >
-        <ChevronDown className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+        <span className="relative z-10 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.2em] md:text-xs">
+          Scroll for more works
+        </span>
+        <ChevronDown className="relative z-10 h-4 w-4 animate-bounce" strokeWidth={1.7} aria-hidden="true" />
       </div>
       <div className="relative z-10 h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth">
         {children}
