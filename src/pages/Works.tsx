@@ -54,6 +54,7 @@ const wesMedia = [
   { src: withBase('images/Wes/134648_00001_.png'), title: 'Wes Anderson Collection 05' },
   { src: withBase('images/Wes/140254_00001_.png'), title: 'Wes Anderson Collection 06' },
   { src: withBase('images/Wes/140924_00001_.png'), title: 'Wes Anderson Collection 07' },
+  { src: withBase('images/Wes/141254_00001_.png'), title: 'Wes Anderson Collection 08' },
 ]
 
 const productWorks = [
