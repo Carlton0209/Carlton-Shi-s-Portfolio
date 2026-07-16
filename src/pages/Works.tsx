@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { ArrowUpRight, ChevronDown, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight, ChevronDown, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
@@ -142,7 +142,7 @@ function FadingBackgroundVideo() {
       playsInline
       preload="auto"
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
+      className="absolute inset-0 h-full w-full object-cover object-center"
       src={backgroundVideoUrl}
       style={{ opacity: 0 }}
     />
@@ -153,6 +153,15 @@ export function WorksPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
+
+      <Link
+        to="/"
+        aria-label="Back to home"
+        className="liquid-glass fixed left-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+      >
+        <ArrowLeft className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+        <span className="relative z-10">Back home</span>
+      </Link>
 
       <section className="relative z-10 flex min-h-screen items-center justify-center px-5 py-8 md:py-16">
         <div className="grid w-full max-w-6xl gap-3 md:grid-cols-3 md:gap-6">
