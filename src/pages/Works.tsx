@@ -28,7 +28,45 @@ const works = [
   },
 ]
 
-const aigcImages = [
+type GalleryImage = {
+  src: string
+  title: string
+}
+
+const narrativeTriptychs: GalleryImage[] = [
+  { src: withBase('images/aigc/absurd-comedy-triptych.png'), title: 'Absurd Comedy' },
+  {
+    src: withBase('images/aigc/american-football-optical-pressure-triptych.jpg'),
+    title: 'American Football: Optical Pressure',
+  },
+  { src: withBase('images/aigc/anthro-harbor-theater-triptych.jpg'), title: 'Anthro Harbor Theater' },
+  { src: withBase('images/aigc/apartment-family-table-triptych.jpg'), title: 'Apartment Family Table' },
+  { src: withBase('images/aigc/army-fisheye-first-person-triptych.png'), title: 'Army: Fisheye First Person' },
+  { src: withBase('images/aigc/bagua-sea-platform-triptych.jpg'), title: 'Bagua Sea Platform' },
+  { src: withBase('images/aigc/blue-sea-large-ship-triptych.png'), title: 'Blue Sea, Large Ship' },
+  { src: withBase('images/aigc/cabaret-aftermath-triptych.png'), title: 'Cabaret Aftermath' },
+  { src: withBase('images/aigc/courthouse-witness-triptych.png'), title: 'Courthouse Witness' },
+  { src: withBase('images/aigc/dumpling-shop-triptych.png'), title: 'Dumpling Shop' },
+  { src: withBase('images/aigc/eastern-palace-triptych.png'), title: 'Eastern Palace' },
+  { src: withBase('images/aigc/go-shadow-ink-triptych.png'), title: 'Go: Shadow & Ink' },
+  { src: withBase('images/aigc/green-girl-wide-aperture-triptych.png'), title: 'Green Girl: Wide Aperture' },
+  { src: withBase('images/aigc/green-water-memory-triptych.png'), title: 'Green Water Memory' },
+  { src: withBase('images/aigc/hotel-pink-ritual-triptych.jpg'), title: 'Hotel Pink Ritual' },
+  { src: withBase('images/aigc/industrial-ensemble-ledger-triptych.png'), title: 'Industrial Ensemble Ledger' },
+  { src: withBase('images/aigc/journey-west-original-epic-triptych.png'), title: 'Journey West: Original Epic' },
+  { src: withBase('images/aigc/laundromat-note-triptych.jpg'), title: 'Laundromat Note' },
+  { src: withBase('images/aigc/mexico-rodeo-family-rope-triptych.jpg'), title: 'Mexico Rodeo: Family Rope' },
+  { src: withBase('images/aigc/monastic-observatory-window-triptych.jpg'), title: 'Monastic Observatory Window' },
+  { src: withBase('images/aigc/rain-courtyard-ledger-triptych.jpg'), title: 'Rain Courtyard Ledger' },
+  { src: withBase('images/aigc/scifi-ice-ring-mine-city-triptych.jpg'), title: 'Sci-Fi Ice Ring Mine City' },
+  { src: withBase('images/aigc/scifi-underwater-football-triptych.jpg'), title: 'Sci-Fi Underwater Football' },
+  { src: withBase('images/aigc/seventies-tv-dance-marathon-triptych.jpg'), title: 'Seventies TV Dance Marathon' },
+  { src: withBase('images/aigc/train-window-departure-triptych.jpg'), title: 'Train Window Departure' },
+  { src: withBase('images/aigc/tropical-court-greenhouse-triptych.jpg'), title: 'Tropical Court Greenhouse' },
+  { src: withBase('images/aigc/venice-palace-triptych.jpg'), title: 'Venice Palace' },
+]
+
+const aigcImages: GalleryImage[] = [
   { src: withBase('images/aigc/aigc-01.png'), title: 'AIGC Study 01' },
   { src: withBase('images/aigc/aigc-02.png'), title: 'AIGC Study 02' },
   { src: withBase('images/aigc/aigc-03.png'), title: 'AIGC Study 03' },
@@ -46,7 +84,7 @@ const aigcImages = [
   { src: withBase('images/aigc/122622_00001_.png'), title: 'AIGC Study 15' },
 ]
 
-const wesMedia = [
+const wesMedia: GalleryImage[] = [
   { src: withBase('images/Wes/120426_00001_.png'), title: 'Wes Anderson Collection 01' },
   { src: withBase('images/Wes/131410_00001_.png'), title: 'Wes Anderson Collection 02' },
   { src: withBase('images/Wes/134124_00001_.png'), title: 'Wes Anderson Collection 03' },
@@ -56,6 +94,8 @@ const wesMedia = [
   { src: withBase('images/Wes/140924_00001_.png'), title: 'Wes Anderson Collection 07' },
   { src: withBase('images/Wes/141254_00001_.png'), title: 'Wes Anderson Collection 08' },
 ]
+
+const wesVideo = withBase('images/Wes/7月22日.mp4')
 
 const productWorks = [
   {
@@ -293,7 +333,7 @@ function ExhibitionChrome({
 }
 
 export function AigcExhibitionPage() {
-  const [selectedImage, setSelectedImage] = useState<(typeof aigcImages)[number] | null>(null)
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
 
   useEffect(() => {
     if (!selectedImage) return undefined
@@ -324,40 +364,90 @@ export function AigcExhibitionPage() {
         }
       >
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
-          <div className="mb-6 md:mb-8">
-            <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments</p>
-            <h2 className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">AIGC Gallery</h2>
-          </div>
+          <section aria-labelledby="narrative-triptychs-title">
+            <div className="mb-6 md:mb-8">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">New collection · 27 works</p>
+              <h2 id="narrative-triptychs-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">
+                Narrative Triptychs
+              </h2>
+            </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
-            {aigcImages.map((image, index) => (
-              <button
-                key={image.src}
-                type="button"
-                onClick={() => setSelectedImage(image)}
-                className={`exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[32px] md:p-3 ${
-                  index === 0 ? 'md:col-span-2' : ''
-                }`}
-                aria-label={`View ${image.title} full size`}
-              >
-                <div className={`relative overflow-hidden rounded-[20px] md:rounded-[24px] ${index === 0 ? 'aspect-[21/7]' : 'aspect-video'}`}>
-                  <img
-                    src={image.src}
-                    alt={image.title}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent" aria-hidden="true" />
-                  <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                      <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
-                    </span>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+              {narrativeTriptychs.map((image, index) => (
+                <button
+                  key={image.src}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[30px] md:p-3"
+                  aria-label={`View ${image.title} full size`}
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-black/30 md:rounded-[22px]">
+                    <img
+                      src={image.src}
+                      alt={image.title}
+                      loading={index < 3 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" aria-hidden="true" />
+                    <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
+                      <span className="text-sm leading-tight text-white/90">{image.title}</span>
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
+            <div className="mb-6 md:mb-8">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments</p>
+              <h2
+                id="selected-experiments-title"
+                className="mt-3 text-3xl font-normal tracking-tight md:text-5xl"
+              >
+                AIGC Gallery
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+              {aigcImages.map((image, index) => (
+                <button
+                  key={image.src}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className={`exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[32px] md:p-3 ${
+                    index === 0 ? 'md:col-span-2' : ''
+                  }`}
+                  aria-label={`View ${image.title} full size`}
+                >
+                  <div
+                    className={`relative overflow-hidden rounded-[20px] md:rounded-[24px] ${index === 0 ? 'aspect-[21/7]' : 'aspect-video'}`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.title}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                    />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent"
+                      aria-hidden="true"
+                    />
+                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
 
           <section id="wes-anderson" className="pt-24 md:pt-32" aria-labelledby="wes-anderson-title">
             <div className="mb-6 text-center md:mb-8">
@@ -368,6 +458,19 @@ export function AigcExhibitionPage() {
               >
                 Skill: Wes Anderson Style
               </h2>
+            </div>
+
+            <div className="exhibition-glass-frame mb-5 overflow-hidden rounded-[26px] p-2 md:rounded-[36px] md:p-3">
+              <video
+                src={wesVideo}
+                controls
+                playsInline
+                preload="metadata"
+                className="max-h-[78vh] w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
+                aria-label="Wes Anderson style video showcase"
+              >
+                Your browser does not support the video tag.
+              </video>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
