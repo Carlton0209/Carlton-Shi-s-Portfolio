@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useRef } from 'react'
-import { ArrowUpRight, ChevronDown, Film, PanelsTopLeft, Sparkles } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowUpRight, ChevronDown, Expand, Film, PanelsTopLeft, Sparkles, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
@@ -28,13 +28,74 @@ const works = [
   },
 ]
 
-const aigcImages = [
+type GalleryImage = {
+  src: string
+  title: string
+}
+
+const narrativeTriptychs: GalleryImage[] = [
+  { src: withBase('images/aigc/absurd-comedy-triptych.png'), title: 'Absurd Comedy' },
+  {
+    src: withBase('images/aigc/american-football-optical-pressure-triptych.jpg'),
+    title: 'American Football: Optical Pressure',
+  },
+  { src: withBase('images/aigc/anthro-harbor-theater-triptych.jpg'), title: 'Anthro Harbor Theater' },
+  { src: withBase('images/aigc/apartment-family-table-triptych.jpg'), title: 'Apartment Family Table' },
+  { src: withBase('images/aigc/army-fisheye-first-person-triptych.png'), title: 'Army: Fisheye First Person' },
+  { src: withBase('images/aigc/bagua-sea-platform-triptych.jpg'), title: 'Bagua Sea Platform' },
+  { src: withBase('images/aigc/blue-sea-large-ship-triptych.png'), title: 'Blue Sea, Large Ship' },
+  { src: withBase('images/aigc/cabaret-aftermath-triptych.png'), title: 'Cabaret Aftermath' },
+  { src: withBase('images/aigc/courthouse-witness-triptych.png'), title: 'Courthouse Witness' },
+  { src: withBase('images/aigc/dumpling-shop-triptych.png'), title: 'Dumpling Shop' },
+  { src: withBase('images/aigc/eastern-palace-triptych.png'), title: 'Eastern Palace' },
+  { src: withBase('images/aigc/go-shadow-ink-triptych.png'), title: 'Go: Shadow & Ink' },
+  { src: withBase('images/aigc/green-girl-wide-aperture-triptych.png'), title: 'Green Girl: Wide Aperture' },
+  { src: withBase('images/aigc/green-water-memory-triptych.png'), title: 'Green Water Memory' },
+  { src: withBase('images/aigc/hotel-pink-ritual-triptych.jpg'), title: 'Hotel Pink Ritual' },
+  { src: withBase('images/aigc/industrial-ensemble-ledger-triptych.png'), title: 'Industrial Ensemble Ledger' },
+  { src: withBase('images/aigc/journey-west-original-epic-triptych.png'), title: 'Journey West: Original Epic' },
+  { src: withBase('images/aigc/laundromat-note-triptych.jpg'), title: 'Laundromat Note' },
+  { src: withBase('images/aigc/mexico-rodeo-family-rope-triptych.jpg'), title: 'Mexico Rodeo: Family Rope' },
+  { src: withBase('images/aigc/monastic-observatory-window-triptych.jpg'), title: 'Monastic Observatory Window' },
+  { src: withBase('images/aigc/rain-courtyard-ledger-triptych.jpg'), title: 'Rain Courtyard Ledger' },
+  { src: withBase('images/aigc/scifi-ice-ring-mine-city-triptych.jpg'), title: 'Sci-Fi Ice Ring Mine City' },
+  { src: withBase('images/aigc/scifi-underwater-football-triptych.jpg'), title: 'Sci-Fi Underwater Football' },
+  { src: withBase('images/aigc/seventies-tv-dance-marathon-triptych.jpg'), title: 'Seventies TV Dance Marathon' },
+  { src: withBase('images/aigc/train-window-departure-triptych.jpg'), title: 'Train Window Departure' },
+  { src: withBase('images/aigc/tropical-court-greenhouse-triptych.jpg'), title: 'Tropical Court Greenhouse' },
+  { src: withBase('images/aigc/venice-palace-triptych.jpg'), title: 'Venice Palace' },
+]
+
+const aigcImages: GalleryImage[] = [
   { src: withBase('images/aigc/aigc-01.png'), title: 'AIGC Study 01' },
   { src: withBase('images/aigc/aigc-02.png'), title: 'AIGC Study 02' },
   { src: withBase('images/aigc/aigc-03.png'), title: 'AIGC Study 03' },
   { src: withBase('images/aigc/aigc-04.png'), title: 'AIGC Study 04' },
   { src: withBase('images/aigc/aigc-05.png'), title: 'AIGC Study 05' },
+  { src: withBase('images/aigc/120232_00001_.png'), title: 'AIGC Study 06' },
+  { src: withBase('images/aigc/121012_00001_.png'), title: 'AIGC Study 07' },
+  { src: withBase('images/aigc/121243_00001_.png'), title: 'AIGC Study 08' },
+  { src: withBase('images/aigc/121444_00001_.png'), title: 'AIGC Study 09' },
+  { src: withBase('images/aigc/121829_00001_.png'), title: 'AIGC Study 10' },
+  { src: withBase('images/aigc/122018_00001_.png'), title: 'AIGC Study 11' },
+  { src: withBase('images/aigc/122114_00001_.png'), title: 'AIGC Study 12' },
+  { src: withBase('images/aigc/122336_00001_.png'), title: 'AIGC Study 13' },
+  { src: withBase('images/aigc/122449_00001_.png'), title: 'AIGC Study 14' },
+  { src: withBase('images/aigc/122622_00001_.png'), title: 'AIGC Study 15' },
 ]
+
+const wesMedia: GalleryImage[] = [
+  { src: withBase('images/Wes/120426_00001_.png'), title: 'Wes Anderson Collection 01' },
+  { src: withBase('images/Wes/131410_00001_.png'), title: 'Wes Anderson Collection 02' },
+  { src: withBase('images/Wes/134124_00001_.png'), title: 'Wes Anderson Collection 03' },
+  { src: withBase('images/Wes/134251_00001_.png'), title: 'Wes Anderson Collection 04' },
+  { src: withBase('images/Wes/134648_00001_.png'), title: 'Wes Anderson Collection 05' },
+  { src: withBase('images/Wes/140254_00001_.png'), title: 'Wes Anderson Collection 06' },
+  { src: withBase('images/Wes/140924_00001_.png'), title: 'Wes Anderson Collection 07' },
+  { src: withBase('images/Wes/141254_00001_.png'), title: 'Wes Anderson Collection 08' },
+]
+
+const wesVideo = withBase('images/Wes/7月22日.mp4')
 
 const productWorks = [
   {
@@ -142,7 +203,7 @@ function FadingBackgroundVideo() {
       playsInline
       preload="auto"
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full translate-y-[17%] object-cover"
+      className="absolute inset-0 h-full w-full object-cover object-center"
       src={backgroundVideoUrl}
       style={{ opacity: 0 }}
     />
@@ -153,6 +214,15 @@ export function WorksPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
+
+      <Link
+        to="/"
+        aria-label="Back to home"
+        className="liquid-glass fixed left-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+      >
+        <ArrowLeft className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+        <span className="relative z-10">Back home</span>
+      </Link>
 
       <section className="relative z-10 flex min-h-screen items-center justify-center px-5 py-8 md:py-16">
         <div className="grid w-full max-w-6xl gap-3 md:grid-cols-3 md:gap-6">
@@ -214,7 +284,19 @@ export function WorksPage() {
   )
 }
 
-function ExhibitionChrome({ title, action, children }: { title: string; action?: ReactNode; children: ReactNode }) {
+function ExhibitionChrome({
+  title,
+  action,
+  snap = true,
+  children,
+}: {
+  title: string
+  action?: ReactNode
+  snap?: boolean
+  children: ReactNode
+}) {
+  const [showScrollHint, setShowScrollHint] = useState(true)
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
@@ -230,12 +312,20 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
 
       <h1 className="sr-only">{title}</h1>
       <div
-        className="liquid-glass pointer-events-none fixed bottom-6 left-1/2 z-30 grid h-12 w-12 -translate-x-1/2 place-items-center rounded-full text-white/78 animate-bounce"
-        aria-hidden="true"
+        className={`liquid-glass pointer-events-none fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:bottom-6 md:px-5 ${
+          showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
+        }`}
+        aria-label="Scroll down to view more works"
       >
-        <ChevronDown className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+        <span className="relative z-10 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.2em] md:text-xs">
+          Scroll for more works
+        </span>
+        <ChevronDown className="relative z-10 h-4 w-4 animate-bounce" strokeWidth={1.7} aria-hidden="true" />
       </div>
-      <div className="relative z-10 h-screen snap-y snap-mandatory overflow-y-auto scroll-smooth">
+      <div
+        className={`relative z-10 h-screen overflow-y-auto scroll-smooth ${snap ? 'snap-y snap-mandatory' : ''}`}
+        onScroll={event => setShowScrollHint(event.currentTarget.scrollTop < 48)}
+      >
         {children}
       </div>
     </main>
@@ -243,40 +333,198 @@ function ExhibitionChrome({ title, action, children }: { title: string; action?:
 }
 
 export function AigcExhibitionPage() {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
+
+  useEffect(() => {
+    if (!selectedImage) return undefined
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelectedImage(null)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedImage])
+
   return (
-    <ExhibitionChrome
-      title="AIGC Works"
-      action={
-        <a
-          href="https://canva.link/05ejtqofermnth7"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
-        >
-          <span className="relative z-10">View more works</span>
-          <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
-        </a>
-      }
-    >
-      {aigcImages.map((image, index) => (
-        <section
-          key={image.src}
-          className="flex min-h-screen snap-start items-center justify-center px-5 py-20"
-          aria-label={image.title}
-        >
-          <figure className="exhibition-glass-frame w-full max-w-5xl rounded-[30px] p-3 md:rounded-[38px] md:p-4">
-            <img
-              src={image.src}
-              alt={image.title}
-              className="max-h-[76vh] w-full rounded-[22px] object-contain md:rounded-[28px]"
-            />
-            <figcaption className="px-2 pb-2 pt-4 text-sm uppercase tracking-[0.22em] text-white/54">
-              {String(index + 1).padStart(2, '0')} / {String(aigcImages.length).padStart(2, '0')}
-            </figcaption>
-          </figure>
+    <>
+      <ExhibitionChrome
+        title="AIGC Works"
+        snap={false}
+        action={
+          <a
+            href="https://canva.link/05ejtqofermnth7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+          >
+            <span className="relative z-10">View more works</span>
+            <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+          </a>
+        }
+      >
+        <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
+          <section aria-labelledby="narrative-triptychs-title">
+            <div className="mb-6 md:mb-8">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">New collection · 27 works</p>
+              <h2 id="narrative-triptychs-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">
+                Narrative Triptychs
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+              {narrativeTriptychs.map((image, index) => (
+                <button
+                  key={image.src}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[30px] md:p-3"
+                  aria-label={`View ${image.title} full size`}
+                >
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-black/30 md:rounded-[22px]">
+                    <img
+                      src={image.src}
+                      alt={image.title}
+                      loading={index < 3 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" aria-hidden="true" />
+                    <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
+                      <span className="text-sm leading-tight text-white/90">{image.title}</span>
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
+            <div className="mb-6 md:mb-8">
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments</p>
+              <h2
+                id="selected-experiments-title"
+                className="mt-3 text-3xl font-normal tracking-tight md:text-5xl"
+              >
+                AIGC Gallery
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+              {aigcImages.map((image, index) => (
+                <button
+                  key={image.src}
+                  type="button"
+                  onClick={() => setSelectedImage(image)}
+                  className={`exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[32px] md:p-3 ${
+                    index === 0 ? 'md:col-span-2' : ''
+                  }`}
+                  aria-label={`View ${image.title} full size`}
+                >
+                  <div
+                    className={`relative overflow-hidden rounded-[20px] md:rounded-[24px] ${index === 0 ? 'aspect-[21/7]' : 'aspect-video'}`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.title}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                    />
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent"
+                      aria-hidden="true"
+                    />
+                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section id="wes-anderson" className="pt-24 md:pt-32" aria-labelledby="wes-anderson-title">
+            <div className="mb-6 text-center md:mb-8">
+              <p className="text-[10px] uppercase tracking-[0.34em] text-[#f7d6c4]/70 md:text-xs">New collection</p>
+              <h2
+                id="wes-anderson-title"
+                className="mt-3 font-serif text-4xl font-normal tracking-[0.04em] text-[#fff3df] md:text-6xl"
+              >
+                Skill: Wes Anderson Style
+              </h2>
+            </div>
+
+            <div className="exhibition-glass-frame mb-5 overflow-hidden rounded-[26px] p-2 md:rounded-[36px] md:p-3">
+              <video
+                src={wesVideo}
+                controls
+                playsInline
+                preload="metadata"
+                className="max-h-[78vh] w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
+                aria-label="Wes Anderson style video showcase"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+              {wesMedia.map(media => (
+                <button
+                  key={media.src}
+                  type="button"
+                  onClick={() => setSelectedImage(media)}
+                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[36px] md:p-3"
+                  aria-label={`View ${media.title} full size`}
+                >
+                  <div className="relative aspect-[137/100] overflow-hidden rounded-[20px] md:rounded-[28px]">
+                    <img
+                      src={media.src}
+                      alt={media.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    />
+                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
+                      <span className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
         </section>
-      ))}
-    </ExhibitionChrome>
+      </ExhibitionChrome>
+
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/88 p-4 backdrop-blur-xl md:p-10"
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedImage.title}
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setSelectedImage(null)}
+            className="liquid-glass absolute right-5 top-5 z-10 grid h-11 w-11 place-items-center rounded-full text-white/82 transition-colors hover:text-white"
+            aria-label="Close image viewer"
+          >
+            <X className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+          </button>
+          <figure className="max-w-7xl" onClick={event => event.stopPropagation()}>
+            <img src={selectedImage.src} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
+          </figure>
+        </div>
+      )}
+    </>
   )
 }
 
