@@ -96,6 +96,7 @@ const wesMedia: GalleryImage[] = [
 ]
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
+const featuredVideo = withBase('videos/8月3日.mp4')
 
 const productWorks = [
   {
@@ -214,25 +215,33 @@ export function WorksPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
+      <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
 
       <Link
         to="/"
         aria-label="Back to home"
-        className="liquid-glass fixed left-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+        className="fixed-safe-top-left liquid-glass fixed z-30 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
       >
         <ArrowLeft className="relative z-10 h-4 w-4" strokeWidth={1.7} />
-        <span className="relative z-10">Back home</span>
+        <span className="relative z-10 hidden sm:inline">Back home</span>
       </Link>
 
-      <section className="relative z-10 flex min-h-screen items-center justify-center px-5 py-8 md:py-16">
-        <div className="grid w-full max-w-6xl gap-3 md:grid-cols-3 md:gap-6">
-          {works.map((work, index) => {
+      <section className="relative z-10 flex min-h-dvh flex-col justify-center px-5 pb-10 pt-24 sm:px-8 md:py-24">
+        <div className="mx-auto mb-8 w-full max-w-6xl md:mb-12">
+          <h1 className="text-balance text-4xl font-normal leading-[1.02] tracking-[-0.025em] md:text-6xl">Selected work</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-[1.6] text-white/62 md:text-[17px]">
+            Three ways into the practice: generative image and video, cinematic production, and product design.
+          </p>
+        </div>
+
+        <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-3 md:gap-6">
+          {works.map(work => {
             const Icon = work.icon
             const cardContent = (
               <div className="relative z-10 flex h-full flex-col justify-between">
                 <div>
                   <div className="mb-3 flex items-center justify-between md:mb-8">
-                    <span className="rounded-full border border-white/15 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white/60">
+                    <span className="rounded-full border border-white/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/60">
                       {work.label}
                     </span>
                     <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white/80 backdrop-blur-md transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
@@ -240,8 +249,7 @@ export function WorksPage() {
                     </span>
                   </div>
 
-                  <p className="text-xs text-white/45 md:text-sm">0{index + 1}</p>
-                  <h2 className="mt-3 text-3xl font-normal leading-none tracking-tight text-white md:mt-8 md:text-[42px]">
+                  <h2 className="mt-5 text-3xl font-normal leading-none tracking-tight text-white md:mt-8 md:text-[40px]">
                     {work.title}
                   </h2>
                 </div>
@@ -254,7 +262,7 @@ export function WorksPage() {
             )
 
             const className =
-              'works-glass-card group block min-h-[185px] rounded-[24px] p-4 md:min-h-[360px] md:rounded-[28px] md:p-7'
+              'works-glass-card group block min-h-[220px] min-w-0 rounded-[24px] p-5 md:min-h-[360px] md:rounded-[28px] md:p-7'
 
             return work.href ? (
               <a
@@ -263,7 +271,6 @@ export function WorksPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={className}
-                style={{ animationDelay: `${index * -1.4}s` }}
               >
                 {cardContent}
               </a>
@@ -272,7 +279,6 @@ export function WorksPage() {
                 key={work.title}
                 to={work.to ?? '/works'}
                 className={className}
-                style={{ animationDelay: `${index * -1.4}s` }}
               >
                 {cardContent}
               </Link>
@@ -304,15 +310,16 @@ function ExhibitionChrome({
 
       <Link
         to="/works"
-        className="liquid-glass fixed left-5 top-5 z-30 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+        className="fixed-safe-top-left liquid-glass fixed z-30 inline-flex min-h-11 items-center rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
       >
-        <span className="relative z-10">Back to works</span>
+        <span className="relative z-10 hidden sm:inline">Back to works</span>
+        <ArrowLeft className="relative z-10 h-4 w-4 sm:hidden" strokeWidth={1.7} aria-hidden="true" />
       </Link>
       {action}
 
       <h1 className="sr-only">{title}</h1>
       <div
-        className={`liquid-glass pointer-events-none fixed bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:bottom-6 md:px-5 ${
+        className={`fixed-safe-bottom-center liquid-glass pointer-events-none fixed z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:px-5 ${
           showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
         }`}
         aria-label="Scroll down to view more works"
@@ -320,10 +327,10 @@ function ExhibitionChrome({
         <span className="relative z-10 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.2em] md:text-xs">
           Scroll for more works
         </span>
-        <ChevronDown className="relative z-10 h-4 w-4 animate-bounce" strokeWidth={1.7} aria-hidden="true" />
+        <ChevronDown className="relative z-10 h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
       </div>
       <div
-        className={`relative z-10 h-screen overflow-y-auto scroll-smooth ${snap ? 'snap-y snap-mandatory' : ''}`}
+        className={`relative z-10 h-dvh overflow-y-auto scroll-smooth ${snap ? 'lg:snap-y lg:snap-mandatory' : ''}`}
         onScroll={event => setShowScrollHint(event.currentTarget.scrollTop < 48)}
       >
         {children}
@@ -356,14 +363,32 @@ export function AigcExhibitionPage() {
             href="https://canva.link/05ejtqofermnth7"
             target="_blank"
             rel="noopener noreferrer"
-            className="liquid-glass fixed right-5 top-5 z-30 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm text-white/82 transition-colors hover:text-white"
+            className="fixed-safe-top-right liquid-glass fixed z-30 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
           >
-            <span className="relative z-10">View more works</span>
+            <span className="relative z-10 hidden sm:inline">View more works</span>
             <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
           </a>
         }
       >
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
+          <section className="mb-24 md:mb-32" aria-labelledby="latest-video-title">
+            <h2 id="latest-video-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
+              Latest video
+            </h2>
+            <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
+              <video
+                src={featuredVideo}
+                controls
+                playsInline
+                preload="metadata"
+                className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
+                aria-label="Latest video showcase"
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </section>
+
           <section aria-labelledby="narrative-triptychs-title">
             <div className="mb-6 md:mb-8">
               <p className="text-xs uppercase tracking-[0.24em] text-white/48">New collection · 27 works</p>
@@ -514,7 +539,7 @@ export function AigcExhibitionPage() {
           <button
             type="button"
             onClick={() => setSelectedImage(null)}
-            className="liquid-glass absolute right-5 top-5 z-10 grid h-11 w-11 place-items-center rounded-full text-white/82 transition-colors hover:text-white"
+            className="fixed-safe-top-right liquid-glass absolute z-10 grid h-11 w-11 place-items-center rounded-full text-white/82 transition-colors hover:text-white active:scale-95"
             aria-label="Close image viewer"
           >
             <X className="relative z-10 h-5 w-5" strokeWidth={1.7} />
@@ -531,15 +556,15 @@ export function AigcExhibitionPage() {
 export function ProductDesignPage() {
   return (
     <ExhibitionChrome title="Product Design">
-      {productWorks.map((product, index) => (
-        <section key={product.title} className="flex min-h-screen snap-start items-center justify-center px-5 py-20">
-          <article className="grid w-full max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.68fr)] lg:items-center">
+      {productWorks.map(product => (
+        <section key={product.title} className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start">
+          <article className="grid w-full min-w-0 max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.68fr)] lg:items-center">
             <a
               href={product.href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${product.title} website`}
-              className="exhibition-glass-frame group block rounded-[30px] p-3 transition-transform duration-300 hover:-translate-y-1 md:rounded-[38px] md:p-4"
+              className="exhibition-glass-frame group order-2 block min-w-0 rounded-[30px] p-3 transition-transform duration-300 hover:-translate-y-1 md:rounded-[38px] md:p-4 lg:order-1"
             >
               <img
                 src={product.src}
@@ -554,10 +579,8 @@ export function ProductDesignPage() {
               </span>
             </a>
 
-            <div className="exhibition-glass-frame rounded-[30px] p-6 md:rounded-[38px] md:p-8">
-              <p className="text-xs uppercase tracking-[0.22em] text-white/45">
-                {String(index + 1).padStart(2, '0')} / Product Design
-              </p>
+            <div className="exhibition-glass-frame order-1 min-w-0 rounded-[30px] p-6 md:rounded-[38px] md:p-8 lg:order-2">
+              <p className="text-xs uppercase tracking-[0.22em] text-white/45">Product Design</p>
               <h2 className="mt-5 text-4xl font-normal leading-none tracking-tight text-white md:text-5xl">
                 {product.title}
               </h2>
