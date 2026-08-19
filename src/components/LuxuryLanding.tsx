@@ -11,6 +11,7 @@ import {
   Figma,
   Framer,
   Layers,
+  Linkedin,
   Palette,
   PenTool,
   Type,
@@ -20,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
 const backgroundVideo = withBase('videos/background-card.mp4')
+const linkedInUrl = 'https://www.linkedin.com/in/carltonshi0209'
 
 const metricVideo =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260507_154543_d5b83fc1-9cea-44f3-b5e8-8f325935211a.mp4'
@@ -90,6 +92,18 @@ function ContactButton() {
           <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
         </span>
       </Link>
+
+      <a
+        href={linkedInUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="liquid-glass inline-flex min-h-11 items-center justify-center rounded-full px-5 text-sm text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-95 sm:px-6"
+      >
+        <span className="relative z-10 inline-flex items-center gap-2">
+          <Linkedin className="h-4 w-4" strokeWidth={1.5} />
+          LinkedIn
+        </span>
+      </a>
 
       <a
         href="mailto:jshi77@syr.edu"
