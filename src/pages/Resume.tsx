@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 
-const resumePdf = withBase('resume/Carlton_Shi_Resume.pdf')
+const resumePdf = withBase('resume/Resume.pdf')
 const linkedInUrl = 'https://www.linkedin.com/in/carltonshi0209'
 
 const skillGroups = [

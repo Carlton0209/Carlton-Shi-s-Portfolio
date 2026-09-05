@@ -96,7 +96,16 @@ const wesMedia: GalleryImage[] = [
 ]
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
-const featuredVideo = withBase('videos/cgt-20260905140653-7hsxb.mp4')
+const featuredVideo = {
+  src: withBase('videos/music.mp4'),
+  title: 'Music',
+}
+
+const videoWorks = [
+  { src: withBase('videos/Black woman.mp4'), title: 'Black Woman' },
+  { src: withBase('videos/cgt-20260905140653-7hsxb.mp4'), title: 'Cinematic Study' },
+  { src: withBase('videos/8月3日.mp4'), title: 'Video Study' },
+]
 
 const productWorks = [
   {
@@ -371,21 +380,47 @@ export function AigcExhibitionPage() {
         }
       >
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
-          <section className="mb-24 md:mb-32" aria-labelledby="latest-video-title">
-            <h2 id="latest-video-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
-              Latest video
+          <section className="mb-24 md:mb-32" aria-labelledby="videos-title">
+            <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
+              Videos
             </h2>
             <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
               <video
-                src={featuredVideo}
+                src={featuredVideo.src}
                 controls
                 playsInline
                 preload="metadata"
                 className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
-                aria-label="Latest video showcase"
+                aria-label={`${featuredVideo.title} video`}
               >
                 Your browser does not support the video tag.
               </video>
+              <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62 md:px-4">
+                {featuredVideo.title}
+              </p>
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
+              {videoWorks.map(video => (
+                <div
+                  key={video.src}
+                  className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:rounded-[30px] md:p-3"
+                >
+                  <video
+                    src={video.src}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[22px]"
+                    aria-label={`${video.title} video`}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                  <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62">
+                    {video.title}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
