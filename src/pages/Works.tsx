@@ -96,7 +96,7 @@ const wesMedia: GalleryImage[] = [
 ]
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
-const featuredVideo = withBase('videos/8月3日.mp4')
+const featuredVideo = withBase('videos/cgt-20260905140653-7hsxb.mp4')
 
 const productWorks = [
   {
