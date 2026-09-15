@@ -97,11 +97,12 @@ const wesMedia: GalleryImage[] = [
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
 const featuredVideo = {
-  src: withBase('videos/music.mp4'),
-  title: 'MV Demo',
+  src: withBase('videos/Resonance.mp4'),
+  title: 'Resonance',
 }
 
 const videoWorks = [
+  { src: withBase('videos/music.mp4'), title: 'MV Demo' },
   { src: withBase('videos/Black woman.mp4'), title: 'Mood Fluctuation Test' },
   { src: withBase('videos/春を盗む風_1_prob4.mp4'), title: 'Music MV' },
   { src: withBase('videos/8月3日.mp4'), title: 'Micro-expressions' },

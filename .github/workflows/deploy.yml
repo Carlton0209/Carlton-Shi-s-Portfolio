@@ -35,6 +35,10 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      # The active homepage uses LuxuryLanding; Hero's legacy video is unused.
+      - name: Exclude unused legacy homepage video from Pages
+        run: rm -f dist/videos/hero.mp4
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
