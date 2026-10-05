@@ -10,7 +10,7 @@ type Workflow = {
   model: string
   description: string
   images: Preview[]
-  video?: { file: string; poster: string; label: string }
+  video?: { file: string; poster: string; label: string; aspect?: 'landscape' }
   graphs?: Preview[]
   note?: string
 }
@@ -55,6 +55,17 @@ const workflows: Workflow[] = [
     images: [{ file: 'leather-result', label: 'Original → refined result' }],
   },
   {
+    id: 'product-fidelity', title: 'Protecting the product through the pipeline', model: 'MiniMax H3 · BiRefNet · DaVinci Fusion',
+    description: 'The supplied shoe photograph stays intact while H3 generates an empty animated environment. A separate Fusion composition adds a contact shadow, a restrained image-plane move and typography. The breakdown compares this controlled approach with the moving-footwear study, then shows three delivery layouts and recorded quality checks.',
+    video: { file: 'product-fidelity-breakdown.mp4', poster: 'product-fidelity-poster', label: '36-second breakdown · finished film, layers, brand correction and QA', aspect: 'landscape' },
+    images: [
+      { file: 'product-fidelity-layouts', label: 'Completed 16:9, 9:16 and 1:1 deliveries' },
+      { file: 'product-fidelity-layers', label: 'Supplied photograph → original RGB cutout → generated environment' },
+    ],
+    graphs: [{ file: 'product-fidelity-workflow', label: 'ComfyUI stages with completed Fusion video previews' }],
+    note: 'Six-second masters at 24 fps. The 512 × 512 generated background is resized for delivery; the product uses the supplied photograph. Fusion runs separately from ComfyUI. A single source view supports a small 2D move, without inventing hidden product surfaces. Independent portfolio study.',
+  },
+  {
     id: 'h3-brand', title: 'Footwear replacement, frame by frame', model: 'MiniMax H3 · Tracked logo compositing',
     description: 'Three separately generated shots replace the footwear in a moving scene. A second ComfyUI pass removes malformed side logos and places the original S artwork using reviewed motion tracks. Generative shoe editing and controlled brand finishing remain separate, inspectable stages.',
     video: { file: 'h3-skechers-brand-corrected.mp4', poster: 'h3-brand-poster', label: 'Completed video · 3 shots · 24 fps' },
@@ -86,7 +97,7 @@ export default function WorkflowShowcase() {
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Six studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
+          Seven studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
         </p>
       </div>
 
@@ -95,7 +106,7 @@ export default function WorkflowShowcase() {
           <article key={workflow.id} className="border-t border-white/15 pt-6 md:pt-8" aria-labelledby={`workflow-${workflow.id}`}>
             <div className="mb-5 flex items-baseline gap-4">
               <span className="text-xs tabular-nums text-white/45">0{index + 1}</span>
-              <h3 id={`workflow-${workflow.id}`} className="text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
+              <h3 id={`workflow-${workflow.id}`} className="scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
             </div>
             <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
               <div className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:p-3">
@@ -104,7 +115,7 @@ export default function WorkflowShowcase() {
                     <figure className="overflow-hidden rounded-[18px] bg-black/30">
                       <video controls playsInline preload="none" poster={asset(workflow.video.poster)}
                         aria-label={`${workflow.title}: completed video`}
-                        className="h-[420px] w-full bg-black/30 object-contain sm:h-[480px]">
+                        className={`w-full bg-black/30 object-contain ${workflow.video.aspect === 'landscape' ? 'aspect-video' : 'h-[420px] sm:h-[480px]'}`}>
                         <source src={withBase(`videos/workflows/${workflow.video.file}`)} type="video/mp4" />
                         Your browser does not support embedded video. <a href={withBase(`videos/workflows/${workflow.video.file}`)}>Open the completed video</a>.
                       </video>
