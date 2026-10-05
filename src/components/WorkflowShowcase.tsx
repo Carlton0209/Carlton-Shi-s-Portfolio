@@ -10,6 +10,9 @@ type Workflow = {
   model: string
   description: string
   images: Preview[]
+  video?: { file: string; poster: string; label: string }
+  graphs?: Preview[]
+  note?: string
 }
 
 const workflows: Workflow[] = [
@@ -51,6 +54,17 @@ const workflows: Workflow[] = [
     description: 'Two hand-selected regions isolate the shoe logos. Separate passes establish the shape, refine matching thin leather and stitching, then blend the edited areas back into the original photograph.',
     images: [{ file: 'leather-result', label: 'Original → refined result' }],
   },
+  {
+    id: 'h3-brand', title: 'Footwear replacement, frame by frame', model: 'MiniMax H3 · Tracked logo compositing',
+    description: 'Three separately generated shots replace the footwear in a moving scene. A second ComfyUI pass removes malformed side logos and places the original S artwork using reviewed motion tracks. Generative shoe editing and controlled brand finishing remain separate, inspectable stages.',
+    video: { file: 'h3-skechers-brand-corrected.mp4', poster: 'h3-brand-poster', label: 'Completed video · 3 shots · 24 fps' },
+    images: [{ file: 'h3-brand-detail', label: 'H3 output → original S artwork, tracked and composited' }],
+    graphs: [
+      { file: 'h3-generation-workflow', label: '01 / H3 footwear generation' },
+      { file: 'h3-brand-workflow', label: '02 / Brand correction and final output' },
+    ],
+    note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for 1080 × 1920 delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
+  },
 ]
 
 const asset = (file: string) => withBase(`images/workflows/${file}.webp`)
@@ -72,7 +86,7 @@ export default function WorkflowShowcase() {
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Five studies in generation and image editing. Explore the results alongside the workflows used to make them.
+          Six studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
         </p>
       </div>
 
@@ -86,13 +100,24 @@ export default function WorkflowShowcase() {
             <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
               <div className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:p-3">
                 <div className={`grid min-h-0 gap-2 ${workflow.images.length === 4 ? 'grid-cols-2' : workflow.images.length === 3 ? 'grid-cols-3' : 'grid-cols-1'}`}>
+                  {workflow.video && (
+                    <figure className="overflow-hidden rounded-[18px] bg-black/30">
+                      <video controls playsInline preload="none" poster={asset(workflow.video.poster)}
+                        aria-label={`${workflow.title}: completed video`}
+                        className="h-[420px] w-full bg-black/30 object-contain sm:h-[480px]">
+                        <source src={withBase(`videos/workflows/${workflow.video.file}`)} type="video/mp4" />
+                        Your browser does not support embedded video. <a href={withBase(`videos/workflows/${workflow.video.file}`)}>Open the completed video</a>.
+                      </video>
+                      <figcaption className="px-3 py-3 text-xs text-white/75">{workflow.video.label}</figcaption>
+                    </figure>
+                  )}
                   {workflow.images.map(preview => (
                     <button key={preview.file} type="button"
                       onClick={event => open(event.currentTarget, `${workflow.title} — ${preview.label}`, preview.file)}
                       className="group relative min-w-0 overflow-hidden rounded-[18px] bg-black/30 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                       aria-label={`Enlarge ${workflow.title}: ${preview.label}`}>
                       <img src={asset(preview.file)} alt={preview.label} loading="lazy" decoding="async"
-                        className={`w-full object-contain ${workflow.images.length === 4 ? 'h-[190px] sm:h-[230px]' : workflow.images.length === 3 ? 'h-[180px] sm:h-[420px]' : 'h-[340px] sm:h-[480px]'}`} />
+                        className={`w-full object-contain ${workflow.video ? 'h-auto' : workflow.images.length === 4 ? 'h-[190px] sm:h-[230px]' : workflow.images.length === 3 ? 'h-[180px] sm:h-[420px]' : 'h-[340px] sm:h-[480px]'}`} />
                       <div className="flex min-h-12 items-center justify-between gap-1 px-2 py-3 text-[10px] text-white/75 sm:px-3 sm:text-xs">
                         <span>{preview.label}</span><Expand className="h-3 w-3 shrink-0" aria-hidden="true" />
                       </div>
@@ -103,16 +128,19 @@ export default function WorkflowShowcase() {
               <div className="flex min-w-0 flex-col items-start self-start rounded-[26px] bg-black/50 p-4 backdrop-blur-md lg:p-5">
                 <p className="text-xs uppercase leading-relaxed tracking-[0.14em] text-white/55">{workflow.model}</p>
                 <p className="mb-6 mt-3 text-sm leading-7 text-white/75">{workflow.description}</p>
-                <button type="button"
-                  onClick={event => open(event.currentTarget, `${workflow.title} — workflow`, `${workflow.id}-workflow`, true)}
-                  className="group w-full overflow-hidden rounded-[18px] border border-white/15 bg-black/35 text-left transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                  aria-label={`View ${workflow.title} workflow screenshot`}>
-                  <img src={asset(`${workflow.id}-workflow-thumb`)} alt={`${workflow.model} node graph with completed output previews`}
+                {(workflow.graphs ?? [{ file: `${workflow.id}-workflow`, label: 'View workflow' }]).map(graph => (
+                <button key={graph.file} type="button"
+                  onClick={event => open(event.currentTarget, `${workflow.title} — ${graph.label}`, graph.file, true)}
+                  className="group mb-4 w-full overflow-hidden rounded-[18px] border border-white/15 bg-black/35 text-left transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                  aria-label={`View ${workflow.title} workflow screenshot: ${graph.label}`}>
+                  <img src={asset(`${graph.file}-thumb`)} alt={`${graph.label}: node graph with completed output previews`}
                     loading="lazy" decoding="async" width={1000} height={600} className="aspect-[16/10] w-full object-contain" />
                   <span className="flex items-center justify-between border-t border-white/10 px-4 py-3 text-sm text-white/85">
-                    View workflow <Expand className="h-4 w-4" aria-hidden="true" />
+                    {graph.label} <Expand className="h-4 w-4" aria-hidden="true" />
                   </span>
                 </button>
+                ))}
+                {workflow.note && <p className="text-xs leading-6 text-white/55">{workflow.note}</p>}
               </div>
             </div>
           </article>
