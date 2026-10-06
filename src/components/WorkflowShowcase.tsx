@@ -56,13 +56,13 @@ const workflows: Workflow[] = [
   },
   {
     id: 'product-fidelity', title: 'Protecting the product through the pipeline', model: 'MiniMax H3 · BiRefNet · DaVinci Fusion',
-    description: 'The supplied shoe photograph stays intact while H3 generates an empty animated environment. A separate Fusion composition adds a contact shadow, a restrained image-plane move and typography. The breakdown compares this controlled approach with the moving-footwear study, then shows three delivery layouts and recorded quality checks.',
-    video: { file: 'product-fidelity-breakdown.mp4', poster: 'product-fidelity-poster', label: '36-second breakdown · finished film, layers, brand correction and QA', aspect: 'landscape' },
+    description: 'The supplied photograph provides the product geometry and branding while H3 generates an empty animated environment. Fusion adds a contact shadow, a restrained image-plane move and typography. Local finishing cleans the narrow gap between the shoes, lifts the deepest shadow and adds subtle directional edge light. The breakdown shows the layers, brand correction, three delivery layouts and recorded quality checks.',
+    video: { file: 'product-fidelity-breakdown.mp4?v=gap-edge-2', poster: 'product-fidelity-poster', label: '36-second breakdown · finished film, layers, brand correction and QA', aspect: 'landscape' },
     images: [
       { file: 'product-fidelity-layouts', label: 'Completed 16:9, 9:16 and 1:1 deliveries' },
-      { file: 'product-fidelity-layers', label: 'Supplied photograph → original RGB cutout → generated environment' },
+      { file: 'product-fidelity-layers', label: 'Supplied photograph → refined product layer → generated environment' },
     ],
-    graphs: [{ file: 'product-fidelity-workflow', label: 'ComfyUI stages with completed Fusion video previews' }],
+    graphs: [{ file: 'product-fidelity-workflow', label: 'ComfyUI stages and finished video previews' }],
     note: 'Six-second masters at 24 fps. The 512 × 512 generated background is resized for delivery; the product uses the supplied photograph. Fusion runs separately from ComfyUI. A single source view supports a small 2D move, without inventing hidden product surfaces. Independent portfolio study.',
   },
   {
@@ -78,7 +78,7 @@ const workflows: Workflow[] = [
   },
 ]
 
-const asset = (file: string) => withBase(`images/workflows/${file}.webp`)
+const asset = (file: string) => withBase(`images/workflows/${file}.webp${file.startsWith('product-fidelity-') ? '?v=gap-edge-2' : ''}`)
 
 export default function WorkflowShowcase() {
   const [selected, setSelected] = useState<{ title: string; file: string; workflow: boolean } | null>(null)
