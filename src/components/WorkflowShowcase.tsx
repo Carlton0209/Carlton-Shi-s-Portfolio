@@ -76,6 +76,14 @@ const workflows: Workflow[] = [
     ],
     note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for 1080 × 1920 delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
   },
+  {
+    id: 'selflift', title: 'Light and terrain', model: 'MiniMax H3 · SelfLift · Local Qwen',
+    description: 'A shoe photograph and a sandstone reference guide a short product film with moving light and a slow camera push-in. Local Qwen turns the brief into a structured video prompt. SelfLift establishes the composition at lower resolution, lifts the video latents, then completes sampling at the delivery resolution.',
+    video: { file: 'selflift-light-terrain.mp4', poster: 'selflift-poster', label: 'Completed local render · 8 seconds · 24 fps', aspect: 'landscape' },
+    images: [],
+    graphs: [{ file: 'selflift-workflow', label: 'Full workflow with recorded video output' }],
+    note: 'Native 960 × 544 output with four sampling steps on a 12 GB GPU. The full graph includes both reference inputs and the completed video preview. Generated product details may differ from the reference. Independent portfolio study.',
+  },
 ]
 
 const asset = (file: string) => withBase(`images/workflows/${file}.webp${file.startsWith('product-fidelity-') ? '?v=gap-edge-2' : ''}`)
@@ -97,7 +105,7 @@ export default function WorkflowShowcase() {
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Seven studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
+          Eight studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
         </p>
       </div>
 
@@ -109,7 +117,7 @@ export default function WorkflowShowcase() {
               <h3 id={`workflow-${workflow.id}`} className="scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
             </div>
             <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
-              <div className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:p-3">
+              <div className="exhibition-glass-frame self-start overflow-hidden rounded-[26px] p-2 md:p-3">
                 <div className={`grid min-h-0 gap-2 ${workflow.images.length === 4 ? 'grid-cols-2' : workflow.images.length === 3 ? 'grid-cols-3' : 'grid-cols-1'}`}>
                   {workflow.video && (
                     <figure className="overflow-hidden rounded-[18px] bg-black/30">
@@ -159,7 +167,7 @@ export default function WorkflowShowcase() {
       </div>
 
       <Dialog open={selected !== null} onOpenChange={value => { if (!value) setSelected(null) }}>
-        <DialogContent className="flex max-h-[94dvh] w-[calc(100vw-24px)] max-w-[1500px] flex-col gap-3 overflow-hidden rounded-2xl border-white/20 bg-[#111315] p-4 text-white sm:p-6"
+        <DialogContent className="flex max-h-[94dvh] w-[calc(100vw-24px)] max-w-[1500px] flex-col gap-3 overflow-hidden rounded-2xl border-white/20 bg-[#111315] p-4 text-white sm:rounded-2xl sm:p-6"
           onCloseAutoFocus={event => { event.preventDefault(); trigger.current?.focus() }}>
           <DialogTitle className="pr-8 text-base font-normal sm:text-xl">{selected?.title}</DialogTitle>
           <DialogDescription className="text-xs text-white/60">
@@ -172,7 +180,7 @@ export default function WorkflowShowcase() {
               Open full size <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>}
           </div>
-          <div className="min-h-0 overflow-auto rounded-lg bg-black/40" tabIndex={0} aria-label="Image preview; scroll to explore at full size">
+          <div className="min-h-0 overflow-auto rounded-xl bg-black/40" tabIndex={0} aria-label="Image preview; scroll to explore at full size">
             {selected && <img key={selected.file} src={asset(selected.file)} alt={selected.title}
               className={actualSize ? 'block max-w-none' : 'mx-auto block max-h-[68dvh] max-w-full object-contain'} />}
           </div>
