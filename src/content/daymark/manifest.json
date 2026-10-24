@@ -1,0 +1,111 @@
+{
+  "brand": "DAYMARK",
+  "tagline": "Coffee for your everyday.",
+  "palette": {
+    "ink": "#1F2A44",
+    "blue": "#2547A8",
+    "oat": "#F5F0E7",
+    "butter": "#F2DFA1",
+    "soft": "#E7ECF9",
+    "muted": "#586271",
+    "line": "#D6D9E2",
+    "white": "#FFFFFF"
+  },
+  "emails": [
+    {
+      "id": "welcome",
+      "name": "Welcome",
+      "stage": "On confirmed signup",
+      "subject": "A better morning starts here.",
+      "preheader": "Meet DAYMARK. Find a coffee and a ritual to make your own.",
+      "eyebrow": "GOOD TO HAVE YOU HERE",
+      "headline": "Make a little\nmorning room.",
+      "intro": "Hi {{first_name}},\nWelcome to DAYMARK. Good coffee and small, repeatable rituals. That's what you'll find here.",
+      "cta": "Find your first coffee",
+      "image": "ritual",
+      "alt": "DAYMARK House Blend and a ceramic coffee cup in a sunlit morning setting.",
+      "sectionTitle": "Something to look forward to.",
+      "features": [
+        {
+          "title": "Coffee, without the guesswork.",
+          "body": "A few well-chosen coffees with clear tasting notes."
+        },
+        {
+          "title": "Rituals you can keep.",
+          "body": "Simple brew notes for better everyday cups."
+        }
+      ],
+      "closing": "Start simple. Make it yours.",
+      "goal": "Introduce the brand and encourage a first product visit.",
+      "rule": "Send after confirmed signup. Exit this sequence on purchase or unsubscribe.",
+      "subjectAlternative": "Your first DAYMARK coffee awaits.",
+      "hypothesis": "Compare a morning benefit with a direct product invitation. No test has been run.",
+      "htmlBytes": 9516,
+      "previewBytes": 9975
+    },
+    {
+      "id": "product",
+      "name": "Product spotlight",
+      "stage": "Day 3 / no purchase",
+      "subject": "Meet the coffee for your everyday.",
+      "preheader": "House Blend: a comfortable place to begin.",
+      "eyebrow": "MEET HOUSE BLEND",
+      "headline": "Your daily cup,\nconsidered.",
+      "intro": "A chocolate-led cup with a bright citrus finish, imagined for the coffee you come back to.",
+      "cta": "Explore House Blend",
+      "image": "product",
+      "alt": "A cobalt blue DAYMARK House Blend coffee pouch beside an ivory cup on a warm tabletop.",
+      "sectionTitle": "A familiar place to begin.",
+      "features": [
+        {
+          "title": "Chocolate + citrus",
+          "body": "A simple tasting direction for a balanced everyday cup."
+        },
+        {
+          "title": "Make it your ritual.",
+          "body": "Choose whole bean or a grind that fits your routine."
+        }
+      ],
+      "closing": "Good coffee. Your way.",
+      "goal": "Give the product a clear point of view and invite consideration.",
+      "rule": "Proposed: send 3 days after signup only when subscribed and no purchase is recorded.",
+      "subjectAlternative": "House Blend, made for your morning.",
+      "hypothesis": "Product clarity is the focus of this message. No performance results are claimed.",
+      "htmlBytes": 9478,
+      "previewBytes": 9945
+    },
+    {
+      "id": "preferences",
+      "name": "Preference reset",
+      "stage": "Day 30 / no click or purchase",
+      "subject": "Keep a little room for DAYMARK?",
+      "preheader": "Choose the coffee notes you want. Or take a pause.",
+      "eyebrow": "LET'S FIND YOUR RHYTHM",
+      "headline": "Your inbox.\nYour rhythm.",
+      "intro": "It's been a little while. If you'd like to hear from us, tell us what fits: new coffee, brew notes, or a quieter inbox.",
+      "cta": "Choose your emails",
+      "image": "ritual",
+      "alt": "A warm morning coffee scene with the DAYMARK House Blend pouch and a ceramic cup.",
+      "sectionTitle": "A little more choice.",
+      "features": [
+        {
+          "title": "New coffees",
+          "body": "Product news when there is something worth sharing."
+        },
+        {
+          "title": "Brew notes",
+          "body": "Small ideas for the coffee you already enjoy."
+        }
+      ],
+      "closing": "Prefer a break? You can unsubscribe below.",
+      "goal": "Let an inactive subscriber choose relevant content or leave easily.",
+      "rule": "Proposed: one message after 30 days without a click or purchase. Suppress after another 14 inactive days.",
+      "subjectAlternative": "More coffee notes, or a quieter inbox?",
+      "hypothesis": "Lead with subscriber control. This flow is a proposal, not an active automation.",
+      "htmlBytes": 9476,
+      "previewBytes": 9955
+    }
+  ],
+  "status": "Self-initiated concept; not sent",
+  "clientTesting": "Browser checks only; no real email-client suite or ESP integration"
+}

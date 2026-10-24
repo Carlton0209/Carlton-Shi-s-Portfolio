@@ -7,6 +7,7 @@ import { AigcExhibitionPage, ProductDesignPage, WorksPage } from './pages/Works'
 import NotFound from './pages/NotFound'
 
 const OffHoursCaseStudy = lazy(() => import('./pages/OffHoursCaseStudy'))
+const DaymarkEmailCaseStudy = lazy(() => import('./pages/DaymarkEmailCaseStudy'))
 
 export default function App() {
   return (
@@ -26,6 +27,14 @@ export default function App() {
           }
         />
         <Route path="/resume" element={<ResumePage />} />
+        <Route
+          path="/works/daymark-email"
+          element={
+            <Suspense fallback={<main className="grid min-h-dvh place-items-center bg-[#f5f0e7] text-[#1f2a44]" role="status">Loading DAYMARK…</main>}>
+              <DaymarkEmailCaseStudy />
+            </Suspense>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

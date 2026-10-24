@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 import WorkflowShowcase from '../components/WorkflowShowcase'
 import OffHoursProjectCard from '../components/OffHoursProjectCard'
+import DaymarkProjectCard from '../components/DaymarkProjectCard'
 
 const backgroundVideoUrl =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4'
@@ -598,6 +599,9 @@ export function ProductDesignPage() {
     <ExhibitionChrome title="Product Design">
       <section className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start" aria-label="OFF HOURS campaign and product design case study">
         <div className="w-full min-w-0 max-w-6xl"><OffHoursProjectCard /></div>
+      </section>
+      <section className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start" aria-label="DAYMARK email design case study">
+        <div className="w-full min-w-0 max-w-6xl"><DaymarkProjectCard /></div>
       </section>
       {productWorks.map(product => (
         <section key={product.title} className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start">
