@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, ChevronDown, Expand, Film, PanelsTopLeft, Spar
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
 import WorkflowShowcase from '../components/WorkflowShowcase'
+import OffHoursProjectCard from '../components/OffHoursProjectCard'
 
 const backgroundVideoUrl =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4'
@@ -241,8 +242,12 @@ export function WorksPage() {
         <div className="mx-auto mb-8 w-full max-w-6xl md:mb-12">
           <h1 className="text-balance text-4xl font-normal leading-[1.02] tracking-[-0.025em] md:text-6xl">Selected work</h1>
           <p className="mt-4 max-w-2xl text-sm leading-[1.6] text-white/62 md:text-[17px]">
-            Three ways into the practice: generative image and video, cinematic production, and product design.
+            Explore the OFF HOURS case study, or browse generative media, cinematic production and product design.
           </p>
+        </div>
+
+        <div className="mx-auto mb-6 w-full max-w-6xl md:mb-8">
+          <OffHoursProjectCard />
         </div>
 
         <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-3 md:gap-6">
@@ -595,6 +600,9 @@ export function AigcExhibitionPage() {
 export function ProductDesignPage() {
   return (
     <ExhibitionChrome title="Product Design">
+      <section className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start" aria-label="OFF HOURS campaign and product design case study">
+        <div className="w-full min-w-0 max-w-6xl"><OffHoursProjectCard /></div>
+      </section>
       {productWorks.map(product => (
         <section key={product.title} className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start">
           <article className="grid w-full min-w-0 max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.68fr)] lg:items-center">
