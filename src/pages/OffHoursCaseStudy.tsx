@@ -110,7 +110,7 @@ export default function OffHoursCaseStudy() {
     <main className="oh-page">
       <a className="oh-skip-link" href="#off-hours-content">Skip to case study</a>
       <header className="oh-site-bar">
-        <Link to="/works" className="oh-back"><ArrowLeft size={16} aria-hidden="true" />All work</Link>
+        <Link to="/works/product-design" className="oh-back"><ArrowLeft size={16} aria-hidden="true" />Product Design</Link>
         <Link to="/" className="oh-owner">Carlton Shi</Link>
         <ExternalLink href={offHoursLinks.file} className="oh-file-link">Open Figma</ExternalLink>
       </header>

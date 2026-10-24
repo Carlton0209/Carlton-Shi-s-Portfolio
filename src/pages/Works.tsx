@@ -242,12 +242,8 @@ export function WorksPage() {
         <div className="mx-auto mb-8 w-full max-w-6xl md:mb-12">
           <h1 className="text-balance text-4xl font-normal leading-[1.02] tracking-[-0.025em] md:text-6xl">Selected work</h1>
           <p className="mt-4 max-w-2xl text-sm leading-[1.6] text-white/62 md:text-[17px]">
-            Explore the OFF HOURS case study, or browse generative media, cinematic production and product design.
+            Three ways into the practice: generative image and video, cinematic production, and product design.
           </p>
-        </div>
-
-        <div className="mx-auto mb-6 w-full max-w-6xl md:mb-8">
-          <OffHoursProjectCard />
         </div>
 
         <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-3 md:gap-6">
