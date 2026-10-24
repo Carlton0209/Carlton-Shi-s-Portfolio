@@ -1,16 +1,20 @@
-// Reviewed against the user-provided Resume.pdf (2026-10-24).
-// Website and downloadable PDF share this content.
+// Reviewed against the user-provided Resume.pdf and delivered portfolio projects (2026-10-24).
+// Website and downloadable PDF share this content; new works are labeled as concepts.
 export const resume = {
   "name": "Jingchuan (Carlton) Shi",
-  "headline": "AI Creative Designer · Generative Image, Video & VFX",
+  "headline": "AI Creative Designer · Generative Media, Web & Email",
   "location": "Syracuse, NY",
   "phone": "315-395-2313",
   "email": "jshi77@syr.edu",
   "linkedIn": "https://www.linkedin.com/in/carltonshi0209",
   "portfolio": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/",
   "socialLikes": "100K+",
-  "summary": "AI creative designer and technical artist delivering image, video, and VFX assets for agency and film marketing teams. Combines generative workflows with compositing, editing, and quality control to take creative briefs through production and delivery. Builds reusable prompting tools and ComfyUI pipelines adopted in real client work.",
+  "summary": "AI creative designer and technical artist delivering image, video, and VFX assets for agency and film marketing teams. Combines generative production with Figma component systems, responsive web layouts, and HTML email design. Builds reusable prompting tools and ComfyUI pipelines adopted in client work.",
   "skills": [
+    {
+      "label": "Figma & Campaign Design",
+      "value": "Auto Layout, components, variants, variables, interactive prototypes, responsive layouts, HTML email, plain-text alternatives"
+    },
     {
       "label": "Generative Image & Video",
       "value": "ComfyUI (custom nodes, Triton / SageAttention optimization), custom LoRA training, Flux, SDXL, ControlNet, IPAdapter, Seedance 2.0/2.5, MiniMax H3 (Hailuo), Kling, Runway, Midjourney, Suno"
@@ -104,6 +108,24 @@ export const resume = {
     }
   ],
   "projects": [
+    {
+      "name": "DAYMARK",
+      "label": "Email design · Self-initiated, AI-assisted concept",
+      "href": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/works/daymark-email",
+      "bullets": [
+        "Created three coordinated lifecycle email concepts—welcome, product spotlight, and preference reset—with desktop/mobile Figma variants, reusable modules, and light/dark color variables.",
+        "Delivered responsive HTML and plain-text templates; checked 320, 375, and 640 px browser layouts, dark styling, and images-off states, and published an interactive portfolio case."
+      ]
+    },
+    {
+      "name": "OFF HOURS",
+      "label": "Campaign & responsive design · Self-initiated concept",
+      "href": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/works/off-hours",
+      "bullets": [
+        "Developed an AI-assisted outdoor campaign with six product views and square, portrait, and story creative, extending one visual direction across product pages and email layouts.",
+        "Built native Figma components, variants, and shared variables; linked desktop/mobile prototypes with gallery switching, scrolling, and CTA navigation, then implemented the portfolio case in React."
+      ]
+    },
     {
       "name": "RealLife AI",
       "label": "AI photo-enhancement platform",

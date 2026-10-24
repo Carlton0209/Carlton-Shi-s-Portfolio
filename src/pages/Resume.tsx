@@ -15,6 +15,28 @@ function ResumeSection({ title, children }: { title: string; children: ReactNode
   )
 }
 
+type ResumeProject = (typeof resume.projects)[number]
+
+function ResumeProjects({ projects }: { projects: readonly ResumeProject[] }) {
+  return (
+    <div className="space-y-6">
+      {projects.map(project => (
+        <section key={project.name}>
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+            <h3 className="text-lg font-semibold text-zinc-950">
+              <a href={project.href} target="_blank" rel="noreferrer" className="hover:underline">{project.name}</a>
+            </h3>
+            <p className="text-sm font-medium text-zinc-500">{project.label}</p>
+          </div>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-700">
+            {project.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )
+}
+
 export function ResumePage() {
   return (
     <main className="min-h-screen bg-black px-5 py-6 text-zinc-950 sm:px-8 lg:px-16">
@@ -86,6 +108,10 @@ export function ResumePage() {
             </div>
           </ResumeSection>
 
+          <ResumeSection title="Selected Design Projects">
+            <ResumeProjects projects={resume.projects.slice(0, 2)} />
+          </ResumeSection>
+
           <ResumeSection title="Experience">
             <div className="space-y-6">
               {resume.experiences.map(experience => (
@@ -105,22 +131,8 @@ export function ResumePage() {
             </div>
           </ResumeSection>
 
-          <ResumeSection title="Selected Projects">
-            <div className="space-y-6">
-              {resume.projects.map(project => (
-                <section key={project.name}>
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                    <h3 className="text-lg font-semibold text-zinc-950">
-                      <a href={project.href} target="_blank" rel="noreferrer" className="hover:underline">{project.name}</a>
-                    </h3>
-                    <p className="text-sm font-medium text-zinc-500">{project.label}</p>
-                  </div>
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-700">
-                    {project.bullets.map(bullet => <li key={bullet}>{bullet}</li>)}
-                  </ul>
-                </section>
-              ))}
-            </div>
+          <ResumeSection title="Additional Projects">
+            <ResumeProjects projects={resume.projects.slice(2)} />
           </ResumeSection>
 
           <ResumeSection title="Education & Credentials">
