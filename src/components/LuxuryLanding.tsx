@@ -18,6 +18,7 @@ import {
   Wand2,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { resume } from '../data/resume'
 import { withBase } from '../lib/asset'
 
 const backgroundVideo = withBase('videos/background-card.mp4')
@@ -165,7 +166,7 @@ function MetricCard() {
       <div className="absolute inset-0 bg-black/45" />
       <div className="relative z-10 flex h-full w-full flex-col justify-end p-6 md:p-8">
         <p className="max-w-[15ch] text-3xl font-normal leading-[1.06] tracking-[-0.025em] text-white sm:text-4xl">
-          Social work reached <span className="font-semibold">10K+ likes.</span>
+          Social work reached <span className="font-semibold">{resume.socialLikes} likes.</span>
         </p>
       </div>
     </article>
