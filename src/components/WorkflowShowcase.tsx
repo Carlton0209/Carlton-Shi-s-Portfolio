@@ -1,92 +1,282 @@
-import { useRef, useState } from 'react'
-import { ArrowUpRight, Expand } from 'lucide-react'
+import { useRef, useState, type KeyboardEvent } from 'react'
+import { ArrowDown, ArrowUpRight, ChevronsLeftRight, Expand } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from './ui/dialog'
 import { withBase } from '../lib/asset'
 
-type Preview = { file: string; label: string }
+const categories = ['Image editing', 'Video', 'Finishing'] as const
+
+type Preview = { file: string; label: string; aspect?: string; fit?: 'contain'; paper?: boolean }
+type Media =
+  | { kind: 'row'; images: Preview[] }
+  | { kind: 'compare'; layout: 'portrait' | 'wide'; before: Preview; after: Preview; extras: Preview[] }
+  | { kind: 'video'; layout: 'portrait' | 'landscape'; video: { file: string; poster: string; label: string }; side: Preview[] }
 type Workflow = {
   id: string
+  short: string
+  category: (typeof categories)[number]
   title: string
-  model: string
-  description: string
-  images: Preview[]
-  video?: { file: string; poster: string; label: string; aspect?: 'landscape' }
-  graphs?: Preview[]
+  summary: string
+  tools: string[]
+  steps: string[]
+  media: Media
+  graphs: Preview[]
+  links?: { href: string; label: string }[]
   note?: string
 }
 
 const workflows: Workflow[] = [
   {
-    id: 'angles', title: 'One character, multiple angles', model: 'Qwen Image Edit · Multiple Angles',
-    description: 'Camera direction changes around a shared character reference. Four selected local runs explore a front view, an overhead shot, a rear view and a low angle.',
-    images: [
-      { file: 'angle-front', label: 'Front view' },
-      { file: 'angle-overhead', label: 'Overhead' },
-      { file: 'angle-back', label: 'Rear view' },
-      { file: 'angle-low', label: 'Low angle' },
+    id: 'angles', short: 'Camera angles', category: 'Image editing', title: 'One character, four camera angles',
+    summary: 'The camera moves around the subject while the face, sweater and forest light stay consistent from shot to shot.',
+    tools: ['Qwen Image Edit 2511', 'Multiple Angles LoRA', 'Lightning 4-step LoRA'],
+    steps: [
+      'One reference portrait fixes identity, wardrobe and location.',
+      'A preset list of 12 camera prompts supplies the shot direction.',
+      'Qwen Image Edit 2511 samples in four steps with the angle and Lightning LoRAs.',
+      'Four runs selected: front, overhead, rear and low angle.',
     ],
+    media: {
+      kind: 'row', images: [
+        { file: 'angle-front', label: 'Front view' },
+        { file: 'angle-overhead', label: 'Overhead' },
+        { file: 'angle-back', label: 'Rear view' },
+        { file: 'angle-low', label: 'Low angle' },
+      ],
+    },
+    graphs: [{ file: 'angles-workflow', label: 'Full graph with recorded outputs' }],
   },
   {
-    id: 'wardrobe', title: 'A change of wardrobe', model: 'Qwen Image Edit · Virtual try-on',
-    description: 'A portrait and a garment reference guide the outfit change, keeping the subject, pose and outdoor setting recognisable.',
-    images: [
-      { file: 'wardrobe-source', label: 'Original portrait' },
-      { file: 'wardrobe-reference', label: 'Garment reference' },
-      { file: 'wardrobe-result', label: 'Generated result' },
+    id: 'wardrobe', short: 'Wardrobe swap', category: 'Image editing', title: 'A change of wardrobe',
+    summary: 'A varsity jacket from a flat product shot is fitted onto a portrait, keeping the person, pose and meadow light.',
+    tools: ['Qwen Image Edit 2511', 'Consistency LoRA', 'Lightning 4-step LoRA'],
+    steps: [
+      'Portrait and garment are prepared as two separate edit references.',
+      'A consistency LoRA at 0.75 helps hold the face and background.',
+      'Four-step sampling, then the result is cropped back to the source frame.',
+      'An image comparer checks the edit against the original portrait.',
     ],
+    media: {
+      kind: 'row', images: [
+        { file: 'wardrobe-source', label: 'Original portrait' },
+        { file: 'wardrobe-reference', label: 'Garment reference', fit: 'contain', paper: true },
+        { file: 'wardrobe-result', label: 'Generated result' },
+      ],
+    },
+    graphs: [{ file: 'wardrobe-workflow', label: 'Full graph with recorded outputs' }],
   },
   {
-    id: 'identity', title: 'Two images, one edit', model: 'Krea2 · Identity Edit V1.2',
-    description: 'A product photograph and a graphic reference drive a two-image editing experiment. The logo reference changes the shoe’s side detail.',
-    images: [
-      { file: 'identity-source', label: 'Source photograph' },
-      { file: 'identity-reference', label: 'Graphic reference' },
-      { file: 'identity-result', label: 'Generated result' },
+    id: 'leather', short: 'Logo on leather', category: 'Image editing', title: 'A logo stitched into the leather',
+    summary: 'The S logo is added to both shoes in a supplied photograph, built from the same cream leather and stitching as the upper instead of being pasted on top.',
+    tools: ['Krea2 edit', 'Manual masks', 'Two-pass local refinement'],
+    steps: [
+      'Hand-drawn masks mark the logo area on the front and rear shoe; each area runs as its own branch.',
+      'Each area is cropped to 768 px. Pass 1 places the outline, using only the S mark from the brand artwork as a second reference.',
+      'Pass 2 keeps that position and outline, and resamples only inside the strokes as thin, same-colour leather.',
+      'Outside the masks the original pixels are restored, so the rest of the photograph is untouched.',
     ],
+    media: {
+      kind: 'compare', layout: 'portrait',
+      before: { file: 'leather-original', label: 'Original' },
+      after: { file: 'leather-refined', label: 'Refined' },
+      extras: [
+        { file: 'leather-step-crop', label: '768 px crop' },
+        { file: 'identity-reference', label: 'Brand reference · S mark', fit: 'contain', paper: true },
+        { file: 'leather-step-pass1', label: 'Pass 1 · outline' },
+        { file: 'leather-step-pass2', label: 'Pass 2 · leather & stitching' },
+      ],
+    },
+    graphs: [{ file: 'leather-workflow', label: 'Full graph · both branches' }],
+    note: 'Process frames are taken from the preview nodes recorded in the graph.',
   },
   {
-    id: 'text-to-image', title: 'From words to a portrait', model: 'Krea2 Turbo · Text to image',
-    description: 'A text prompt sets the portrait, crimson backdrop, flowers and directional light. A compact control panel brings prompt, resolution and model settings together.',
-    images: [{ file: 'text-to-image-result', label: 'Generated portrait' }],
-  },
-  {
-    id: 'leather', title: 'A more precise product edit', model: 'Krea2 · Manual masks & local refinement',
-    description: 'Two hand-selected regions isolate the shoe logos. Separate passes establish the shape, refine matching thin leather and stitching, then blend the edited areas back into the original photograph.',
-    images: [{ file: 'leather-result', label: 'Original → refined result' }],
-  },
-  {
-    id: 'product-fidelity', title: 'Protecting the product through the pipeline', model: 'MiniMax H3 · BiRefNet · DaVinci Fusion',
-    description: 'The supplied photograph provides the product geometry and branding while H3 generates an empty animated environment. Fusion adds a contact shadow, a restrained image-plane move and typography. Local finishing cleans the narrow gap between the shoes, lifts the deepest shadow and adds subtle directional edge light. The breakdown shows the layers, brand correction, three delivery layouts and recorded quality checks.',
-    video: { file: 'product-fidelity-breakdown.mp4?v=gap-edge-2', poster: 'product-fidelity-poster', label: '36-second breakdown · finished film, layers, brand correction and QA', aspect: 'landscape' },
-    images: [
-      { file: 'product-fidelity-layouts', label: 'Completed 16:9, 9:16 and 1:1 deliveries' },
-      { file: 'product-fidelity-layers', label: 'Supplied photograph → refined product layer → generated environment' },
+    id: 'h3-brand', short: 'Footwear replacement', category: 'Video', title: 'Footwear replacement, frame by frame',
+    summary: 'H3 swaps the sneakers in a moving shot. A separate tracked pass then restores the real S artwork where the model drew malformed logos.',
+    tools: ['MiniMax H3', 'Motion tracking', 'ComfyUI compositing'],
+    steps: [
+      'Three shots are generated separately in H3 from the source footage and product photographs.',
+      'A second graph loads the render and keeps its original frame rate and audio.',
+      'Reviewed motion tracks remove the malformed side glyphs and place the original S artwork in perspective.',
+      'Delivered at 1080 × 1920, with frame 26 exported as a brand-detail check.',
     ],
-    graphs: [{ file: 'product-fidelity-workflow', label: 'ComfyUI stages and finished video previews' }],
-    note: 'Six-second masters at 24 fps. The 512 × 512 generated background is resized for delivery; the product uses the supplied photograph. Fusion runs separately from ComfyUI. A single source view supports a small 2D move, without inventing hidden product surfaces. Independent portfolio study.',
-  },
-  {
-    id: 'h3-brand', title: 'Footwear replacement, frame by frame', model: 'MiniMax H3 · Tracked logo compositing',
-    description: 'Three separately generated shots replace the footwear in a moving scene. A second ComfyUI pass removes malformed side logos and places the original S artwork using reviewed motion tracks. Generative shoe editing and controlled brand finishing remain separate, inspectable stages.',
-    video: { file: 'h3-skechers-brand-corrected.mp4', poster: 'h3-brand-poster', label: 'Completed video · 3 shots · 24 fps' },
-    images: [{ file: 'h3-brand-detail', label: 'H3 output → original S artwork, tracked and composited' }],
+    media: {
+      kind: 'video', layout: 'portrait',
+      video: { file: 'h3-skechers-brand-corrected.mp4', poster: 'h3-brand-poster', label: 'Completed video · 3 shots · 24 fps' },
+      side: [{ file: 'h3-brand-detail', label: 'H3 output → original S artwork, tracked and composited' }],
+    },
     graphs: [
       { file: 'h3-generation-workflow', label: '01 / H3 footwear generation' },
       { file: 'h3-brand-workflow', label: '02 / Brand correction and final output' },
     ],
-    note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for 1080 × 1920 delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
+    note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
   },
   {
-    id: 'selflift', title: 'Light and terrain', model: 'MiniMax H3 · SelfLift · Local Qwen',
-    description: 'A shoe photograph and a sandstone reference guide a short product film with moving light and a slow camera push-in. Local Qwen turns the brief into a structured video prompt. SelfLift establishes the composition at lower resolution, lifts the video latents, then completes sampling at the delivery resolution.',
-    video: { file: 'selflift-light-terrain.mp4', poster: 'selflift-poster', label: 'Completed local render · 8 seconds · 24 fps', aspect: 'landscape' },
-    images: [],
-    graphs: [{ file: 'selflift-workflow', label: 'Full workflow with recorded video output' }],
-    note: 'Native 960 × 544 output with four sampling steps on a 12 GB GPU. The full graph includes both reference inputs and the completed video preview. Generated product details may differ from the reference. Independent portfolio study.',
+    id: 'selflift', short: 'Light & terrain', category: 'Video', title: 'Light and terrain',
+    summary: 'An 8-second product film built from two stills, a shoe photograph and a sandstone reference, with moving light and a slow push-in.',
+    tools: ['MiniMax H3', 'SelfLift sampler', 'Qwen3-VL 4B · local'],
+    steps: [
+      'The shoe photograph and terrain reference load as image 1 and image 2.',
+      'A local Qwen3-VL model turns the brief into a structured H3 video prompt.',
+      'SelfLift sets the composition at low resolution, lifts the video latents, then finishes at 960 × 544.',
+      'Four sampling steps on a 12 GB GPU; 24 fps, 8 seconds.',
+    ],
+    media: {
+      kind: 'video', layout: 'landscape',
+      video: { file: 'selflift-light-terrain.mp4', poster: 'selflift-poster', label: 'Completed local render · 8 seconds · 24 fps' },
+      side: [
+        { file: 'selflift-input-shoe', label: 'Input 1 · product photograph', aspect: 'aspect-square' },
+        { file: 'selflift-input-terrain', label: 'Input 2 · terrain reference', aspect: 'aspect-[960/544]' },
+      ],
+    },
+    graphs: [{ file: 'selflift-workflow', label: 'Full graph with recorded video output' }],
+    note: 'Native output without upscaling. Generated product details may differ from the reference. Independent portfolio study.',
+  },
+  {
+    id: 'seedvr2', short: '4K finishing', category: 'Finishing', title: '4K masters from small sources',
+    summary: 'The finishing pass behind the stills on this page. Every source is reduced to the same 0.25 MP, then rebuilt by SeedVR2 at up to 4096 px.',
+    tools: ['SeedVR2 7B · Q4_K_M GGUF', 'Tiled VAE', 'LAB colour match'],
+    steps: [
+      'Load a generated still, whatever its original size.',
+      'Scale it to 0.25 MP with Lanczos, so every source starts from the same pixel budget.',
+      'SeedVR2 7B rebuilds it at 4096 px on the long edge; tiled VAE and 16 offloaded blocks keep it within VRAM.',
+      'LAB colour correction holds the source palette, and a comparer node checks before and after.',
+    ],
+    media: {
+      kind: 'compare', layout: 'wide',
+      before: { file: 'seedvr2-detail-working', label: '0.25 MP working size' },
+      after: { file: 'seedvr2-detail-master', label: '4096 px master' },
+      extras: [
+        { file: 'seedvr2-output-dune', label: 'Desert procession · 4096 × 1712' },
+        { file: 'seedvr2-output-night-market', label: 'Night counter · 4096 × 2212' },
+        { file: 'seedvr2-output-bonfire', label: 'Bonfire · 4096 × 2138' },
+        { file: 'seedvr2-output-lost-and-found', label: 'Lost and found · 4096 × 2730' },
+      ],
+    },
+    graphs: [],
+    links: [
+      { href: '#aigc-gallery', label: 'AIGC Gallery · 15 stills' },
+      { href: '#wes-anderson', label: 'Wes Anderson collection · 8 stills' },
+    ],
+    note: 'Graph read from the workflow metadata embedded in the output PNGs. In the comparison, the left side is the master downsampled to the graph’s 0.25 MP working size for reference, not the original source file.',
   },
 ]
 
-const asset = (file: string) => withBase(`images/workflows/${file}.webp${file.startsWith('product-fidelity-') ? '?v=gap-edge-2' : ''}`)
+const asset = (file: string) => withBase(`images/workflows/${file}.webp`)
+const clamp = (value: number) => Math.min(100, Math.max(0, value))
+
+function Tile({ preview, aspect, onOpen }: { preview: Preview; aspect: string; onOpen: (button: HTMLButtonElement) => void }) {
+  return (
+    <button type="button" onClick={event => onOpen(event.currentTarget)}
+      className="group min-w-0 overflow-hidden rounded-[18px] bg-black/30 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      aria-label={`Enlarge ${preview.label}`}>
+      <div className={`overflow-hidden ${preview.aspect ?? aspect} ${preview.paper ? 'bg-white' : ''}`}>
+        <img src={asset(preview.file)} alt={preview.label} loading="lazy" decoding="async"
+          className={`h-full w-full transition-transform duration-500 group-hover:scale-[1.02] ${preview.fit === 'contain' ? 'object-contain p-3 sm:p-5' : 'object-cover'}`} />
+      </div>
+      <span className="flex min-h-11 items-center justify-between gap-2 px-2 py-2.5 text-[10px] leading-snug text-white/75 sm:px-3 sm:text-xs">
+        {preview.label}<Expand className="h-3 w-3 shrink-0" aria-hidden="true" />
+      </span>
+    </button>
+  )
+}
+
+function CompareSlider({ before, after, aspect, onOpen }: {
+  before: Preview; after: Preview; aspect: string; onOpen: (button: HTMLButtonElement, preview: Preview) => void
+}) {
+  const [position, setPosition] = useState(50)
+  const frame = useRef<HTMLDivElement | null>(null)
+
+  const move = (clientX: number) => {
+    const rect = frame.current?.getBoundingClientRect()
+    if (rect) setPosition(clamp(((clientX - rect.left) / rect.width) * 100))
+  }
+  const nudge = (event: KeyboardEvent<HTMLDivElement>) => {
+    const step = ({ ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5, Home: -100, End: 100 } as Record<string, number>)[event.key]
+    if (step === undefined) return
+    event.preventDefault()
+    setPosition(value => clamp(value + step))
+  }
+
+  return (
+    <figure className="min-w-0 overflow-hidden rounded-[18px] bg-black/30">
+      <div ref={frame} className={`relative cursor-ew-resize select-none overflow-hidden ${aspect}`} style={{ touchAction: 'pan-y' }}
+        onPointerDown={event => { event.currentTarget.setPointerCapture(event.pointerId); move(event.clientX) }}
+        onPointerMove={event => { if (event.currentTarget.hasPointerCapture(event.pointerId)) move(event.clientX) }}>
+        <img src={asset(after.file)} alt={after.label} loading="lazy" decoding="async" draggable={false} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={asset(before.file)} alt={before.label} loading="lazy" decoding="async" draggable={false}
+          className="absolute inset-0 h-full w-full object-cover" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} />
+        <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-black/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-white/85 backdrop-blur-md">{before.label}</span>
+        <span className="pointer-events-none absolute right-3 top-3 rounded-full bg-black/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-white/85 backdrop-blur-md">{after.label}</span>
+        <div role="slider" tabIndex={0} onKeyDown={nudge}
+          aria-label={`Compare ${before.label} with ${after.label}`} aria-valuemin={0} aria-valuemax={100}
+          aria-valuenow={Math.round(position)} aria-valuetext={`${Math.round(position)}% ${before.label}`}
+          className="absolute inset-y-0 w-px -translate-x-1/2 bg-white/85 focus-visible:outline-none [&:focus-visible>span]:ring-2 [&:focus-visible>span]:ring-white"
+          style={{ left: `${position}%` }}>
+          <span className="absolute left-1/2 top-1/2 grid h-10 w-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/50 bg-black/55 text-white backdrop-blur-md">
+            <ChevronsLeftRight className="h-4 w-4" aria-hidden="true" />
+          </span>
+        </div>
+      </div>
+      <figcaption className="flex flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-xs text-white/75">
+        <span>Drag to compare</span>
+        <span className="flex flex-wrap gap-2">
+          {[before, after].map(preview => (
+            <button key={preview.file} type="button" onClick={event => onOpen(event.currentTarget, preview)}
+              className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-white/20 px-3 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              aria-label={`Enlarge ${preview.label}`}>
+              {preview.label} <Expand className="h-3 w-3" aria-hidden="true" />
+            </button>
+          ))}
+        </span>
+      </figcaption>
+    </figure>
+  )
+}
+
+function WorkflowMedia({ workflow, open }: { workflow: Workflow; open: (button: HTMLButtonElement, title: string, file: string) => void }) {
+  const { media, title } = workflow
+  const enlarge = (preview: Preview) => (button: HTMLButtonElement) => open(button, `${title} — ${preview.label}`, preview.file)
+
+  if (media.kind === 'row') {
+    return (
+      <div className={`grid gap-2 ${media.images.length === 4 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-3'}`}>
+        {media.images.map(preview => <Tile key={preview.file} preview={preview} aspect="aspect-[4/5]" onOpen={enlarge(preview)} />)}
+      </div>
+    )
+  }
+
+  if (media.kind === 'compare') {
+    const portrait = media.layout === 'portrait'
+    return (
+      <div className={`grid gap-2 ${portrait ? 'lg:grid-cols-2' : ''}`}>
+        <CompareSlider before={media.before} after={media.after} aspect={portrait ? 'aspect-[4/5]' : 'aspect-[2/1]'}
+          onOpen={(button, preview) => enlarge(preview)(button)} />
+        <div className={`grid content-start gap-2 ${portrait ? 'grid-cols-2 sm:grid-cols-4 lg:grid-cols-2' : 'grid-cols-2 sm:grid-cols-4'}`}>
+          {media.extras.map(preview => (
+            <Tile key={preview.file} preview={preview} aspect={portrait ? 'aspect-square' : 'aspect-video'} onOpen={enlarge(preview)} />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  const portrait = media.layout === 'portrait'
+  const src = withBase(`videos/workflows/${media.video.file}`)
+  return (
+    <div className={`grid items-start gap-2 ${portrait ? 'sm:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)]' : 'lg:grid-cols-[minmax(0,1fr)_260px]'}`}>
+      <figure className="min-w-0 overflow-hidden rounded-[18px] bg-black/30">
+        <video controls playsInline preload="none" poster={asset(media.video.poster)} aria-label={`${title}: completed video`}
+          className={`w-full bg-black/30 object-contain ${portrait ? 'aspect-[9/16] max-h-[620px]' : 'aspect-video'}`}>
+          <source src={src} type="video/mp4" />
+          Your browser does not support embedded video. <a href={src}>Open the completed video</a>.
+        </video>
+        <figcaption className="px-3 py-3 text-xs text-white/75">{media.video.label}</figcaption>
+      </figure>
+      <div className={`grid items-start gap-2 ${portrait ? '' : 'grid-cols-2 lg:grid-cols-1'}`}>
+        {media.side.map(preview => <Tile key={preview.file} preview={preview} aspect="" onOpen={enlarge(preview)} />)}
+      </div>
+    </div>
+  )
+}
 
 export default function WorkflowShowcase() {
   const [selected, setSelected] = useState<{ title: string; file: string; workflow: boolean } | null>(null)
@@ -101,65 +291,97 @@ export default function WorkflowShowcase() {
 
   return (
     <section id="workflows" className="mb-24 scroll-mt-24 md:mb-32" aria-labelledby="workflows-title">
-      <div className="mb-8 md:mb-12">
+      <div className="mb-10 md:mb-14">
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Eight studies in image generation, editing and video finishing. Explore the results alongside the workflows used to make them.
+          Six local pipelines, from controlled image edits to tracked video finishing. Each study leads with the finished output, followed by the steps and the node graph behind it.
         </p>
+        <nav aria-label="Workflow index" className="mt-8 grid gap-5 sm:grid-cols-3 md:gap-8">
+          {categories.map(category => (
+            <div key={category} className="border-t border-white/15 pt-3">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">{category}</p>
+              <ul className="mt-2">
+                {workflows.map((workflow, index) => workflow.category === category && (
+                  <li key={workflow.id}>
+                    <a href={`#workflow-${workflow.id}`} className="inline-flex min-h-9 items-center gap-3 text-sm text-white/75 transition-colors hover:text-white">
+                      <span className="text-xs tabular-nums text-white/40">0{index + 1}</span>{workflow.short}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
       </div>
 
-      <div className="space-y-10 md:space-y-14">
+      <div className="space-y-14 md:space-y-20">
         {workflows.map((workflow, index) => (
           <article key={workflow.id} className="border-t border-white/15 pt-6 md:pt-8" aria-labelledby={`workflow-${workflow.id}`}>
             <div className="mb-5 flex items-baseline gap-4">
               <span className="text-xs tabular-nums text-white/45">0{index + 1}</span>
-              <h3 id={`workflow-${workflow.id}`} className="scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
+              <h3 id={`workflow-${workflow.id}`} className="min-w-0 flex-1 scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
+              <span className="hidden shrink-0 text-[11px] uppercase tracking-[0.18em] text-white/45 sm:inline">{workflow.category}</span>
             </div>
-            <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr] lg:gap-7">
-              <div className="exhibition-glass-frame self-start overflow-hidden rounded-[26px] p-2 md:p-3">
-                <div className={`grid min-h-0 gap-2 ${workflow.images.length === 4 ? 'grid-cols-2' : workflow.images.length === 3 ? 'grid-cols-3' : 'grid-cols-1'}`}>
-                  {workflow.video && (
-                    <figure className="overflow-hidden rounded-[18px] bg-black/30">
-                      <video controls playsInline preload="none" poster={asset(workflow.video.poster)}
-                        aria-label={`${workflow.title}: completed video`}
-                        className={`w-full bg-black/30 object-contain ${workflow.video.aspect === 'landscape' ? 'aspect-video' : 'h-[420px] sm:h-[480px]'}`}>
-                        <source src={withBase(`videos/workflows/${workflow.video.file}`)} type="video/mp4" />
-                        Your browser does not support embedded video. <a href={withBase(`videos/workflows/${workflow.video.file}`)}>Open the completed video</a>.
-                      </video>
-                      <figcaption className="px-3 py-3 text-xs text-white/75">{workflow.video.label}</figcaption>
-                    </figure>
-                  )}
-                  {workflow.images.map(preview => (
-                    <button key={preview.file} type="button"
-                      onClick={event => open(event.currentTarget, `${workflow.title} — ${preview.label}`, preview.file)}
-                      className="group relative min-w-0 overflow-hidden rounded-[18px] bg-black/30 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                      aria-label={`Enlarge ${workflow.title}: ${preview.label}`}>
-                      <img src={asset(preview.file)} alt={preview.label} loading="lazy" decoding="async"
-                        className={`w-full object-contain ${workflow.video ? 'h-auto' : workflow.images.length === 4 ? 'h-[190px] sm:h-[230px]' : workflow.images.length === 3 ? 'h-[180px] sm:h-[420px]' : 'h-[340px] sm:h-[480px]'}`} />
-                      <div className="flex min-h-12 items-center justify-between gap-1 px-2 py-3 text-[10px] text-white/75 sm:px-3 sm:text-xs">
-                        <span>{preview.label}</span><Expand className="h-3 w-3 shrink-0" aria-hidden="true" />
-                      </div>
-                    </button>
+
+            <div className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:p-3">
+              <WorkflowMedia workflow={workflow} open={open} />
+            </div>
+
+            <div className="mt-3 grid gap-6 rounded-[26px] bg-black/50 p-5 backdrop-blur-md md:p-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-8">
+              <div className="min-w-0">
+                <p className="text-[15px] leading-7 text-white/85 md:text-base">{workflow.summary}</p>
+                <ul className="mt-4 flex flex-wrap gap-2" aria-label="Models and tools">
+                  {workflow.tools.map(tool => (
+                    <li key={tool} className="rounded-full border border-white/15 px-3 py-1 text-[11px] text-white/65">{tool}</li>
                   ))}
-                </div>
+                </ul>
               </div>
-              <div className="flex min-w-0 flex-col items-start self-start rounded-[26px] bg-black/50 p-4 backdrop-blur-md lg:p-5">
-                <p className="text-xs uppercase leading-relaxed tracking-[0.14em] text-white/55">{workflow.model}</p>
-                <p className="mb-6 mt-3 text-sm leading-7 text-white/75">{workflow.description}</p>
-                {(workflow.graphs ?? [{ file: `${workflow.id}-workflow`, label: 'View workflow' }]).map(graph => (
-                <button key={graph.file} type="button"
-                  onClick={event => open(event.currentTarget, `${workflow.title} — ${graph.label}`, graph.file, true)}
-                  className="group mb-4 w-full overflow-hidden rounded-[18px] border border-white/15 bg-black/35 text-left transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                  aria-label={`View ${workflow.title} workflow screenshot: ${graph.label}`}>
-                  <img src={asset(`${graph.file}-thumb`)} alt={`${graph.label}: node graph with completed output previews`}
-                    loading="lazy" decoding="async" width={1000} height={600} className="aspect-[16/10] w-full object-contain" />
-                  <span className="flex items-center justify-between border-t border-white/10 px-4 py-3 text-sm text-white/85">
-                    {graph.label} <Expand className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                </button>
-                ))}
-                {workflow.note && <p className="text-xs leading-6 text-white/55">{workflow.note}</p>}
+
+              <div className="min-w-0">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-white/50">Pipeline</p>
+                <ol className="mt-3 space-y-2.5">
+                  {workflow.steps.map((step, stepIndex) => (
+                    <li key={step} className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-2 text-sm leading-6 text-white/75">
+                      <span className="tabular-nums text-white/40">{stepIndex + 1}</span>{step}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="min-w-0">
+                {workflow.graphs.length > 0 && (
+                  <>
+                    <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/50">Node graph</p>
+                    {workflow.graphs.map(graph => (
+                      <button key={graph.file} type="button"
+                        onClick={event => open(event.currentTarget, `${workflow.title} — ${graph.label}`, graph.file, true)}
+                        className="group mb-3 w-full overflow-hidden rounded-[18px] border border-white/15 bg-black/35 text-left transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                        aria-label={`View ${workflow.title} workflow screenshot: ${graph.label}`}>
+                        <img src={asset(`${graph.file}-thumb`)} alt={`${graph.label}: node graph with completed output previews`}
+                          loading="lazy" decoding="async" width={1000} height={600} className="aspect-[16/10] w-full object-contain" />
+                        <span className="flex items-center justify-between gap-2 border-t border-white/10 px-4 py-3 text-xs text-white/85 sm:text-sm">
+                          {graph.label} <Expand className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        </span>
+                      </button>
+                    ))}
+                  </>
+                )}
+                {workflow.links && (
+                  <>
+                    <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/50">Used on this page</p>
+                    <ul className="space-y-2">
+                      {workflow.links.map(link => (
+                        <li key={link.href}>
+                          <a href={link.href} className="flex min-h-11 items-center justify-between gap-2 rounded-[18px] border border-white/15 px-4 py-2 text-sm text-white/80 transition-colors hover:border-white/40 hover:text-white">
+                            {link.label} <ArrowDown className="h-4 w-4 shrink-0" aria-hidden="true" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {workflow.note && <p className="mt-4 text-xs leading-6 text-white/55">{workflow.note}</p>}
               </div>
             </div>
           </article>

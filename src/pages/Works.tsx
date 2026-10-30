@@ -33,69 +33,73 @@ const works = [
 
 type GalleryImage = {
   src: string
+  full: string
   title: string
 }
 
+// Grid tiles load the -sm.webp copy; the viewer loads the full-resolution WebP (or the original JPG).
+const galleryImage = (path: string, title: string): GalleryImage => {
+  const base = path.replace(/\.(png|jpg)$/, '')
+  return { src: withBase(`${base}-sm.webp`), full: withBase(path.endsWith('.png') ? `${base}.webp` : path), title }
+}
+
 const narrativeTriptychs: GalleryImage[] = [
-  { src: withBase('images/aigc/absurd-comedy-triptych.png'), title: 'Absurd Comedy' },
-  {
-    src: withBase('images/aigc/american-football-optical-pressure-triptych.jpg'),
-    title: 'American Football: Optical Pressure',
-  },
-  { src: withBase('images/aigc/anthro-harbor-theater-triptych.jpg'), title: 'Anthro Harbor Theater' },
-  { src: withBase('images/aigc/apartment-family-table-triptych.jpg'), title: 'Apartment Family Table' },
-  { src: withBase('images/aigc/army-fisheye-first-person-triptych.png'), title: 'Army: Fisheye First Person' },
-  { src: withBase('images/aigc/bagua-sea-platform-triptych.jpg'), title: 'Bagua Sea Platform' },
-  { src: withBase('images/aigc/blue-sea-large-ship-triptych.png'), title: 'Blue Sea, Large Ship' },
-  { src: withBase('images/aigc/cabaret-aftermath-triptych.png'), title: 'Cabaret Aftermath' },
-  { src: withBase('images/aigc/courthouse-witness-triptych.png'), title: 'Courthouse Witness' },
-  { src: withBase('images/aigc/dumpling-shop-triptych.png'), title: 'Dumpling Shop' },
-  { src: withBase('images/aigc/eastern-palace-triptych.png'), title: 'Eastern Palace' },
-  { src: withBase('images/aigc/go-shadow-ink-triptych.png'), title: 'Go: Shadow & Ink' },
-  { src: withBase('images/aigc/green-girl-wide-aperture-triptych.png'), title: 'Green Girl: Wide Aperture' },
-  { src: withBase('images/aigc/green-water-memory-triptych.png'), title: 'Green Water Memory' },
-  { src: withBase('images/aigc/hotel-pink-ritual-triptych.jpg'), title: 'Hotel Pink Ritual' },
-  { src: withBase('images/aigc/industrial-ensemble-ledger-triptych.png'), title: 'Industrial Ensemble Ledger' },
-  { src: withBase('images/aigc/journey-west-original-epic-triptych.png'), title: 'Journey West: Original Epic' },
-  { src: withBase('images/aigc/laundromat-note-triptych.jpg'), title: 'Laundromat Note' },
-  { src: withBase('images/aigc/mexico-rodeo-family-rope-triptych.jpg'), title: 'Mexico Rodeo: Family Rope' },
-  { src: withBase('images/aigc/monastic-observatory-window-triptych.jpg'), title: 'Monastic Observatory Window' },
-  { src: withBase('images/aigc/rain-courtyard-ledger-triptych.jpg'), title: 'Rain Courtyard Ledger' },
-  { src: withBase('images/aigc/scifi-ice-ring-mine-city-triptych.jpg'), title: 'Sci-Fi Ice Ring Mine City' },
-  { src: withBase('images/aigc/scifi-underwater-football-triptych.jpg'), title: 'Sci-Fi Underwater Football' },
-  { src: withBase('images/aigc/seventies-tv-dance-marathon-triptych.jpg'), title: 'Seventies TV Dance Marathon' },
-  { src: withBase('images/aigc/train-window-departure-triptych.jpg'), title: 'Train Window Departure' },
-  { src: withBase('images/aigc/tropical-court-greenhouse-triptych.jpg'), title: 'Tropical Court Greenhouse' },
-  { src: withBase('images/aigc/venice-palace-triptych.jpg'), title: 'Venice Palace' },
+  galleryImage('images/aigc/absurd-comedy-triptych.png', 'Absurd Comedy'),
+  galleryImage('images/aigc/american-football-optical-pressure-triptych.jpg', 'American Football: Optical Pressure'),
+  galleryImage('images/aigc/anthro-harbor-theater-triptych.jpg', 'Anthro Harbor Theater'),
+  galleryImage('images/aigc/apartment-family-table-triptych.jpg', 'Apartment Family Table'),
+  galleryImage('images/aigc/army-fisheye-first-person-triptych.png', 'Army: Fisheye First Person'),
+  galleryImage('images/aigc/bagua-sea-platform-triptych.jpg', 'Bagua Sea Platform'),
+  galleryImage('images/aigc/blue-sea-large-ship-triptych.png', 'Blue Sea, Large Ship'),
+  galleryImage('images/aigc/cabaret-aftermath-triptych.png', 'Cabaret Aftermath'),
+  galleryImage('images/aigc/courthouse-witness-triptych.png', 'Courthouse Witness'),
+  galleryImage('images/aigc/dumpling-shop-triptych.png', 'Dumpling Shop'),
+  galleryImage('images/aigc/eastern-palace-triptych.png', 'Eastern Palace'),
+  galleryImage('images/aigc/go-shadow-ink-triptych.png', 'Go: Shadow & Ink'),
+  galleryImage('images/aigc/green-girl-wide-aperture-triptych.png', 'Green Girl: Wide Aperture'),
+  galleryImage('images/aigc/green-water-memory-triptych.png', 'Green Water Memory'),
+  galleryImage('images/aigc/hotel-pink-ritual-triptych.jpg', 'Hotel Pink Ritual'),
+  galleryImage('images/aigc/industrial-ensemble-ledger-triptych.png', 'Industrial Ensemble Ledger'),
+  galleryImage('images/aigc/journey-west-original-epic-triptych.png', 'Journey West: Original Epic'),
+  galleryImage('images/aigc/laundromat-note-triptych.jpg', 'Laundromat Note'),
+  galleryImage('images/aigc/mexico-rodeo-family-rope-triptych.jpg', 'Mexico Rodeo: Family Rope'),
+  galleryImage('images/aigc/monastic-observatory-window-triptych.jpg', 'Monastic Observatory Window'),
+  galleryImage('images/aigc/rain-courtyard-ledger-triptych.jpg', 'Rain Courtyard Ledger'),
+  galleryImage('images/aigc/scifi-ice-ring-mine-city-triptych.jpg', 'Sci-Fi Ice Ring Mine City'),
+  galleryImage('images/aigc/scifi-underwater-football-triptych.jpg', 'Sci-Fi Underwater Football'),
+  galleryImage('images/aigc/seventies-tv-dance-marathon-triptych.jpg', 'Seventies TV Dance Marathon'),
+  galleryImage('images/aigc/train-window-departure-triptych.jpg', 'Train Window Departure'),
+  galleryImage('images/aigc/tropical-court-greenhouse-triptych.jpg', 'Tropical Court Greenhouse'),
+  galleryImage('images/aigc/venice-palace-triptych.jpg', 'Venice Palace'),
 ]
 
 const aigcImages: GalleryImage[] = [
-  { src: withBase('images/aigc/aigc-01.png'), title: 'AIGC Study 01' },
-  { src: withBase('images/aigc/aigc-02.png'), title: 'AIGC Study 02' },
-  { src: withBase('images/aigc/aigc-03.png'), title: 'AIGC Study 03' },
-  { src: withBase('images/aigc/aigc-04.png'), title: 'AIGC Study 04' },
-  { src: withBase('images/aigc/aigc-05.png'), title: 'AIGC Study 05' },
-  { src: withBase('images/aigc/120232_00001_.png'), title: 'AIGC Study 06' },
-  { src: withBase('images/aigc/121012_00001_.png'), title: 'AIGC Study 07' },
-  { src: withBase('images/aigc/121243_00001_.png'), title: 'AIGC Study 08' },
-  { src: withBase('images/aigc/121444_00001_.png'), title: 'AIGC Study 09' },
-  { src: withBase('images/aigc/121829_00001_.png'), title: 'AIGC Study 10' },
-  { src: withBase('images/aigc/122018_00001_.png'), title: 'AIGC Study 11' },
-  { src: withBase('images/aigc/122114_00001_.png'), title: 'AIGC Study 12' },
-  { src: withBase('images/aigc/122336_00001_.png'), title: 'AIGC Study 13' },
-  { src: withBase('images/aigc/122449_00001_.png'), title: 'AIGC Study 14' },
-  { src: withBase('images/aigc/122622_00001_.png'), title: 'AIGC Study 15' },
+  galleryImage('images/aigc/aigc-01.png', 'AIGC Study 01'),
+  galleryImage('images/aigc/aigc-02.png', 'AIGC Study 02'),
+  galleryImage('images/aigc/aigc-03.png', 'AIGC Study 03'),
+  galleryImage('images/aigc/aigc-04.png', 'AIGC Study 04'),
+  galleryImage('images/aigc/aigc-05.png', 'AIGC Study 05'),
+  galleryImage('images/aigc/120232_00001_.png', 'AIGC Study 06'),
+  galleryImage('images/aigc/121012_00001_.png', 'AIGC Study 07'),
+  galleryImage('images/aigc/121243_00001_.png', 'AIGC Study 08'),
+  galleryImage('images/aigc/121444_00001_.png', 'AIGC Study 09'),
+  galleryImage('images/aigc/121829_00001_.png', 'AIGC Study 10'),
+  galleryImage('images/aigc/122018_00001_.png', 'AIGC Study 11'),
+  galleryImage('images/aigc/122114_00001_.png', 'AIGC Study 12'),
+  galleryImage('images/aigc/122336_00001_.png', 'AIGC Study 13'),
+  galleryImage('images/aigc/122449_00001_.png', 'AIGC Study 14'),
+  galleryImage('images/aigc/122622_00001_.png', 'AIGC Study 15'),
 ]
 
 const wesMedia: GalleryImage[] = [
-  { src: withBase('images/Wes/120426_00001_.png'), title: 'Wes Anderson Collection 01' },
-  { src: withBase('images/Wes/131410_00001_.png'), title: 'Wes Anderson Collection 02' },
-  { src: withBase('images/Wes/134124_00001_.png'), title: 'Wes Anderson Collection 03' },
-  { src: withBase('images/Wes/134251_00001_.png'), title: 'Wes Anderson Collection 04' },
-  { src: withBase('images/Wes/134648_00001_.png'), title: 'Wes Anderson Collection 05' },
-  { src: withBase('images/Wes/140254_00001_.png'), title: 'Wes Anderson Collection 06' },
-  { src: withBase('images/Wes/140924_00001_.png'), title: 'Wes Anderson Collection 07' },
-  { src: withBase('images/Wes/141254_00001_.png'), title: 'Wes Anderson Collection 08' },
+  galleryImage('images/Wes/120426_00001_.png', 'Wes Anderson Collection 01'),
+  galleryImage('images/Wes/131410_00001_.png', 'Wes Anderson Collection 02'),
+  galleryImage('images/Wes/134124_00001_.png', 'Wes Anderson Collection 03'),
+  galleryImage('images/Wes/134251_00001_.png', 'Wes Anderson Collection 04'),
+  galleryImage('images/Wes/134648_00001_.png', 'Wes Anderson Collection 05'),
+  galleryImage('images/Wes/140254_00001_.png', 'Wes Anderson Collection 06'),
+  galleryImage('images/Wes/140924_00001_.png', 'Wes Anderson Collection 07'),
+  galleryImage('images/Wes/141254_00001_.png', 'Wes Anderson Collection 08'),
 ]
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
@@ -468,9 +472,9 @@ export function AigcExhibitionPage() {
             </div>
           </section>
 
-          <section className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
+          <section id="aigc-gallery" className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
             <div className="mb-6 md:mb-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments · 4096 px SeedVR2 masters</p>
               <h2
                 id="selected-experiments-title"
                 className="mt-3 text-3xl font-normal tracking-tight md:text-5xl"
@@ -586,7 +590,7 @@ export function AigcExhibitionPage() {
             <X className="relative z-10 h-5 w-5" strokeWidth={1.7} />
           </button>
           <figure className="max-w-7xl" onClick={event => event.stopPropagation()}>
-            <img src={selectedImage.src} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
+            <img src={selectedImage.full} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
           </figure>
         </div>
       )}
