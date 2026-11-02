@@ -12,27 +12,22 @@ const backgroundVideoUrl =
 
 const works = [
   {
-    title: 'AI Image & Video',
-    label: 'Workflows / Films / Stills',
-    description:
-      'Six documented ComfyUI workflows for character, product and logo consistency, followed by films and three still collections.',
+    title: 'AIGC Works',
+    label: 'Images / Videos',
     icon: Sparkles,
     to: '/works/aigc',
-    featured: true,
-  },
-  {
-    title: 'Product Design',
-    label: 'Campaigns / Email / Apps',
-    description: 'OFF HOURS, DAYMARK, LINEAGE and RealLife AI: campaign systems, lifecycle email and AI product prototypes.',
-    icon: PanelsTopLeft,
-    to: '/works/product-design',
   },
   {
     title: 'Film & 3D',
     label: 'Cinema / Spatial',
-    description: 'Short films, VFX and spatial work, hosted on Canva.',
     icon: Film,
     href: 'https://carltonshi0209.my.canva.site/',
+  },
+  {
+    title: 'Product Design',
+    label: 'Interface / System',
+    icon: PanelsTopLeft,
+    to: '/works/product-design',
   },
 ]
 
@@ -105,14 +100,6 @@ const wesMedia: GalleryImage[] = [
   galleryImage('images/Wes/140254_00001_.png', 'Wes Anderson Collection 06'),
   galleryImage('images/Wes/140924_00001_.png', 'Wes Anderson Collection 07'),
   galleryImage('images/Wes/141254_00001_.png', 'Wes Anderson Collection 08'),
-]
-
-const aigcSections = [
-  { href: '#workflows', label: 'Workflows', count: '06' },
-  { href: '#films', label: 'Films & motion tests', count: '05' },
-  { href: '#narrative-triptychs', label: 'Narrative triptychs', count: String(narrativeTriptychs.length) },
-  { href: '#aigc-gallery', label: 'AIGC gallery', count: String(aigcImages.length) },
-  { href: '#wes-anderson', label: 'Wes Anderson style', count: String(wesMedia.length).padStart(2, '0') },
 ]
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
@@ -260,18 +247,18 @@ export function WorksPage() {
         <div className="mx-auto mb-8 w-full max-w-6xl md:mb-12">
           <h1 className="text-balance text-4xl font-normal leading-[1.02] tracking-[-0.025em] md:text-6xl">Selected work</h1>
           <p className="mt-4 max-w-2xl text-sm leading-[1.6] text-white/62 md:text-[17px]">
-            Start with AI image and video: each workflow shows the result, the steps and the node graph behind it. Product design and film follow.
+            Three ways into the practice: generative image and video, cinematic production, and product design.
           </p>
         </div>
 
-        <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:grid-rows-2 md:gap-5">
+        <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-3 md:gap-6">
           {works.map(work => {
             const Icon = work.icon
             const cardContent = (
               <div className="relative z-10 flex h-full flex-col justify-between">
                 <div>
                   <div className="mb-3 flex items-center justify-between md:mb-8">
-                    <span className="rounded-full border border-white/15 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
+                    <span className="rounded-full border border-white/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/60">
                       {work.label}
                     </span>
                     <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white/80 backdrop-blur-md transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
@@ -279,22 +266,20 @@ export function WorksPage() {
                     </span>
                   </div>
 
-                  <h2 className={`mt-5 font-normal leading-none tracking-tight text-white md:mt-8 ${work.featured ? 'text-3xl md:text-5xl' : 'text-3xl md:text-[34px]'}`}>
+                  <h2 className="mt-5 text-3xl font-normal leading-none tracking-tight text-white md:mt-8 md:text-[40px]">
                     {work.title}
                   </h2>
-                  <p className="mt-4 max-w-[46ch] text-sm leading-[1.6] text-white/68">{work.description}</p>
                 </div>
 
-                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white/82">
-                  {work.href ? 'Open site' : 'View work'}
+                <div className="inline-flex items-center gap-2 text-sm font-medium text-white/82">
+                  View work
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
                 </div>
               </div>
             )
 
-            const className = `works-glass-card group block min-h-[220px] min-w-0 rounded-[24px] p-5 md:rounded-[28px] md:p-7 ${
-              work.featured ? 'md:row-span-2 md:min-h-[480px]' : 'md:min-h-[230px]'
-            }`
+            const className =
+              'works-glass-card group block min-h-[220px] min-w-0 rounded-[24px] p-5 md:min-h-[360px] md:rounded-[28px] md:p-7'
 
             return work.href ? (
               <a
@@ -328,7 +313,7 @@ function ExhibitionChrome({
   snap = true,
   children,
 }: {
-  title?: string
+  title: string
   action?: ReactNode
   snap?: boolean
   children: ReactNode
@@ -338,7 +323,7 @@ function ExhibitionChrome({
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <FadingBackgroundVideo />
-      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/38" aria-hidden="true" />
 
       <Link
         to="/works"
@@ -349,7 +334,7 @@ function ExhibitionChrome({
       </Link>
       {action}
 
-      {title && <h1 className="sr-only">{title}</h1>}
+      <h1 className="sr-only">{title}</h1>
       <div
         className={`fixed-safe-bottom-center liquid-glass pointer-events-none fixed z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:px-5 ${
           showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
@@ -388,6 +373,7 @@ export function AigcExhibitionPage() {
   return (
     <>
       <ExhibitionChrome
+        title="AIGC Works"
         snap={false}
         action={
           <a
@@ -401,34 +387,10 @@ export function AigcExhibitionPage() {
           </a>
         }
       >
-        <div className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28">
-          <header className="mb-20 md:mb-28">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">AI image & video</p>
-            <h1 className="mt-4 max-w-3xl text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] md:text-[56px]">
-              How each image and shot is controlled.
-            </h1>
-            <p className="mt-5 max-w-[64ch] text-sm leading-relaxed text-white/68 md:text-base">
-              The workflows come first: what holds a face, a garment or a logo steady, and how source artwork is recomposited when generation drifts. Films and still collections follow.
-            </p>
-            <nav aria-label="Sections on this page" className="mt-10">
-              <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-5">
-                {aigcSections.map(section => (
-                  <li key={section.href} className="border-t border-white/15">
-                    <a href={section.href} className="flex min-h-12 items-center justify-between gap-3 py-2 text-sm text-white/85 transition-colors hover:text-white">
-                      {section.label}
-                      <span className="font-mono text-xs tabular-nums text-white/40">{section.count}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </header>
-          <WorkflowShowcase />
-
-          <section id="films" className="mb-24 md:mb-32" aria-labelledby="videos-title">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">Films & motion tests · {videoWorks.length + 1}</p>
-            <h2 id="videos-title" className="mt-3 text-balance text-3xl font-normal tracking-tight md:text-5xl">
-              Films
+        <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
+          <section className="mb-24 md:mb-32" aria-labelledby="videos-title">
+            <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
+              Videos
             </h2>
             <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
               <video
@@ -470,15 +432,14 @@ export function AigcExhibitionPage() {
             </div>
           </section>
 
-          <section id="narrative-triptychs" aria-labelledby="narrative-triptychs-title">
+          <WorkflowShowcase />
+
+          <section aria-labelledby="narrative-triptychs-title">
             <div className="mb-6 md:mb-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">Story studies · {narrativeTriptychs.length} triptychs</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">New collection · 27 works</p>
               <h2 id="narrative-triptychs-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">
                 Narrative Triptychs
               </h2>
-              <p className="mt-4 max-w-[64ch] text-sm leading-relaxed text-white/65 md:text-base">
-                Each scene in three frames: an establishing wide, a character moment and a closing detail, with characters, props and light carried from frame to frame.
-              </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
@@ -513,7 +474,7 @@ export function AigcExhibitionPage() {
 
           <section id="aigc-gallery" className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
             <div className="mb-6 md:mb-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">Selected experiments · 4096 px SeedVR2 masters</p>
+              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments · 4096 px SeedVR2 masters</p>
               <h2
                 id="selected-experiments-title"
                 className="mt-3 text-3xl font-normal tracking-tight md:text-5xl"
@@ -559,13 +520,13 @@ export function AigcExhibitionPage() {
           </section>
 
           <section id="wes-anderson" className="pt-24 md:pt-32" aria-labelledby="wes-anderson-title">
-            <div className="mb-6 md:mb-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#f7d6c4]/70">Style skill · film + {wesMedia.length} stills</p>
+            <div className="mb-6 text-center md:mb-8">
+              <p className="text-[10px] uppercase tracking-[0.34em] text-[#f7d6c4]/70 md:text-xs">New collection</p>
               <h2
                 id="wes-anderson-title"
-                className="mt-3 font-serif text-4xl font-normal tracking-[0.02em] text-[#fff3df] md:text-[56px]"
+                className="mt-3 font-serif text-4xl font-normal tracking-[0.04em] text-[#fff3df] md:text-6xl"
               >
-                Wes Anderson style
+                Skill: Wes Anderson Style
               </h2>
             </div>
 
@@ -609,7 +570,7 @@ export function AigcExhibitionPage() {
               ))}
             </div>
           </section>
-        </div>
+        </section>
       </ExhibitionChrome>
 
       {selectedImage && (
