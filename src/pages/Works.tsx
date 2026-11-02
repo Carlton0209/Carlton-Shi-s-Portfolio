@@ -1,35 +1,16 @@
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowUpRight, ChevronDown, Expand, Film, PanelsTopLeft, Sparkles, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowUpRight, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { withBase } from '../lib/asset'
+import { useRoomMotion } from '../lib/motion'
 import WorkflowShowcase from '../components/WorkflowShowcase'
 import OffHoursProjectCard from '../components/OffHoursProjectCard'
 import DaymarkProjectCard from '../components/DaymarkProjectCard'
+import { ContactSection, SiteBar, WorkPanels, frameX } from '../components/Room'
 
-const backgroundVideoUrl =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4'
-
-const works = [
-  {
-    title: 'AIGC Works',
-    label: 'Images / Videos',
-    icon: Sparkles,
-    to: '/works/aigc',
-  },
-  {
-    title: 'Film & 3D',
-    label: 'Cinema / Spatial',
-    icon: Film,
-    href: 'https://carltonshi0209.my.canva.site/',
-  },
-  {
-    title: 'Product Design',
-    label: 'Interface / System',
-    icon: PanelsTopLeft,
-    to: '/works/product-design',
-  },
-]
+const poster = (file: string) => withBase(`images/posters/${file}.webp`)
+const sectionGap = 'mt-[clamp(120px,14vw,220px)]'
 
 type GalleryImage = {
   src: string
@@ -106,13 +87,14 @@ const wesVideo = withBase('images/Wes/7月22日.mp4')
 const featuredVideo = {
   src: withBase('videos/Resonance.mp4'),
   title: 'Resonance',
+  poster: poster('resonance'),
 }
 
 const videoWorks = [
-  { src: withBase('videos/music.mp4'), title: 'MV Demo' },
-  { src: withBase('videos/Black woman.mp4'), title: 'Mood Fluctuation Test' },
-  { src: withBase('videos/春を盗む風_1_prob4.mp4'), title: 'Music MV' },
-  { src: withBase('videos/8月3日.mp4'), title: 'Micro-expressions' },
+  { src: withBase('videos/music.mp4'), title: 'MV Demo', poster: poster('music') },
+  { src: withBase('videos/Black woman.mp4'), title: 'Mood Fluctuation Test', poster: poster('black-woman') },
+  { src: withBase('videos/春を盗む風_1_prob4.mp4'), title: 'Music MV', poster: poster('music-mv') },
+  { src: withBase('videos/8月3日.mp4'), title: 'Micro-expressions', poster: poster('micro-expressions') },
 ]
 
 const productWorks = [
@@ -136,223 +118,134 @@ const productWorks = [
   },
 ]
 
-function FadingBackgroundVideo() {
-  const videoRef = useRef<HTMLVideoElement | null>(null)
-  const animationFrameRef = useRef<number | null>(null)
-  const fadingOutRef = useRef(false)
-
-  const fadeTo = useCallback((targetOpacity: number, duration = 500) => {
-    const video = videoRef.current
-    if (!video) return
-
-    if (animationFrameRef.current !== null) {
-      window.cancelAnimationFrame(animationFrameRef.current)
-    }
-
-    const startOpacity = Number.parseFloat(video.style.opacity || '0')
-    const startTime = performance.now()
-
-    const animate = (time: number) => {
-      const progress = Math.min((time - startTime) / duration, 1)
-      const opacity = startOpacity + (targetOpacity - startOpacity) * progress
-      video.style.opacity = String(opacity)
-
-      if (progress < 1) {
-        animationFrameRef.current = window.requestAnimationFrame(animate)
-      } else {
-        animationFrameRef.current = null
-      }
-    }
-
-    animationFrameRef.current = window.requestAnimationFrame(animate)
-  }, [])
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return undefined
-
-    const handleLoaded = () => {
-      fadingOutRef.current = false
-      void video.play().catch(() => undefined)
-      fadeTo(1)
-    }
-
-    const handleTimeUpdate = () => {
-      if (!Number.isFinite(video.duration) || video.duration <= 0) return
-
-      const timeRemaining = video.duration - video.currentTime
-      if (timeRemaining <= 0.55 && !fadingOutRef.current) {
-        fadingOutRef.current = true
-        fadeTo(0)
-      }
-    }
-
-    const handleEnded = () => {
-      video.style.opacity = '0'
-
-      window.setTimeout(() => {
-        video.currentTime = 0
-        fadingOutRef.current = false
-        void video.play().catch(() => undefined)
-        fadeTo(1)
-      }, 100)
-    }
-
-    video.addEventListener('loadeddata', handleLoaded)
-    video.addEventListener('timeupdate', handleTimeUpdate)
-    video.addEventListener('ended', handleEnded)
-
-    return () => {
-      video.removeEventListener('loadeddata', handleLoaded)
-      video.removeEventListener('timeupdate', handleTimeUpdate)
-      video.removeEventListener('ended', handleEnded)
-
-      if (animationFrameRef.current !== null) {
-        window.cancelAnimationFrame(animationFrameRef.current)
-      }
-    }
-  }, [fadeTo])
-
-  return (
-    <video
-      ref={videoRef}
-      muted
-      autoPlay
-      playsInline
-      preload="auto"
-      aria-hidden="true"
-      className="absolute inset-0 h-full w-full object-cover object-center"
-      src={backgroundVideoUrl}
-      style={{ opacity: 0 }}
-    />
-  )
-}
-
 export function WorksPage() {
+  const root = useRef<HTMLElement | null>(null)
+  useRoomMotion(root)
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
-      <FadingBackgroundVideo />
-      <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
-
-      <Link
-        to="/"
-        aria-label="Back to home"
-        className="fixed-safe-top-left liquid-glass fixed z-30 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
-      >
-        <ArrowLeft className="relative z-10 h-4 w-4" strokeWidth={1.7} />
-        <span className="relative z-10 hidden sm:inline">Back home</span>
-      </Link>
-
-      <section className="relative z-10 flex min-h-dvh flex-col justify-center px-5 pb-10 pt-24 sm:px-8 md:py-24">
-        <div className="mx-auto mb-8 w-full max-w-6xl md:mb-12">
-          <h1 className="text-balance text-4xl font-normal leading-[1.02] tracking-[-0.025em] md:text-6xl">Selected work</h1>
-          <p className="mt-4 max-w-2xl text-sm leading-[1.6] text-white/62 md:text-[17px]">
-            Three ways into the practice: generative image and video, cinematic production, and product design.
-          </p>
-        </div>
-
-        <div className="mx-auto grid w-full min-w-0 max-w-6xl gap-4 md:grid-cols-3 md:gap-6">
-          {works.map(work => {
-            const Icon = work.icon
-            const cardContent = (
-              <div className="relative z-10 flex h-full flex-col justify-between">
-                <div>
-                  <div className="mb-3 flex items-center justify-between md:mb-8">
-                    <span className="rounded-full border border-white/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/60">
-                      {work.label}
-                    </span>
-                    <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white/80 backdrop-blur-md transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
-                      <Icon className="h-5 w-5" strokeWidth={1.5} />
-                    </span>
-                  </div>
-
-                  <h2 className="mt-5 text-3xl font-normal leading-none tracking-tight text-white md:mt-8 md:text-[40px]">
-                    {work.title}
-                  </h2>
-                </div>
-
-                <div className="inline-flex items-center gap-2 text-sm font-medium text-white/82">
-                  View work
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.5} />
-                </div>
-              </div>
-            )
-
-            const className =
-              'works-glass-card group block min-h-[220px] min-w-0 rounded-[24px] p-5 md:min-h-[360px] md:rounded-[28px] md:p-7'
-
-            return work.href ? (
-              <a
-                key={work.title}
-                href={work.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={className}
-              >
-                {cardContent}
-              </a>
-            ) : (
-              <Link
-                key={work.title}
-                to={work.to ?? '/works'}
-                className={className}
-              >
-                {cardContent}
-              </Link>
-            )
-          })}
-        </div>
-      </section>
+    <main ref={root} className="room min-h-dvh">
+      <SiteBar current="works" />
+      <header data-reveal-group className={`grid gap-5 pb-[clamp(56px,7vw,96px)] pt-[clamp(40px,7vw,104px)] md:grid-cols-12 md:items-end ${frameX}`}>
+        <h1 data-reveal className="t-head md:col-span-6">Selected work</h1>
+        <p data-reveal className="t-lead text-room-ink md:col-span-6 md:col-start-7">
+          Four ways into the practice: generative image and video, the ComfyUI pipelines behind them, cinematic production, and product design.
+        </p>
+      </header>
+      <WorkPanels />
+      <ContactSection />
     </main>
   )
 }
 
-function ExhibitionChrome({
+function ExhibitionPage({
   title,
+  intro,
+  index,
   action,
-  snap = true,
   children,
 }: {
   title: string
+  intro: string
+  index?: { href: string; label: string }[]
+  /** The page's one primary action, set as the solid button under the intro. */
   action?: ReactNode
-  snap?: boolean
   children: ReactNode
 }) {
-  const [showScrollHint, setShowScrollHint] = useState(true)
+  const root = useRef<HTMLElement | null>(null)
+  useRoomMotion(root)
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
-      <FadingBackgroundVideo />
-      <div className="absolute inset-0 bg-black/38" aria-hidden="true" />
-
-      <Link
-        to="/works"
-        className="fixed-safe-top-left liquid-glass fixed z-30 inline-flex min-h-11 items-center rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
-      >
-        <span className="relative z-10 hidden sm:inline">Back to works</span>
-        <ArrowLeft className="relative z-10 h-4 w-4 sm:hidden" strokeWidth={1.7} aria-hidden="true" />
-      </Link>
-      {action}
-
-      <h1 className="sr-only">{title}</h1>
-      <div
-        className={`fixed-safe-bottom-center liquid-glass pointer-events-none fixed z-30 flex -translate-x-1/2 items-center gap-2 rounded-full px-4 py-2.5 text-white/82 transition-all duration-300 md:px-5 ${
-          showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
-        }`}
-        aria-label="Scroll down to view more works"
-      >
-        <span className="relative z-10 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.2em] md:text-xs">
-          Scroll for more works
-        </span>
-        <ChevronDown className="relative z-10 h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
-      </div>
-      <div
-        className={`relative z-10 h-dvh overflow-y-auto scroll-smooth ${snap ? 'lg:snap-y lg:snap-mandatory' : ''}`}
-        onScroll={event => setShowScrollHint(event.currentTarget.scrollTop < 48)}
-      >
-        {children}
-      </div>
+    <main ref={root} className="room min-h-dvh">
+      <SiteBar current="works" />
+      <header data-reveal-group className={`grid gap-5 pb-[clamp(40px,5vw,72px)] pt-[clamp(32px,4vw,64px)] md:grid-cols-12 md:items-end ${frameX}`}>
+        <h1 data-reveal className="t-head md:col-span-6">{title}</h1>
+        <div className="md:col-span-6 md:col-start-7">
+          <p data-reveal className="t-lead text-room-ink">{intro}</p>
+          {index && (
+            <nav data-reveal aria-label="On this page" className="mt-4 flex flex-wrap gap-x-6">
+              {index.map(link => (
+                <a key={link.href} href={link.href} className="room-link t-small text-room-link">
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          )}
+          {action && (
+            <div data-reveal className="mt-6">
+              {action}
+            </div>
+          )}
+        </div>
+      </header>
+      {children}
+      <div className="h-[clamp(120px,14vw,220px)]" aria-hidden="true" />
+      <ContactSection />
     </main>
+  )
+}
+
+function SectionHead({ id, title, children }: { id: string; title: string; children: ReactNode }) {
+  return (
+    <div data-reveal-group className="grid gap-4 md:grid-cols-12 md:items-end">
+      <h2 id={id} data-reveal className="t-head md:col-span-6">
+        {title}
+      </h2>
+      <p data-reveal className="t-body text-room-ink md:col-span-5 md:col-start-8">
+        {children}
+      </p>
+    </div>
+  )
+}
+
+function Film({ src, poster, title, className = '' }: { src: string; poster: string; title: string; className?: string }) {
+  return (
+    <video
+      src={src}
+      poster={poster}
+      controls
+      playsInline
+      preload="none"
+      className={`w-full bg-black object-contain ${className}`}
+      aria-label={`${title} video`}
+    >
+      Your browser does not support the video tag.
+    </video>
+  )
+}
+
+function StillButton({ image, onOpen, className, aspect, fit = 'cover', caption = true }: {
+  image: GalleryImage
+  onOpen: (image: GalleryImage) => void
+  className?: string
+  aspect: string
+  fit?: 'cover' | 'contain'
+  caption?: boolean
+}) {
+  return (
+    <button
+      type="button"
+      data-reveal-item
+      onClick={() => onOpen(image)}
+      className={`group block min-w-0 text-left ${className ?? ''}`}
+      aria-label={`View ${image.title} full size`}
+    >
+      <span className={`block overflow-hidden bg-room-surface ${aspect}`}>
+        <img
+          src={image.src}
+          alt={image.title}
+          loading="lazy"
+          decoding="async"
+          className={`h-full w-full brightness-[0.9] transition-[filter,transform] duration-500 group-hover:scale-[1.02] group-hover:brightness-100 ${
+            fit === 'contain' ? 'object-contain' : 'object-cover'
+          }`}
+        />
+      </span>
+      {caption && (
+        <span className="t-small mt-3 block text-room-ink decoration-1 underline-offset-[0.3em] group-hover:underline">
+          {image.title}
+        </span>
+      )}
+    </button>
   )
 }
 
@@ -372,210 +265,104 @@ export function AigcExhibitionPage() {
 
   return (
     <>
-      <ExhibitionChrome
+      <ExhibitionPage
         title="AIGC Works"
-        snap={false}
+        intro="Six films, six ComfyUI workflows and fifty stills, from narrative triptychs to a Wes Anderson style collection."
+        index={[
+          { href: '#videos', label: 'Videos' },
+          { href: '#workflows', label: 'Workflows' },
+          { href: '#narrative-triptychs', label: 'Triptychs' },
+          { href: '#aigc-gallery', label: 'Gallery' },
+          { href: '#wes-anderson', label: 'Wes Anderson' },
+        ]}
         action={
-          <a
-            href="https://canva.link/05ejtqofermnth7"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fixed-safe-top-right liquid-glass fixed z-30 inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm text-white/82 transition-colors hover:text-white active:scale-95"
-          >
-            <span className="relative z-10 hidden sm:inline">View more works</span>
-            <ArrowUpRight className="relative z-10 h-4 w-4" strokeWidth={1.7} />
+          <a href="https://canva.link/05ejtqofermnth7" target="_blank" rel="noopener noreferrer" className="room-button">
+            View more works
+            <ArrowUpRight className="h-4 w-4" strokeWidth={1.6} aria-hidden="true" />
           </a>
         }
       >
-        <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
-          <section className="mb-24 md:mb-32" aria-labelledby="videos-title">
-            <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
-              Videos
-            </h2>
-            <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
-              <video
-                src={featuredVideo.src}
-                controls
-                playsInline
-                preload="metadata"
-                className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
-                aria-label={`${featuredVideo.title} video`}
-              >
-                Your browser does not support the video tag.
-              </video>
-              <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62 md:px-4">
-                {featuredVideo.title}
-              </p>
-            </div>
+        <section id="videos" className={frameX} aria-labelledby="videos-title">
+          <SectionHead id="videos-title" title="Videos">
+            Resonance runs 8 minutes 45 seconds. Four shorter studies follow it: a music video demo, a mood test, a music MV and micro-expressions.
+          </SectionHead>
 
-            <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-              {videoWorks.map(video => (
-                <div
-                  key={video.src}
-                  className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:rounded-[30px] md:p-3"
-                >
-                  <video
-                    src={video.src}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[22px]"
-                    aria-label={`${video.title} video`}
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                  <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62">
-                    {video.title}
-                  </p>
-                </div>
-              ))}
+          <figure data-reveal-group className="mt-10 md:mt-14">
+            <div data-reveal>
+              <Film src={featuredVideo.src} poster={featuredVideo.poster} title={featuredVideo.title} className="aspect-video" />
             </div>
-          </section>
+            <figcaption data-reveal className="t-small mt-3 text-room-ink">
+              {featuredVideo.title}
+            </figcaption>
+          </figure>
 
-          <WorkflowShowcase />
-
-          <section aria-labelledby="narrative-triptychs-title">
-            <div className="mb-6 md:mb-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-white/48">New collection · 27 works</p>
-              <h2 id="narrative-triptychs-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">
-                Narrative Triptychs
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
-              {narrativeTriptychs.map((image, index) => (
-                <button
-                  key={image.src}
-                  type="button"
-                  onClick={() => setSelectedImage(image)}
-                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[30px] md:p-3"
-                  aria-label={`View ${image.title} full size`}
-                >
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-[20px] bg-black/30 md:rounded-[22px]">
-                    <img
-                      src={image.src}
-                      alt={image.title}
-                      loading={index < 3 ? 'eager' : 'lazy'}
-                      decoding="async"
-                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" aria-hidden="true" />
-                    <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3">
-                      <span className="text-sm leading-tight text-white/90">{image.title}</span>
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section id="aigc-gallery" className="pt-24 md:pt-32" aria-labelledby="selected-experiments-title">
-            <div className="mb-6 md:mb-8">
-              <p className="text-xs uppercase tracking-[0.24em] text-white/48">Selected experiments · 4096 px SeedVR2 masters</p>
-              <h2
-                id="selected-experiments-title"
-                className="mt-3 text-3xl font-normal tracking-tight md:text-5xl"
-              >
-                AIGC Gallery
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
-              {aigcImages.map((image, index) => (
-                <button
-                  key={image.src}
-                  type="button"
-                  onClick={() => setSelectedImage(image)}
-                  className={`exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[32px] md:p-3 ${
-                    index === 0 ? 'md:col-span-2' : ''
-                  }`}
-                  aria-label={`View ${image.title} full size`}
-                >
-                  <div
-                    className={`relative overflow-hidden rounded-[20px] md:rounded-[24px] ${index === 0 ? 'aspect-[21/7]' : 'aspect-video'}`}
-                  >
-                    <img
-                      src={image.src}
-                      alt={image.title}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-                    />
-                    <div
-                      className="absolute inset-0 bg-gradient-to-t from-black/72 via-black/5 to-transparent"
-                      aria-hidden="true"
-                    />
-                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section id="wes-anderson" className="pt-24 md:pt-32" aria-labelledby="wes-anderson-title">
-            <div className="mb-6 text-center md:mb-8">
-              <p className="text-[10px] uppercase tracking-[0.34em] text-[#f7d6c4]/70 md:text-xs">New collection</p>
-              <h2
-                id="wes-anderson-title"
-                className="mt-3 font-serif text-4xl font-normal tracking-[0.04em] text-[#fff3df] md:text-6xl"
-              >
-                Skill: Wes Anderson Style
-              </h2>
-            </div>
-
-            <div className="exhibition-glass-frame mb-5 overflow-hidden rounded-[26px] p-2 md:rounded-[36px] md:p-3">
-              <video
-                src={wesVideo}
-                controls
-                playsInline
-                preload="metadata"
-                className="max-h-[78vh] w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
-                aria-label="Wes Anderson style video showcase"
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
-              {wesMedia.map(media => (
-                <button
-                  key={media.src}
-                  type="button"
-                  onClick={() => setSelectedImage(media)}
-                  className="exhibition-glass-frame group relative overflow-hidden rounded-[26px] p-2 text-left md:rounded-[36px] md:p-3"
-                  aria-label={`View ${media.title} full size`}
-                >
-                  <div className="relative aspect-[137/100] overflow-hidden rounded-[20px] md:rounded-[28px]">
-                    <img
-                      src={media.src}
-                      alt={media.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
-                      <span className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/25 text-white/80 backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                        <Expand className="h-4 w-4" strokeWidth={1.7} aria-hidden="true" />
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </section>
+          <div className="mt-12 grid grid-cols-1 gap-x-5 gap-y-10 md:mt-16 md:grid-cols-2">
+            {videoWorks.map(video => (
+              <figure key={video.src} data-reveal-item className="min-w-0">
+                <Film src={video.src} poster={video.poster} title={video.title} className="aspect-video" />
+                <figcaption className="t-small mt-3 text-room-ink">{video.title}</figcaption>
+              </figure>
+            ))}
+          </div>
         </section>
-      </ExhibitionChrome>
+
+        <div className={`${sectionGap} ${frameX}`}>
+          <WorkflowShowcase />
+        </div>
+
+        <section id="narrative-triptychs" className={`${sectionGap} ${frameX}`} aria-labelledby="narrative-triptychs-title">
+          <SectionHead id="narrative-triptychs-title" title="Narrative Triptychs">
+            A new collection of 27 stories, each told in three frames.
+          </SectionHead>
+
+          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 md:mt-14 md:grid-cols-3 md:gap-x-5 md:gap-y-12 lg:grid-cols-4">
+            {narrativeTriptychs.map(image => (
+              <StillButton key={image.src} image={image} onOpen={setSelectedImage} aspect="aspect-[3/4]" />
+            ))}
+          </div>
+        </section>
+
+        <section id="aigc-gallery" className={`${sectionGap} ${frameX}`} aria-labelledby="selected-experiments-title">
+          <SectionHead id="selected-experiments-title" title="AIGC Gallery">
+            Selected experiments, finished as 4096 px SeedVR2 masters.
+          </SectionHead>
+
+          <div className="mt-10 grid grid-cols-1 gap-4 md:mt-14 md:grid-cols-2 md:gap-5">
+            {aigcImages.map((image, index) => (
+              <StillButton
+                key={image.src}
+                image={image}
+                onOpen={setSelectedImage}
+                caption={false}
+                className={index === 0 ? 'md:col-span-2' : ''}
+                aspect={index === 0 ? 'aspect-video md:aspect-[21/8]' : 'aspect-video'}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section id="wes-anderson" className={`${sectionGap} ${frameX}`} aria-labelledby="wes-anderson-title">
+          <SectionHead id="wes-anderson-title" title="Skill: Wes Anderson Style">
+            A new collection: one film and eight stills.
+          </SectionHead>
+
+          <div data-reveal-group className="mt-10 md:mt-14">
+            <div data-reveal>
+              <Film src={wesVideo} poster={poster('wes-film')} title="Wes Anderson style" className="max-h-[78vh]" />
+            </div>
+          </div>
+
+          <div className="mt-4 grid grid-cols-1 gap-4 md:mt-5 md:grid-cols-2 md:gap-5">
+            {wesMedia.map(media => (
+              <StillButton key={media.src} image={media} onOpen={setSelectedImage} caption={false} aspect="aspect-[137/100]" />
+            ))}
+          </div>
+        </section>
+      </ExhibitionPage>
 
       {selectedImage && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/88 p-4 backdrop-blur-xl md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 md:p-10"
           role="dialog"
           aria-modal="true"
           aria-label={selectedImage.title}
@@ -584,13 +371,14 @@ export function AigcExhibitionPage() {
           <button
             type="button"
             onClick={() => setSelectedImage(null)}
-            className="fixed-safe-top-right liquid-glass absolute z-10 grid h-11 w-11 place-items-center rounded-full text-white/82 transition-colors hover:text-white active:scale-95"
+            className="fixed-safe-top-right absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-room-surface text-room-ink transition-colors hover:bg-[#232326] active:scale-95"
             aria-label="Close image viewer"
           >
-            <X className="relative z-10 h-5 w-5" strokeWidth={1.7} />
+            <X className="h-5 w-5" strokeWidth={1.7} />
           </button>
           <figure className="max-w-7xl" onClick={event => event.stopPropagation()}>
-            <img src={selectedImage.full} alt={selectedImage.title} className="max-h-[84vh] max-w-full rounded-2xl object-contain shadow-2xl" />
+            <img src={selectedImage.full} alt={selectedImage.title} className="max-h-[84vh] max-w-full object-contain" />
+            <figcaption className="t-small mt-3 text-room-ink">{selectedImage.title}</figcaption>
           </figure>
         </div>
       )}
@@ -600,54 +388,73 @@ export function AigcExhibitionPage() {
 
 export function ProductDesignPage() {
   return (
-    <ExhibitionChrome title="Product Design">
-      <section className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start" aria-label="OFF HOURS campaign and product design case study">
-        <div className="w-full min-w-0 max-w-6xl"><OffHoursProjectCard /></div>
+    <ExhibitionPage
+      title="Product Design"
+      intro="Four concepts: a campaign with its Figma system, a welcome email journey and two AI products."
+      action={
+        <Link to="/works/off-hours" className="room-button">
+          Open the OFF HOURS case study
+          <ArrowUpRight className="h-4 w-4" strokeWidth={1.6} aria-hidden="true" />
+        </Link>
+      }
+    >
+      <section className={frameX} aria-label="OFF HOURS campaign and product design case study">
+        <div data-reveal-group>
+          <div data-reveal>
+            <OffHoursProjectCard />
+          </div>
+        </div>
       </section>
-      <section className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start" aria-label="DAYMARK email design case study">
-        <div className="w-full min-w-0 max-w-6xl"><DaymarkProjectCard /></div>
+      <section className={`${sectionGap} ${frameX}`} aria-label="DAYMARK email design case study">
+        <div data-reveal-group>
+          <div data-reveal>
+            <DaymarkProjectCard reverse />
+          </div>
+        </div>
       </section>
-      {productWorks.map(product => (
-        <section key={product.title} className="flex min-h-dvh items-center justify-center px-5 py-24 lg:snap-start">
-          <article className="grid w-full min-w-0 max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.68fr)] lg:items-center">
+      {productWorks.map((product, index) => (
+        <section key={product.title} className={`${sectionGap} ${frameX}`} aria-labelledby={`product-${index}`}>
+          <article data-reveal-group className="grid min-w-0 gap-8 md:grid-cols-12 md:items-center md:gap-5">
             <a
               href={product.href}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open ${product.title} website`}
-              className="exhibition-glass-frame group order-2 block min-w-0 rounded-[30px] p-3 transition-transform duration-300 hover:-translate-y-1 md:rounded-[38px] md:p-4 lg:order-1"
+              data-reveal
+              className={`group block min-w-0 overflow-hidden bg-room-surface md:col-span-7 ${index % 2 ? 'md:order-2 md:col-start-6' : ''}`}
             >
               <img
                 src={product.src}
                 alt={`${product.title} homepage`}
-                className="relative z-10 max-h-[72vh] w-full rounded-[22px] object-contain transition-transform duration-300 group-hover:scale-[1.01] md:rounded-[28px]"
+                loading="lazy"
+                decoding="async"
+                className="max-h-[72vh] w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
               />
-              <span
-                className="absolute right-5 top-5 z-20 grid h-10 w-10 place-items-center rounded-full bg-black/70 text-white shadow-lg backdrop-blur transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                aria-hidden="true"
-              >
-                <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
-              </span>
             </a>
 
-            <div className="exhibition-glass-frame order-1 min-w-0 rounded-[30px] p-6 md:rounded-[38px] md:p-8 lg:order-2">
-              <p className="text-xs uppercase tracking-[0.22em] text-white/45">Product Design</p>
-              <h2 className="mt-5 text-4xl font-normal leading-none tracking-tight text-white md:text-5xl">
+            <div className={`min-w-0 md:col-span-4 ${index % 2 ? 'md:order-1 md:col-start-1' : 'md:col-start-9'}`}>
+              <h2 id={`product-${index}`} data-reveal className="t-head">
                 {product.title}
               </h2>
-              <p className="mt-3 text-sm uppercase tracking-[0.18em] text-white/48">{product.label}</p>
-              <p className="mt-6 text-sm leading-[1.75] text-white/72">{product.description}</p>
-              <div className="mt-7 space-y-3">
+              <p data-reveal className="t-lead mt-3 text-room-ink">
+                {product.label}
+              </p>
+              <p data-reveal className="t-body mt-5 text-room-ink">
+                {product.description}
+              </p>
+              <ul data-reveal className="t-body mt-5 list-disc space-y-1 pl-5 text-room-ink marker:text-room-dim">
                 {product.features.map(feature => (
-                  <div key={feature} className="rounded-full border border-white/12 px-4 py-2 text-sm text-white/72">
-                    {feature}
-                  </div>
+                  <li key={feature}>{feature}</li>
                 ))}
-              </div>
+              </ul>
+              <a data-reveal href={product.href} target="_blank" rel="noopener noreferrer" className="room-link mt-4 text-room-link">
+                Open the site
+                <ArrowUpRight className="h-4 w-4" strokeWidth={1.6} aria-hidden="true" />
+              </a>
             </div>
           </article>
         </section>
       ))}
-    </ExhibitionChrome>
+    </ExhibitionPage>
   )
 }
