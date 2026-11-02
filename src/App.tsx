@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import { DragCursorEffect } from './components/DragCursorEffect'
 import { LuxuryLanding } from './components/LuxuryLanding'
 import { ResumePage } from './pages/Resume'
 import { AigcExhibitionPage, ProductDesignPage, WorksPage } from './pages/Works'
@@ -12,7 +11,6 @@ const DaymarkEmailCaseStudy = lazy(() => import('./pages/DaymarkEmailCaseStudy')
 export default function App() {
   return (
     <>
-      <DragCursorEffect />
       <Routes>
         <Route path="/" element={<LuxuryLanding />} />
         <Route path="/works" element={<WorksPage />} />

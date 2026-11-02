@@ -14,6 +14,7 @@ type Workflow = {
   id: string
   short: string
   category: (typeof categories)[number]
+  focus: string
   title: string
   summary: string
   tools: string[]
@@ -26,7 +27,8 @@ type Workflow = {
 
 const workflows: Workflow[] = [
   {
-    id: 'angles', short: 'Camera angles', category: 'Image editing', title: 'One character, four camera angles',
+    id: 'angles', short: 'Camera angles', category: 'Image editing', focus: 'Character consistency across camera angles',
+    title: 'One character, four camera angles',
     summary: 'The camera moves around the subject while the face, sweater and forest light stay consistent from shot to shot.',
     tools: ['Qwen Image Edit 2511', 'Multiple Angles LoRA', 'Lightning 4-step LoRA'],
     steps: [
@@ -46,7 +48,8 @@ const workflows: Workflow[] = [
     graphs: [{ file: 'angles-workflow', label: 'Full graph with recorded outputs' }],
   },
   {
-    id: 'wardrobe', short: 'Wardrobe swap', category: 'Image editing', title: 'A change of wardrobe',
+    id: 'wardrobe', short: 'Wardrobe swap', category: 'Image editing', focus: 'Identity hold during garment transfer',
+    title: 'A change of wardrobe',
     summary: 'A varsity jacket from a flat product shot is fitted onto a portrait, keeping the person, pose and meadow light.',
     tools: ['Qwen Image Edit 2511', 'Consistency LoRA', 'Lightning 4-step LoRA'],
     steps: [
@@ -65,7 +68,8 @@ const workflows: Workflow[] = [
     graphs: [{ file: 'wardrobe-workflow', label: 'Full graph with recorded outputs' }],
   },
   {
-    id: 'leather', short: 'Logo on leather', category: 'Image editing', title: 'A logo stitched into the leather',
+    id: 'leather', short: 'Logo on leather', category: 'Image editing', focus: 'Logo integrity on a supplied product photo',
+    title: 'A logo stitched into the leather',
     summary: 'The S logo is added to both shoes in a supplied photograph, built from the same cream leather and stitching as the upper instead of being pasted on top.',
     tools: ['Krea2 edit', 'Manual masks', 'Two-pass local refinement'],
     steps: [
@@ -89,8 +93,9 @@ const workflows: Workflow[] = [
     note: 'Process frames are taken from the preview nodes recorded in the graph.',
   },
   {
-    id: 'h3-brand', short: 'Footwear replacement', category: 'Video', title: 'Footwear replacement, frame by frame',
-    summary: 'H3 swaps the sneakers in a moving shot. A separate tracked pass then restores the real S artwork where the model drew malformed logos.',
+    id: 'h3-brand', short: 'Footwear replacement', category: 'Video', focus: 'Product fidelity in generated video',
+    title: 'Footwear replacement, frame by frame',
+    summary: 'H3 swaps the sneakers in a moving shot. Where it drew malformed logos, the original S artwork is tracked and recomposited from the source asset.',
     tools: ['MiniMax H3', 'Motion tracking', 'ComfyUI compositing'],
     steps: [
       'Three shots are generated separately in H3 from the source footage and product photographs.',
@@ -110,7 +115,8 @@ const workflows: Workflow[] = [
     note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
   },
   {
-    id: 'selflift', short: 'Light & terrain', category: 'Video', title: 'Light and terrain',
+    id: 'selflift', short: 'Light & terrain', category: 'Video', focus: 'Image-to-video from product stills',
+    title: 'Light and terrain',
     summary: 'An 8-second product film built from two stills, a shoe photograph and a sandstone reference, with moving light and a slow push-in.',
     tools: ['MiniMax H3', 'SelfLift sampler', 'Qwen3-VL 4B · local'],
     steps: [
@@ -131,7 +137,8 @@ const workflows: Workflow[] = [
     note: 'Native output without upscaling. Generated product details may differ from the reference. Independent portfolio study.',
   },
   {
-    id: 'seedvr2', short: '4K finishing', category: 'Finishing', title: '4K masters from small sources',
+    id: 'seedvr2', short: '4K finishing', category: 'Finishing', focus: '4K delivery within a VRAM budget',
+    title: '4K masters from small sources',
     summary: 'The finishing pass behind the stills on this page. Every source is reduced to the same 0.25 MP, then rebuilt by SeedVR2 at up to 4096 px.',
     tools: ['SeedVR2 7B · Q4_K_M GGUF', 'Tiled VAE', 'LAB colour match'],
     steps: [
@@ -292,20 +299,20 @@ export default function WorkflowShowcase() {
   return (
     <section id="workflows" className="mb-24 scroll-mt-24 md:mb-32" aria-labelledby="workflows-title">
       <div className="mb-10 md:mb-14">
-        <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">Process · Local ComfyUI runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Six local pipelines, from controlled image edits to tracked video finishing. Each study leads with the finished output, followed by the steps and the node graph behind it.
+          Six documented pipelines, each built around a problem production teams raise: identity and product consistency, logo integrity across frames, image-to-video from stills, and 4K delivery on limited VRAM. Every study shows the output first, then the steps and the node graph.
         </p>
         <nav aria-label="Workflow index" className="mt-8 grid gap-5 sm:grid-cols-3 md:gap-8">
           {categories.map(category => (
             <div key={category} className="border-t border-white/15 pt-3">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-white/45">{category}</p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">{category}</p>
               <ul className="mt-2">
                 {workflows.map((workflow, index) => workflow.category === category && (
                   <li key={workflow.id}>
                     <a href={`#workflow-${workflow.id}`} className="inline-flex min-h-9 items-center gap-3 text-sm text-white/75 transition-colors hover:text-white">
-                      <span className="text-xs tabular-nums text-white/40">0{index + 1}</span>{workflow.short}
+                      <span className="font-mono text-xs tabular-nums text-white/40">0{index + 1}</span>{workflow.short}
                     </a>
                   </li>
                 ))}
@@ -319,9 +326,12 @@ export default function WorkflowShowcase() {
         {workflows.map((workflow, index) => (
           <article key={workflow.id} className="border-t border-white/15 pt-6 md:pt-8" aria-labelledby={`workflow-${workflow.id}`}>
             <div className="mb-5 flex items-baseline gap-4">
-              <span className="text-xs tabular-nums text-white/45">0{index + 1}</span>
-              <h3 id={`workflow-${workflow.id}`} className="min-w-0 flex-1 scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
-              <span className="hidden shrink-0 text-[11px] uppercase tracking-[0.18em] text-white/45 sm:inline">{workflow.category}</span>
+              <span className="font-mono text-xs tabular-nums text-white/45">0{index + 1}</span>
+              <div className="min-w-0 flex-1">
+                <h3 id={`workflow-${workflow.id}`} className="scroll-mt-24 text-xl font-normal tracking-tight md:text-2xl">{workflow.title}</h3>
+                <p className="mt-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-[#7cb8ff]">{workflow.focus}</p>
+              </div>
+              <span className="hidden shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-white/45 sm:inline">{workflow.category}</span>
             </div>
 
             <div className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:p-3">
@@ -333,17 +343,17 @@ export default function WorkflowShowcase() {
                 <p className="text-[15px] leading-7 text-white/85 md:text-base">{workflow.summary}</p>
                 <ul className="mt-4 flex flex-wrap gap-2" aria-label="Models and tools">
                   {workflow.tools.map(tool => (
-                    <li key={tool} className="rounded-full border border-white/15 px-3 py-1 text-[11px] text-white/65">{tool}</li>
+                    <li key={tool} className="rounded-full border border-white/15 px-3 py-1 font-mono text-[11px] text-white/70">{tool}</li>
                   ))}
                 </ul>
               </div>
 
               <div className="min-w-0">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-white/50">Pipeline</p>
+                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">Pipeline</p>
                 <ol className="mt-3 space-y-2.5">
                   {workflow.steps.map((step, stepIndex) => (
                     <li key={step} className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-2 text-sm leading-6 text-white/75">
-                      <span className="tabular-nums text-white/40">{stepIndex + 1}</span>{step}
+                      <span className="font-mono text-xs leading-6 tabular-nums text-white/40">{stepIndex + 1}</span>{step}
                     </li>
                   ))}
                 </ol>
@@ -352,7 +362,7 @@ export default function WorkflowShowcase() {
               <div className="min-w-0">
                 {workflow.graphs.length > 0 && (
                   <>
-                    <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/50">Node graph</p>
+                    <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">Node graph</p>
                     {workflow.graphs.map(graph => (
                       <button key={graph.file} type="button"
                         onClick={event => open(event.currentTarget, `${workflow.title} — ${graph.label}`, graph.file, true)}
@@ -369,7 +379,7 @@ export default function WorkflowShowcase() {
                 )}
                 {workflow.links && (
                   <>
-                    <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/50">Used on this page</p>
+                    <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">Used on this page</p>
                     <ul className="space-y-2">
                       {workflow.links.map(link => (
                         <li key={link.href}>
