@@ -22,24 +22,8 @@ export default {
         heading: ["'Inter'", 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         body: ["'Inter'", 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         bagel: ["'Inter'", 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        // DESIGN.md type: SF Pro on Apple devices, Inter elsewhere.
-        display: ["'SF Pro Display'", '-apple-system', 'BlinkMacSystemFont', "'Inter'", "'Segoe UI'", 'sans-serif'],
-        text: ["'SF Pro Text'", '-apple-system', 'BlinkMacSystemFont', "'Inter'", "'Segoe UI'", 'sans-serif'],
       },
       colors: {
-        // "Dark room" palette: one dark ground, a soft light ink, one blue accent.
-        room: {
-          ground: '#0a0a0b',
-          surface: '#161618',
-          ink: '#f5f5f7',
-          dim: '#a1a1a6',
-          accent: '#0071e3',
-          'accent-hover': '#0077ed',
-          link: '#2997ff',
-          paper: '#f5f5f7',
-          'paper-ink': '#1d1d1f',
-          'paper-link': '#0066cc',
-        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

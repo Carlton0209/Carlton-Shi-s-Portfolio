@@ -1,5 +1,5 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { lazy, Suspense, useLayoutEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import { DragCursorEffect } from './components/DragCursorEffect'
 import { LuxuryLanding } from './components/LuxuryLanding'
 import { ResumePage } from './pages/Resume'
@@ -9,24 +9,9 @@ import NotFound from './pages/NotFound'
 const OffHoursCaseStudy = lazy(() => import('./pages/OffHoursCaseStudy'))
 const DaymarkEmailCaseStudy = lazy(() => import('./pages/DaymarkEmailCaseStudy'))
 
-// Pages scroll the window, so a new route opens at its top, or at the section its hash names.
-// This runs before the page's own layout effects, so its scroll triggers are measured from the right place.
-function ScrollToRouteTarget() {
-  const { pathname, hash } = useLocation()
-
-  useLayoutEffect(() => {
-    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null
-    if (target) target.scrollIntoView({ behavior: 'instant' })
-    else window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [pathname, hash])
-
-  return null
-}
-
 export default function App() {
   return (
     <>
-      <ScrollToRouteTarget />
       <DragCursorEffect />
       <Routes>
         <Route path="/" element={<LuxuryLanding />} />
