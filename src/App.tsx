@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound'
 
 const OffHoursCaseStudy = lazy(() => import('./pages/OffHoursCaseStudy'))
 const DaymarkEmailCaseStudy = lazy(() => import('./pages/DaymarkEmailCaseStudy'))
+const VeliseCaseStudy = lazy(() => import('./pages/VeliseCaseStudy'))
 
 export default function App() {
   return (
@@ -32,6 +33,14 @@ export default function App() {
           element={
             <Suspense fallback={<main className="grid min-h-dvh place-items-center bg-[#f5f0e7] text-[#1f2a44]" role="status">Loading DAYMARK…</main>}>
               <DaymarkEmailCaseStudy />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/works/velise"
+          element={
+            <Suspense fallback={<main className="grid min-h-dvh place-items-center bg-[#f3eee6] text-[#231419]" role="status">Loading VELISE…</main>}>
+              <VeliseCaseStudy />
             </Suspense>
           }
         />
