@@ -102,17 +102,22 @@ const wesMedia: GalleryImage[] = [
   galleryImage('images/Wes/141254_00001_.png', 'Wes Anderson Collection 08'),
 ]
 
+// Poster frames are stills taken from each film, so a video shows a picture before it plays.
+const poster = (name: string) => withBase(`images/posters/${name}.webp`)
+
 const wesVideo = withBase('images/Wes/7月22日.mp4')
+const wesPoster = poster('wes-film')
 const featuredVideo = {
   src: withBase('videos/Resonance.mp4'),
+  poster: poster('resonance'),
   title: 'Resonance',
 }
 
 const videoWorks = [
-  { src: withBase('videos/music.mp4'), title: 'MV Demo' },
-  { src: withBase('videos/Black woman.mp4'), title: 'Mood Fluctuation Test' },
-  { src: withBase('videos/春を盗む風_1_prob4.mp4'), title: 'Music MV' },
-  { src: withBase('videos/8月3日.mp4'), title: 'Micro-expressions' },
+  { src: withBase('videos/music.mp4'), poster: poster('music'), title: 'MV Demo' },
+  { src: withBase('videos/Black woman.mp4'), poster: poster('black-woman'), title: 'Mood Fluctuation Test' },
+  { src: withBase('videos/春を盗む風_1_prob4.mp4'), poster: poster('music-mv'), title: 'Music MV' },
+  { src: withBase('videos/8月3日.mp4'), poster: poster('micro-expressions'), title: 'Micro-expressions' },
 ]
 
 const productWorks = [
@@ -388,6 +393,8 @@ export function AigcExhibitionPage() {
         }
       >
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
+          <WorkflowShowcase />
+
           <section className="mb-24 md:mb-32" aria-labelledby="videos-title">
             <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
               Videos
@@ -395,9 +402,10 @@ export function AigcExhibitionPage() {
             <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
               <video
                 src={featuredVideo.src}
+                poster={featuredVideo.poster}
                 controls
                 playsInline
-                preload="metadata"
+                preload="none"
                 className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
                 aria-label={`${featuredVideo.title} video`}
               >
@@ -416,9 +424,10 @@ export function AigcExhibitionPage() {
                 >
                   <video
                     src={video.src}
+                    poster={video.poster}
                     controls
                     playsInline
-                    preload="metadata"
+                    preload="none"
                     className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[22px]"
                     aria-label={`${video.title} video`}
                   >
@@ -431,8 +440,6 @@ export function AigcExhibitionPage() {
               ))}
             </div>
           </section>
-
-          <WorkflowShowcase />
 
           <section aria-labelledby="narrative-triptychs-title">
             <div className="mb-6 md:mb-8">
@@ -533,9 +540,10 @@ export function AigcExhibitionPage() {
             <div className="exhibition-glass-frame mb-5 overflow-hidden rounded-[26px] p-2 md:rounded-[36px] md:p-3">
               <video
                 src={wesVideo}
+                poster={wesPoster}
                 controls
                 playsInline
-                preload="metadata"
+                preload="none"
                 className="max-h-[78vh] w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
                 aria-label="Wes Anderson style video showcase"
               >
