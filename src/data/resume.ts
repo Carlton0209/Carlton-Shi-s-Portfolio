@@ -1,39 +1,32 @@
-// Reviewed against the user-provided Resume.pdf and delivered portfolio projects (2026-10-24).
-// Website and downloadable PDF share this content; new works are labeled as concepts.
+// Mirrors the Creative Technologist resume built on 2026-11-02 (resume-workspace-20261102/work/build_resumes.py).
+// Website and downloadable PDF share this content; workflows are independent studies documented on /works/aigc.
 export const resume = {
   "name": "Jingchuan (Carlton) Shi",
-  "headline": "AI Creative Designer · Generative Media, Web & Email",
+  "headline": "Creative Technologist · AI Workflows & Generative Production",
   "location": "Syracuse, NY",
+  "relocation": "Open to relocation: Los Angeles",
   "phone": "315-395-2313",
   "email": "jshi77@syr.edu",
   "linkedIn": "https://www.linkedin.com/in/carltonshi0209",
   "portfolio": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/",
   "socialLikes": "100K+",
-  "summary": "AI creative designer and technical artist delivering image, video, and VFX assets for agency and film marketing teams. Combines generative production with Figma component systems, responsive web layouts, and HTML email design. Builds reusable prompting tools and ComfyUI pipelines adopted in client work.",
+  "summary": "Creative technologist who builds the AI tooling creative teams use every day. Rebuilds manual, judgment-heavy production processes as repeatable agent workflows with review and QC steps, ships the assets they produce, and trains the teams that run them. Workflow throughput gains up to 30%; social content past 100K likes.",
   "skills": [
     {
-      "label": "Figma & Campaign Design",
-      "value": "Auto Layout, components, variants, variables, interactive prototypes, responsive layouts, HTML email, plain-text alternatives"
+      "label": "AI Systems & Agents",
+      "value": "Agent skill design, prompt architecture, structured-output schemas, Anthropic / OpenAI / Groq / OpenRouter APIs with fallback routing, multi-model prompt portability, Claude Code"
     },
     {
-      "label": "Generative Image & Video",
-      "value": "ComfyUI (custom nodes, Triton / SageAttention optimization), custom LoRA training, Flux, SDXL, ControlNet, IPAdapter, Seedance 2.0/2.5, MiniMax H3 (Hailuo), Kling, Runway, Midjourney, Suno"
+      "label": "Generative Media",
+      "value": "ComfyUI (custom Python nodes), LoRA training, Flux, SDXL, ControlNet, IP-Adapter, Seedance 2.0/2.5, MiniMax H3 (Hailuo), Kling, Runway, Midjourney, Suno"
     },
     {
-      "label": "Design, Motion & VFX",
-      "value": "Photoshop, After Effects, Premiere Pro, DaVinci Resolve, Nuke, compositing, color grading, Unreal Engine, Blender, Maya, Houdini, XR"
+      "label": "Prototyping & Production",
+      "value": "Python, FastAPI, React, Next.js, Docker Compose, Linux GPU servers; After Effects, DaVinci Resolve, Premiere Pro, Nuke, Unreal Engine, Blender, Maya, Houdini"
     },
     {
-      "label": "Prompting & Agents",
-      "value": "Prompt architecture, agent skill design, structured-output schemas, Anthropic / OpenAI / Groq / OpenRouter API integration, fallback routing, multi-model prompt portability"
-    },
-    {
-      "label": "Creative Operations",
-      "value": "Airtable asset systems, version control, cross-team workflow design, Google Analytics, KPI analysis, SEO"
-    },
-    {
-      "label": "Engineering",
-      "value": "Python, FastAPI, JavaScript, React, Next.js, HTML/CSS, Docker Compose, Git, SQL, PyTorch/CUDA environment tuning"
+      "label": "Creative Ops & Governance",
+      "value": "Airtable asset systems, version control, C2PA provenance, cross-team workflow design, team training and documentation, KPI analysis"
     }
   ],
   "experiences": [
@@ -43,9 +36,9 @@ export const resume = {
       "role": "AI Technical Artist",
       "dates": "Jun 2026 – Present",
       "bullets": [
-        "Built and operated an end-to-end ComfyUI production workflow across 5 live client projects, covering model selection, prompt templating, generation, quality control, and delivery.",
-        "Developed an internal agent skill that translates one-line briefs into video-generation prompts with shot-level control over facial expression, dialogue timing, action, and camera motion; adopted as the team's default starting point.",
-        "Standardized prompt structures across Seedance and MiniMax H3 to support reuse of creative briefs across models."
+        "Built an internal agent skill that turns a one-line creative brief into a production-ready AIGC video prompt with shot-level control over expression, dialogue timing, action and camera motion; now the team's default starting point instead of hand-written prompts.",
+        "Standardized prompt structure across Seedance and MiniMax H3 so a brief can be re-run on a newer model without a rewrite, tying output quality to the model rather than the prompt writer.",
+        "Designed the creative team's ComfyUI pipeline end to end (model selection, prompt templating, generation, QC, delivery) and ran it on 5 live client projects."
       ]
     },
     {
@@ -54,9 +47,9 @@ export const resume = {
       "role": "U.S. Domestic Marketing & Distribution",
       "dates": "Jan 2026 – Mar 2026",
       "bullets": [
-        "Produced campaign-ready trailers, promos, posters, and theatrical and digital release assets across multiple film titles, translating creative direction into finished deliverables.",
-        "Built an LLM-driven social-content agent adopted by the marketing team, increasing content throughput by at least 30%.",
-        "Designed an Airtable asset system for 6 film titles, replacing ad hoc handoffs with version tracking and shared status visibility across marketing, sales, and creative."
+        "Built an LLM-driven agent for social content creation, adopted by the marketing team as a standing part of their workflow and raising content throughput by at least 30%.",
+        "Designed an Airtable asset system for 6 film titles, replacing ad-hoc file handoffs with versioned tracking and shared status across marketing, sales and creative.",
+        "Produced campaign-ready trailers, promos, posters, and theatrical and digital release assets across multiple titles."
       ]
     },
     {
@@ -65,16 +58,16 @@ export const resume = {
       "role": "Invited Advisor",
       "dates": "Sep 2025 – Mar 2026",
       "bullets": [
-        "Invited to SXSW as an advisor to discuss generative AI; developed startup eligibility screening tools that increased the number of companies processed by over 80% year over year."
+        "Built AI tools to screen startup eligibility, raising the number of companies processed by over 80% year over year."
       ]
     },
     {
-      "company": "F.O.U.N.D. (part-time)",
+      "company": "F.O.U.N.D.",
       "location": "New York, NY",
-      "role": "Web Design Artist",
+      "role": "Web Design Artist (part-time)",
       "dates": "Sep 2025 – Jun 2026",
       "bullets": [
-        "Designed responsive layouts and modular interactive components; implemented JavaScript interactions and dynamic content to maintain visual consistency and shorten iteration cycles."
+        "Designed responsive layouts and modular interactive components with JavaScript-driven interactions."
       ]
     },
     {
@@ -83,9 +76,8 @@ export const resume = {
       "role": "AI Technical Artist",
       "dates": "Feb 2025 – Jun 2025",
       "bullets": [
-        "Designed AI-assisted VFX workflows for facial replacement, character enhancement, and asset reuse, reducing shot turnaround by roughly 20%.",
-        "Integrated generative AI outputs into live-action footage using ComfyUI and node-based compositing.",
-        "Led research and design teams applying generative AI to previsualization, concept iteration, and look development."
+        "Led research and design teams applying generative AI to previsualization, concept iteration and look development.",
+        "Designed AI-assisted VFX pipelines for face replacement, character enhancement and asset reuse, cutting shot turnaround roughly 20%."
       ]
     },
     {
@@ -94,7 +86,7 @@ export const resume = {
       "role": "Video Editor",
       "dates": "Feb 2025 – Mar 2025",
       "bullets": [
-        "Produced fast-turnaround short-form cinematic content with VFX, motion graphics, and color grading in DaVinci Resolve and After Effects; clips earned over 100K likes across TikTok and WeChat Official Accounts."
+        "Produced fast-turnaround short-form cinematic content with VFX, motion graphics and color grading (DaVinci Resolve, After Effects); clips earned 100K+ likes across TikTok and WeChat Official Accounts."
       ]
     },
     {
@@ -103,27 +95,28 @@ export const resume = {
       "role": "Graphic Artist Intern",
       "dates": "Jun 2023 – Jan 2024",
       "bullets": [
-        "Built digital-human assets and VFX elements for XR and immersive-media campaigns; optimized Unreal Engine and Maya render setups to reduce render time by 20%."
+        "Built digital-human assets and VFX elements for XR campaigns; optimized Unreal Engine and Maya render setups to cut render time by 20%."
       ]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Footwear product fidelity",
+      "text": "MiniMax H3 shots from source footage and product photos; malformed side logos removed with reviewed motion tracks and the original artwork composited back in perspective (1080 × 1920, 24 fps)."
+    },
+    {
+      "name": "Identity consistency",
+      "text": "face, wardrobe and light held across four camera angles and a garment swap with Qwen Image Edit 2511 and angle, consistency and Lightning LoRAs."
     }
   ],
   "projects": [
     {
-      "name": "DAYMARK",
-      "label": "Email design · Self-initiated, AI-assisted concept",
-      "href": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/works/daymark-email",
+      "name": "LINEAGE",
+      "label": "AI content provenance and compliance platform (MVP)",
+      "href": "https://lineage-puce.vercel.app/",
       "bullets": [
-        "Created three coordinated lifecycle email concepts—welcome, product spotlight, and preference reset—with desktop/mobile Figma variants, reusable modules, and light/dark color variables.",
-        "Delivered responsive HTML and plain-text templates; checked 320, 375, and 640 px browser layouts, dark styling, and images-off states, and published an interactive portfolio case."
-      ]
-    },
-    {
-      "name": "OFF HOURS",
-      "label": "Campaign & responsive design · Self-initiated concept",
-      "href": "https://carlton0209.github.io/Carlton-Shi-s-Portfolio/works/off-hours",
-      "bullets": [
-        "Developed an AI-assisted outdoor campaign with six product views and square, portrait, and story creative, extending one visual direction across product pages and email layouts.",
-        "Built native Figma components, variants, and shared variables; linked desktop/mobile prototypes with gallery switching, scrolling, and CTA navigation, then implemented the portfolio case in React."
+        "Records prompts, tools, source assets, model usage and output hashes so each AI-assisted deliverable ships with a signed C2PA-superset manifest; FastAPI ledger, Next.js dashboard, browser extension, offline Docker Compose deploy.",
+        "Owned the non-engineering surface too: market research, five user personas, brand system, 14-slide investor deck."
       ]
     },
     {
@@ -131,16 +124,7 @@ export const resume = {
       "label": "AI photo-enhancement platform",
       "href": "https://reallife-ai-eib5.vercel.app/",
       "bullets": [
-        "Built a photo-enhancement platform using a custom two-stage LoRA and ComfyUI pipeline for photorealistic results that preserve subject identity; developed the React / Vite / Tailwind front end on Vercel."
-      ]
-    },
-    {
-      "name": "LINEAGE",
-      "label": "AI content provenance and compliance platform (MVP)",
-      "href": "https://lineage-puce.vercel.app/",
-      "bullets": [
-        "Shipped a monorepo with a FastAPI ledger, Next.js dashboard, browser extension, six-stage verification pipeline, and Ed25519-signed C2PA-superset manifests; packaged offline deployment with Docker Compose.",
-        "Conducted market research and developed five user personas, a brand system, and a 14-slide investor deck."
+        "Trained a custom two-stage LoRA and built the ComfyUI pipeline behind a photo-enhancement platform that keeps subject identity; React / Vite / Tailwind front end on Vercel."
       ]
     }
   ],
@@ -161,5 +145,5 @@ export const resume = {
       "dates": ""
     }
   ],
-  "training": "Advanced Learning Algorithms, DeepLearning.AI (2025) | Applied ML in Python, Univ. of Michigan (2026) | AIGC, Newhouse (2025)"
+  "training": "Advanced Learning Algorithms, DeepLearning.AI (2025) · Applied ML in Python, Univ. of Michigan (2026) · AIGC, Newhouse (2025)"
 } as const

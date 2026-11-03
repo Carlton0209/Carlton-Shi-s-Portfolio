@@ -77,7 +77,7 @@ export function ResumePage() {
           <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
             <div>
               <h1 className="text-4xl font-semibold leading-none tracking-normal text-zinc-950 sm:text-5xl">{resume.name}</h1>
-              <p className="mt-3 max-w-2xl text-base leading-relaxed text-zinc-600">{resume.location}</p>
+              <p className="mt-3 max-w-2xl text-base leading-relaxed text-zinc-600">{resume.location} · {resume.relocation}</p>
             </div>
             <div className="flex flex-col gap-2 text-sm text-zinc-600 md:items-end">
               <a href={`tel:${resume.phone.replace(/-/g, '')}`} className="inline-flex items-center gap-2 hover:text-zinc-950">
@@ -108,10 +108,6 @@ export function ResumePage() {
             </div>
           </ResumeSection>
 
-          <ResumeSection title="Selected Design Projects">
-            <ResumeProjects projects={resume.projects.slice(0, 2)} />
-          </ResumeSection>
-
           <ResumeSection title="Experience">
             <div className="space-y-6">
               {resume.experiences.map(experience => (
@@ -131,8 +127,19 @@ export function ResumePage() {
             </div>
           </ResumeSection>
 
-          <ResumeSection title="Additional Projects">
-            <ResumeProjects projects={resume.projects.slice(2)} />
+          <ResumeSection title="Selected ComfyUI Workflows">
+            <p className="mb-3 text-sm text-zinc-500">
+              Independent studies, documented on the <Link to="/works/aigc" className="underline hover:text-zinc-950">AIGC page</Link>.
+            </p>
+            <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-zinc-700">
+              {resume.workflows.map(workflow => (
+                <li key={workflow.name}><span className="font-semibold text-zinc-950">{workflow.name}: </span>{workflow.text}</li>
+              ))}
+            </ul>
+          </ResumeSection>
+
+          <ResumeSection title="Selected Projects">
+            <ResumeProjects projects={resume.projects} />
           </ResumeSection>
 
           <ResumeSection title="Education & Credentials">
