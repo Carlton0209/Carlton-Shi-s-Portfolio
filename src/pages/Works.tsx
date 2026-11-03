@@ -393,8 +393,6 @@ export function AigcExhibitionPage() {
         }
       >
         <section className="mx-auto w-full max-w-6xl px-5 pb-24 pt-24 md:pt-28" aria-label="AIGC image gallery">
-          <WorkflowShowcase />
-
           <section className="mb-24 md:mb-32" aria-labelledby="videos-title">
             <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
               Videos
@@ -440,6 +438,8 @@ export function AigcExhibitionPage() {
               ))}
             </div>
           </section>
+
+          <WorkflowShowcase />
 
           <section aria-labelledby="narrative-triptychs-title">
             <div className="mb-6 md:mb-8">
