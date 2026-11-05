@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound'
 const OffHoursCaseStudy = lazy(() => import('./pages/OffHoursCaseStudy'))
 const DaymarkEmailCaseStudy = lazy(() => import('./pages/DaymarkEmailCaseStudy'))
 const VeliseCaseStudy = lazy(() => import('./pages/VeliseCaseStudy'))
+const CgiProductCaseStudy = lazy(() => import('./pages/CgiProductCaseStudy'))
 
 export default function App() {
   return (
@@ -19,6 +20,22 @@ export default function App() {
         <Route path="/works" element={<WorksPage />} />
         <Route path="/works/aigc" element={<AigcExhibitionPage />} />
         <Route path="/works/product-design" element={<ProductDesignPage />} />
+        <Route
+          path="/works/still-beverage"
+          element={
+            <Suspense fallback={<main className="grid min-h-dvh place-items-center bg-[#eeece6] text-[#242822]" role="status">Loading STILL…</main>}>
+              <CgiProductCaseStudy studyId="still" />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/works/form-light"
+          element={
+            <Suspense fallback={<main className="grid min-h-dvh place-items-center bg-[#eeece6] text-[#242822]" role="status">Loading FORM / LIGHT…</main>}>
+              <CgiProductCaseStudy studyId="form-light" />
+            </Suspense>
+          }
+        />
         <Route
           path="/works/off-hours"
           element={

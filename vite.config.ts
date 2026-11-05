@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react-swc'
 // GitHub Pages only has index.html at the root, so deep links such as /works/aigc fell through to
 // 404.html and answered with a 404 status before redirecting. A copy of index.html in each route's
 // folder makes them answer 200. Keep this list in step with the routes in src/App.tsx.
-const appRoutes = ['works', 'works/aigc', 'works/product-design', 'works/off-hours', 'works/daymark-email', 'resume']
+const appRoutes = ['works', 'works/aigc', 'works/product-design', 'works/still-beverage', 'works/form-light', 'works/velise', 'works/off-hours', 'works/daymark-email', 'resume']
 
 function routeIndexCopies(): Plugin {
   let outDir = ''
