@@ -3,13 +3,13 @@ import { ArrowDown, ArrowUpRight, ChevronsLeftRight, Expand } from 'lucide-react
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from './ui/dialog'
 import { withBase } from '../lib/asset'
 
-const categories = ['Image editing', 'Video', 'Finishing'] as const
+const categories = ['Video', 'Image editing', 'Finishing'] as const
 
 type Preview = { file: string; label: string; aspect?: string; fit?: 'contain'; paper?: boolean }
 type Media =
   | { kind: 'row'; images: Preview[] }
   | { kind: 'compare'; layout: 'portrait' | 'wide'; before: Preview; after: Preview; extras: Preview[] }
-  | { kind: 'video'; layout: 'portrait' | 'landscape'; video: { file: string; poster: string; label: string }; side: Preview[] }
+  | { kind: 'video'; layout: 'portrait' | 'landscape'; video: { file: string; poster: string; label: string; captions?: string }; side: Preview[] }
 type Workflow = {
   id: string
   short: string
@@ -25,6 +25,30 @@ type Workflow = {
 }
 
 const workflows: Workflow[] = [
+  {
+    id: 'lessonforge', short: 'Lip-synced lesson', category: 'Video', title: 'An 88-second lesson, from script to master',
+    summary: 'A ComfyUI and Python pipeline turns a script and shot list into an 88-second Marie Curie lesson, led by a fictional instructor lip-synced to a generated voice.',
+    tools: ['MiniMax H3', 'Qwen3-TTS', 'Six custom LessonForge nodes'],
+    steps: [
+      'Qwen3-TTS clones all 13 lines from one designed voice; Whisper checks each line, and the voice sets the timeline.',
+      'Hand-picked Krea-2 keyframes become 11 B-roll shots in MiniMax H3; Qwen Image Edit 2511 adds a second instructor angle.',
+      'Pixaroma’s H3 Audio Sync locks the voice into H3’s audio latent, so only the picture is sampled; a Python batch renders every take.',
+      'Takes that fail QC on length, black or frozen frames, or lip sync are re-rendered; ffmpeg adds the Remotion graphics and mixes to −16 LUFS.',
+    ],
+    media: {
+      kind: 'video', layout: 'landscape',
+      video: { file: 'lessonforge-curie-lesson.mp4', poster: 'lessonforge-poster', label: 'Completed lesson · 88 seconds · 21 shots · 24 fps', captions: 'lessonforge-curie-lesson.vtt' },
+      side: [
+        { file: 'lessonforge-presenter', label: 'Presenter + graphics', aspect: 'aspect-video' },
+        { file: 'lessonforge-broll', label: 'B-roll · the electrometer', aspect: 'aspect-video lg:aspect-square' },
+      ],
+    },
+    graphs: [
+      { file: 'lessonforge-presenter-workflow', label: '01 / Presenter stage in the editor' },
+      { file: 'lessonforge-nodes-workflow', label: '02 / The six LessonForge nodes' },
+    ],
+    note: 'By the pipeline’s own check, all 7 presenter shots land within 2 frames of the voice. The instructor and the historical scenes are AI-generated.',
+  },
   {
     id: 'angles', short: 'Camera angles', category: 'Image editing', title: 'One character, four camera angles',
     summary: 'The camera moves around the subject while the face, sweater and forest light stay consistent from shot to shot.',
@@ -87,48 +111,6 @@ const workflows: Workflow[] = [
     },
     graphs: [{ file: 'leather-workflow', label: 'Full graph · both branches' }],
     note: 'Process frames are taken from the preview nodes recorded in the graph.',
-  },
-  {
-    id: 'h3-brand', short: 'Footwear replacement', category: 'Video', title: 'Footwear replacement, frame by frame',
-    summary: 'H3 swaps the sneakers in a moving shot. A separate tracked pass then restores the real S artwork where the model drew malformed logos.',
-    tools: ['MiniMax H3', 'Motion tracking', 'ComfyUI compositing'],
-    steps: [
-      'Three shots are generated separately in H3 from the source footage and product photographs.',
-      'A second graph loads the render and keeps its original frame rate and audio.',
-      'Reviewed motion tracks remove the malformed side glyphs and place the original S artwork in perspective.',
-      'Delivered at 1080 × 1920, with frame 26 exported as a brand-detail check.',
-    ],
-    media: {
-      kind: 'video', layout: 'portrait',
-      video: { file: 'h3-skechers-brand-corrected.mp4', poster: 'h3-brand-poster', label: 'Completed video · 3 shots · 24 fps' },
-      side: [{ file: 'h3-brand-detail', label: 'H3 output → original S artwork, tracked and composited' }],
-    },
-    graphs: [
-      { file: 'h3-generation-workflow', label: '01 / H3 footwear generation' },
-      { file: 'h3-brand-workflow', label: '02 / Brand correction and final output' },
-    ],
-    note: 'A 106-frame study with source-specific tracks. The 576 × 1024 H3 render is upscaled for delivery; visible side logos are corrected, while other small generated lettering remains unrefined.',
-  },
-  {
-    id: 'selflift', short: 'Light & terrain', category: 'Video', title: 'Light and terrain',
-    summary: 'An 8-second product film built from two stills, a shoe photograph and a sandstone reference, with moving light and a slow push-in.',
-    tools: ['MiniMax H3', 'SelfLift sampler', 'Qwen3-VL 4B · local'],
-    steps: [
-      'The shoe photograph and terrain reference load as image 1 and image 2.',
-      'A local Qwen3-VL model turns the brief into a structured H3 video prompt.',
-      'SelfLift sets the composition at low resolution, lifts the video latents, then finishes at 960 × 544.',
-      'Four sampling steps on a 12 GB GPU; 24 fps, 8 seconds.',
-    ],
-    media: {
-      kind: 'video', layout: 'landscape',
-      video: { file: 'selflift-light-terrain.mp4', poster: 'selflift-poster', label: 'Completed local render · 8 seconds · 24 fps' },
-      side: [
-        { file: 'selflift-input-shoe', label: 'Input 1 · product photograph', aspect: 'aspect-square' },
-        { file: 'selflift-input-terrain', label: 'Input 2 · terrain reference', aspect: 'aspect-[960/544]' },
-      ],
-    },
-    graphs: [{ file: 'selflift-workflow', label: 'Full graph with recorded video output' }],
-    note: 'Native output without upscaling. Generated product details may differ from the reference. Independent portfolio study.',
   },
   {
     id: 'seedvr2', short: '4K finishing', category: 'Finishing', title: '4K masters from small sources',
@@ -262,11 +244,14 @@ function WorkflowMedia({ workflow, open }: { workflow: Workflow; open: (button: 
   const portrait = media.layout === 'portrait'
   const src = withBase(`videos/workflows/${media.video.file}`)
   return (
-    <div className={`grid items-start gap-2 ${portrait ? 'sm:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)]' : 'lg:grid-cols-[minmax(0,1fr)_260px]'}`}>
+    <div className={`grid items-start gap-2 ${portrait ? 'sm:grid-cols-[minmax(0,0.42fr)_minmax(0,1fr)]' : 'lg:grid-cols-[minmax(0,76fr)_minmax(0,24fr)]'}`}>
       <figure className="min-w-0 overflow-hidden rounded-[18px] bg-black/30">
         <video controls playsInline preload="none" poster={asset(media.video.poster)} aria-label={`${title}: completed video`}
-          className={`w-full bg-black/30 object-contain ${portrait ? 'aspect-[9/16] max-h-[620px]' : 'aspect-video'}`}>
+          className={`w-full bg-black/30 object-contain focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white ${portrait ? 'aspect-[9/16] max-h-[620px]' : 'aspect-video'}`}>
           <source src={src} type="video/mp4" />
+          {media.video.captions && (
+            <track kind="captions" src={withBase(`videos/workflows/${media.video.captions}`)} srcLang="en" label="English" />
+          )}
           Your browser does not support embedded video. <a href={src}>Open the completed video</a>.
         </video>
         <figcaption className="px-3 py-3 text-xs text-white/75">{media.video.label}</figcaption>
@@ -295,7 +280,7 @@ export default function WorkflowShowcase() {
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Six local pipelines, from controlled image edits to tracked video finishing. Each study leads with the finished output, followed by the steps and the node graph behind it.
+          Five local pipelines, from a complete lip-synced lesson to controlled image edits and 4K finishing. Each study leads with the finished output, followed by the steps and, where there is one, the node graph behind it.
         </p>
         <nav aria-label="Workflow index" className="mt-8 grid gap-5 sm:grid-cols-3 md:gap-8">
           {categories.map(category => (
@@ -358,7 +343,7 @@ export default function WorkflowShowcase() {
                         onClick={event => open(event.currentTarget, `${workflow.title} — ${graph.label}`, graph.file, true)}
                         className="group mb-3 w-full overflow-hidden rounded-[18px] border border-white/15 bg-black/35 text-left transition-colors hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                         aria-label={`View ${workflow.title} workflow screenshot: ${graph.label}`}>
-                        <img src={asset(`${graph.file}-thumb`)} alt={`${graph.label}: node graph with completed output previews`}
+                        <img src={asset(`${graph.file}-thumb`)} alt={`${graph.label}: ComfyUI node graph`}
                           loading="lazy" decoding="async" width={1000} height={600} className="aspect-[16/10] w-full object-contain" />
                         <span className="flex items-center justify-between gap-2 border-t border-white/10 px-4 py-3 text-xs text-white/85 sm:text-sm">
                           {graph.label} <Expand className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -381,7 +366,7 @@ export default function WorkflowShowcase() {
                     </ul>
                   </>
                 )}
-                {workflow.note && <p className="mt-4 text-xs leading-6 text-white/55">{workflow.note}</p>}
+                {workflow.note && <p className="mt-4 text-xs leading-6 text-white/75">{workflow.note}</p>}
               </div>
             </div>
           </article>
@@ -393,7 +378,7 @@ export default function WorkflowShowcase() {
           onCloseAutoFocus={event => { event.preventDefault(); trigger.current?.focus() }}>
           <DialogTitle className="pr-8 text-base font-normal sm:text-xl">{selected?.title}</DialogTitle>
           <DialogDescription className="text-xs text-white/60">
-            {selected?.workflow ? 'ComfyUI canvas with recorded output previews. Use 100% to read the nodes and scroll around the graph.' : 'Image from a local ComfyUI study. Open full size for a closer look.'}
+            {selected?.workflow ? 'ComfyUI canvas. Use 100% to read the nodes and scroll around the graph.' : 'Image from a local ComfyUI study. Open full size for a closer look.'}
           </DialogDescription>
           <div className="flex flex-wrap items-center gap-3 text-xs">
             {selected?.workflow && <button type="button" aria-pressed={actualSize} onClick={() => setActualSize(value => !value)}
