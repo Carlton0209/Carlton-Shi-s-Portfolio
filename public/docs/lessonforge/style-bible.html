@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Style bible — The Glow in the Shed</title>
+<meta name="description" content="Style bible for The Glow in the Shed: look, light logic, characters, world, accuracy rules and cutting rules.">
+<link rel="icon" href="../../favicon.png">
+<style>@font-face{font-family:"Inter";src:url("../../fonts/off-hours/Inter-Variable.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;color-scheme:dark}
+body{margin:0;background:#000;color:rgba(255,255,255,.84);font:400 16px/1.7 "Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-feature-settings:"cv02","cv03","cv04","cv11";-webkit-font-smoothing:antialiased}
+a{color:#fff;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:rgba(255,255,255,.38);
+text-underline-offset:3px}
+a:hover{text-decoration-color:#fff}
+a:focus-visible,[tabindex="0"]:focus-visible{outline:2px solid #0071e3;outline-offset:3px;border-radius:4px}
+a.ext::after{content:"\2197" / "";margin-left:.15em;font-size:.82em;color:rgba(255,255,255,.55)}
+.doc{padding:40px 16px 72px}
+.doc>*{max-width:46rem;margin-left:auto;margin-right:auto}
+.doc>.table-wrap,.doc>pre{max-width:min(100%,1148px)}
+.doc>.table-wrap.sheet{max-width:min(100%,1400px)}
+.doc h1{font-size:clamp(2rem,1.45rem + 2.2vw,2.9rem);line-height:1.08;font-weight:400;letter-spacing:-.025em;color:#fff;
+margin-top:0;margin-bottom:.7em;text-wrap:balance}
+.doc h2{font-size:1.5rem;line-height:1.25;font-weight:400;letter-spacing:-.015em;color:#fff;margin-top:3rem;
+margin-bottom:1rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.14)}
+.doc h3{font-size:1.15rem;font-weight:500;color:#fff;margin-top:2rem;margin-bottom:.6rem}
+.doc h1,.doc h2,.doc h3{scroll-margin-top:16px}
+.doc p{margin-top:0;margin-bottom:1em;overflow-wrap:break-word}
+.doc ul,.doc ol{padding-left:1.4em;margin-top:0;margin-bottom:1.2em}
+.doc li{margin:.35em 0;overflow-wrap:break-word}
+.doc li::marker{color:rgba(255,255,255,.45)}
+.doc strong{color:#fff;font-weight:600}
+.doc em{color:#fff}
+.doc code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.86em;background:rgba(255,255,255,.08);border-radius:6px;padding:.12em .38em;
+white-space:nowrap}
+.doc code.wrap{white-space:normal;overflow-wrap:break-word}
+.doc pre{background:#0b0b0c;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 18px;overflow-x:auto;
+font-size:13px;line-height:1.65;margin-top:1.2em;margin-bottom:1.6em}
+.doc pre code{background:none;padding:0;border-radius:0;font-size:inherit;white-space:pre;overflow-wrap:normal}
+.lede{font-size:1.08rem;color:rgba(255,255,255,.78)}
+.table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#0b0b0c;
+margin-top:1.2em;margin-bottom:1.8em;width:fit-content;min-width:min(46rem,100%)}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.6}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.08)}
+thead th{font-size:11px;line-height:1.5;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+color:rgba(255,255,255,.58);background:#141416}
+tbody tr:last-child>*{border-bottom:0}
+tbody th{color:#fff;font-weight:600}
+.c-short{white-space:nowrap}
+td.c-mid{min-width:7rem}
+td.c-long{min-width:10rem}
+.sheet{max-height:min(78vh,60rem);overflow:auto;background:#0b0b0c}
+.sheet table{font-size:13px;line-height:1.55}
+.sheet thead th{position:sticky;top:0;z-index:2;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12px;letter-spacing:0;text-transform:none;
+color:rgba(255,255,255,.72);white-space:nowrap;box-shadow:inset 0 -1px 0 rgba(255,255,255,.14)}
+.sheet tbody th{position:sticky;left:0;z-index:1;background:#101012;white-space:nowrap;box-shadow:inset -1px 0 0 rgba(255,255,255,.14)}
+.sheet thead th:first-child{left:0;z-index:3;box-shadow:inset -1px -1px 0 rgba(255,255,255,.14)}
+.sheet tbody th{scroll-margin-top:52px}.vo tbody th{scroll-margin-top:24px}
+.w-prompt{min-width:22rem}.w-motion{min-width:18rem}.w-mid{min-width:13rem}.w-text{min-width:16rem}
+.legend{padding-left:1.2em}
+.legend li{margin:.3em 0}
+.vo td:nth-child(3),.vo td:nth-child(4){min-width:15rem}
+.lf-foot{border-top:1px solid rgba(255,255,255,.14);padding:24px 16px 40px;font-size:13px;color:rgba(255,255,255,.55)}
+.lf-foot-in{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.lf-foot a{color:rgba(255,255,255,.75)}
+@media (min-width:768px){.doc{padding:56px 24px 96px}.lf-bar-in{padding:16px 24px 20px}td.c-long{min-width:14rem}}
+
+.lf-skip{position:absolute;left:16px;top:-60px;z-index:10;padding:10px 16px;border-radius:999px;background:#fff;color:#000;
+font:500 14px/1.2 "Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-decoration:none}.lf-skip:focus{top:12px}
+.lf-bar{background:#050505;border-bottom:1px solid rgba(255,255,255,.14);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-feature-settings:"cv02","cv03","cv04","cv11"}
+.lf-bar-in{max-width:1180px;margin:0 auto;padding:14px 16px 18px}
+.lf-bar a{text-decoration:none}
+.lf-bar a:focus-visible{outline:2px solid #0071e3;outline-offset:3px}
+.lf-back{display:inline-flex;align-items:center;gap:8px;min-height:40px;font-size:14px;line-height:1.3;color:rgba(255,255,255,.62)}
+.lf-back:hover{color:#fff}.lf-back svg{flex:none}
+.lf-set{margin:4px 0 0;font-size:17px;line-height:1.35;font-weight:400;letter-spacing:-.01em;color:#fff}
+.lf-nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.lf-nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid rgba(255,255,255,.18);
+border-radius:999px;font-size:14px;line-height:1.2;color:rgba(255,255,255,.82)}
+.lf-nav a:hover{border-color:rgba(255,255,255,.45);color:#fff}
+.lf-nav a[aria-current="page"]{background:#fff;border-color:#fff;color:#000}
+.lf-note{margin:12px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+<a class="lf-skip" href="#main">Skip to the document</a>
+<header class="lf-bar"><div class="lf-bar-in">
+<a class="lf-back" href="../../works/aigc#workflow-lessonforge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to the portfolio card</a>
+<p class="lf-set">The Glow in the Shed — production documents (lessonforge)</p>
+<nav aria-label="Production documents"><ul class="lf-nav"><li><a href="treatment.html">Treatment</a></li><li><a href="style-bible.html" aria-current="page">Style bible</a></li><li><a href="shot-list.html">Shot list + VO script</a></li><li><a href="report.html">QC report</a></li></ul></nav>
+<p class="lf-note">Corrected 2026-11-16; the lesson itself was delivered on 2026-11-07.</p>
+</div></header>
+<main id="main" class="doc">
+<h1 id="style-bible-the-glow-in-the-shed">Style Bible: The Glow in the Shed</h1>
+<p>The rules every shot in this lesson is made to, whoever or whatever makes it.
+The locked prompt blocks in <code>lesson.toml</code> are the machine-readable version
+of this page. If the two ever disagree, fix <code>lesson.toml</code>. Where a delivered
+shot breaks a rule, the rule says so.</p>
+<h2 id="1-look">1. Look</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">Format</th>
+<td class="c-long">16:9, 1920x1080, 24 fps delivery</td>
+</tr>
+<tr>
+<th scope="row">Capture feel</th>
+<td class="c-long">35mm film, spherical lenses, soft grain, gentle halation</td>
+</tr>
+<tr>
+<th scope="row">Lenses</th>
+<td class="c-long">24 / 28 mm for wides, 35 / 50 mm for mediums, 85 / 100 mm for close-ups and inserts</td>
+</tr>
+<tr>
+<th scope="row">Depth of field</th>
+<td class="c-long">Shallow on everything closer than a medium shot</td>
+</tr>
+<tr>
+<th scope="row">Palette</th>
+<td class="c-long">Umber, brass, slate blue, ochre. Nothing saturated except the lamp flame</td>
+</tr>
+<tr>
+<th scope="row">Contrast</th>
+<td class="c-long">Low-key. Let shadows go to near black; never lift them to &quot;see everything&quot;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-light-logic">2. Light logic</h2>
+<p>The shed has <strong>one</strong> light source per state, and every shot is written to obey it.</p>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Source</th>
+<th>Direction</th>
+<th>Colour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="c-mid">Lamp lit (S02-S05, S10)</td>
+<td class="c-mid">Brass oil lamp on the table</td>
+<td class="c-mid"><strong>Camera left</strong>, low</td>
+<td class="c-mid">Warm, about 2000 K</td>
+</tr>
+<tr>
+<td class="c-mid">Lamp down (S06, S07, S21)</td>
+<td class="c-mid">The vials themselves</td>
+<td class="c-mid">From below and from the shelves</td>
+<td class="c-mid"><strong>Faint pale blue</strong>, very dim</td>
+</tr>
+<tr>
+<td class="c-mid">Courtyard day (S16, S17)</td>
+<td class="c-mid">Overcast sky</td>
+<td class="c-mid">Top, soft</td>
+<td class="c-mid">Neutral grey</td>
+</tr>
+<tr>
+<td class="c-mid">Exterior night (S01)</td>
+<td class="c-mid">Lamp through the glass roof</td>
+<td class="c-mid">From the shed outward</td>
+<td class="c-mid">Warm amber against cool blue</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The delivered cut breaks this table in three places. In the lamp-lit shots (S02-S05, S10)
+the glass roof is lit like overcast daylight, a second, cool source from above. In S06 the
+roof brightens into daylight and green leaves after the lamp goes down. And the vials in
+S06 and S07 do not visibly glow; only S21's do, and they read blue-green.</p>
+<p>The presenter set copies the lamp-lit state: warm key from camera left, a
+practical brass lamp in the background. That is what lets AI plates and
+live-action plates cut together.</p>
+<p>The delivered presenter shots break the first half of that: the approved A still came out
+keyed from camera right, opposite the lamp, and setup B and all seven presenter shots
+follow it. A and B match each other, so the cuts between them hold.</p>
+<h2 id="3-characters">3. Characters</h2>
+<p><strong>Marie Curie, 34, in 1902.</strong> Slender, oval face, high forehead, deep-set grey
+eyes, frizzy ash-blond hair in a loose low bun. Plain dark navy wool dress,
+high collar, long sleeves, no jewellery, no apron, no gloves. Bare hands with
+slightly reddened, cracked fingertips: radium burns were already marking her
+hands by this period.</p>
+<p><strong>Pierre Curie, 43.</strong> Appears once (S16), in the background, soft focus, back
+or profile only. Limiting him to one soft shot keeps the second identity out
+of the consistency budget. The delivered S16 breaks this: Krea-2 rendered him
+sharp, working at a barrel just behind her, his face in three-quarter view, in all
+three candidates. He appears once, so there is nothing to match.</p>
+<p>Locking method used on this lesson:</p>
+<ol>
+<li>Identical description text in every prompt (pulled from <code>lesson.toml</code>, never retyped).</li>
+<li>Video shots start from an approved keyframe (image-to-video), never from text alone.</li>
+<li>A producer picks each keyframe by eye.</li>
+</ol>
+<p>Planned, not run on this lesson:</p>
+<ul>
+<li>A character LoRA for Marie (trigger <code>mcurie1902</code>), trained from the approved keyframes
+(README, Next).</li>
+<li>QC gate: ArcFace similarity to a reference sheet (<code>refs/marie_turnaround.png</code>, not made
+yet), threshold 0.45, once the face model is installed. On this lesson the face check
+skipped every take.</li>
+</ul>
+<p>What the delivered cut shows: Marie reads 15 to 20 years older than 34 (S02, S03, S05, S07,
+S16); in S06 her hair is sleek and platinum, not frizzy; and in the S04 and S10 inserts her
+clothes read light slate-blue, not dark navy.</p>
+<h2 id="4-world">4. World</h2>
+<ul>
+<li><strong>The shed:</strong> bare wooden walls, tar-black floor, pitched glass roof that
+leaks, worn pine tables, black cast-iron stove. No blackboard in the prompt:
+Curie's account puts one in the shed, but in every test render it filled with
+garbled chalk writing, so it was left out of the set description. Krea-2 still
+added one, with faint chalk marks, in S02 and S05 (delivered). Glassware:
+flasks, white porcelain evaporating dishes, small stoppered vials.</li>
+<li><strong>The courtyard:</strong> cobblestones, plain grey stone buildings, iron cauldron
+on a brick fire pit, canvas sacks of brown ore dust mixed with pine needles.</li>
+<li><strong>Period:</strong> Paris, 1902. No electric bulbs, no wristwatches, no plastic,
+no modern lab safety gear. In the delivered S02 a dark cable runs from the oil
+lamp's base (S03 shows a stub of it), which makes the lamp read as electric.</li>
+</ul>
+<h2 id="5-accuracy-rules-the-no-hallucinations-list">5. Accuracy rules (the &quot;no hallucinations&quot; list)</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="c-long">The radium glow is <strong>faint pale blue</strong>, never neon green</td>
+<td class="c-long">Curie described &quot;feebly luminous&quot; vials like faint fairy lights. Radium's own glow is blue; luminous paint glowed because of its zinc-sulfide phosphor, not radium's own light. The one glow in the delivered cut (S21) reads blue-green</td>
+</tr>
+<tr>
+<td class="c-long">No smoke or vapour coming off the vials</td>
+<td class="c-long">Models add it by default for &quot;radioactive&quot;; it is not real</td>
+</tr>
+<tr>
+<td class="c-long">No text, numbers or readable dials in any generated frame</td>
+<td class="c-long">Generated text is the most common hallucination. Every readable word and number in the master is added in motion graphics. Exception in the delivered cut: faint, unreadable chalk marks on a blackboard in S02 and S05</td>
+</tr>
+<tr>
+<td class="c-long">No atomic nucleus imagery in the 1898-1902 scenes</td>
+<td class="c-long">The nucleus was discovered in 1911. Modern explanations appear only in the graphic labelled <em>Modern understanding</em> (S19)</td>
+</tr>
+<tr>
+<td class="c-long">No protective gear</td>
+<td class="c-long">The Curies worked bare-handed; showing gloves would be false comfort</td>
+</tr>
+<tr>
+<td class="c-long">Dates on screen only from the fact-check table in <a href="treatment.html#accuracy"><code>README.md</code></a></td>
+<td class="c-long">One source of truth for every number</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="6-negative-prompt-strategy">6. Negative prompt strategy</h2>
+<p>On this lesson no negative prompt is evaluated: Krea-2 turbo, Qwen-Image-Edit with the
+Lightning LoRA and H3 turbo run at CFG 1, and the production graphs have no <code>LF:negative</code>
+node, so accuracy comes from the positive prompt, the set and selection
+(models doc, CFG 1: <code>docs/models_and_samplers.md</code>).
+The layers below apply to engines that run real CFG, such as the Wan 2.2 alternate.</p>
+<p>Negatives are layered, so each shot carries only what it needs:</p>
+<ol>
+<li><strong>Global</strong> (<code>style.negative</code>): period breakers, text and numerals, the green-glow myth, anatomy failures.</li>
+<li><strong>Video</strong> (<code>style.video_negative</code>): motion failures such as morphing, identity drift and flicker. Wan uses negatives; Krea-2 turbo at CFG 1 ignores them, so keyframe accuracy comes from the positive prompt and selection.</li>
+<li><strong>Per shot</strong> (<code>negative_extra</code> in the shot list): the specific thing that shot tends to invent, such as faces in hands-only inserts or readable dials on the electrometer.</li>
+</ol>
+<h2 id="7-cutting-rules">7. Cutting rules</h2>
+<ul>
+<li>Cut on action: S05 cuts as the flame drops, not after.</li>
+<li>180° line in the shed: the lamp is camera left. Written as Marie facing camera right;
+in the delivered cut Krea-2 turned her toward the lamp, so she faces camera left in S02,
+S03 and S05, and in S07 her eyes go to the vials at camera right. The lamp never changes
+sides.</li>
+<li>S06 is a silent beat with no VO. Hold at least 4 seconds and let the glow land.
+The delivered S06 holds 4 seconds but shows no glow (§2).</li>
+<li>Graphics never sit on top of a face.</li>
+</ul>
+</main>
+<footer class="lf-foot"><div class="lf-foot-in"><span>The Glow in the Shed · production documents from lessonforge</span><span><a href="#main">Top</a> · <a href="../../works/aigc#workflow-lessonforge">Back to the portfolio card</a></span></div></footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+TITLE: curie_radium_en
+FCM: NON-DROP FRAME
+
+001  S01V001  V     C        00:00:00:00 00:00:03:22 01:00:00:00 01:00:03:22
+* FROM CLIP NAME: S01.mp4
+* COMMENT: S01 gen v001 generated
+
+002  S02V001  V     C        00:00:00:00 00:00:01:22 01:00:03:22 01:00:05:20
+* FROM CLIP NAME: S02.mp4
+* COMMENT: S02 gen v001 generated
+
+003  S03V001  V     C        00:00:00:00 00:00:01:22 01:00:05:20 01:00:07:18
+* FROM CLIP NAME: S03.mp4
+* COMMENT: S03 gen v001 generated
+
+004  S04V001  V     C        00:00:00:00 00:00:01:22 01:00:07:18 01:00:09:16
+* FROM CLIP NAME: S04.mp4
+* COMMENT: S04 gen v001 generated
+
+005  S05V001  V     C        00:00:00:00 00:00:02:06 01:00:09:16 01:00:11:22
+* FROM CLIP NAME: S05.mp4
+* COMMENT: S05 gen v001 generated
+
+006  S06V001  V     C        00:00:00:00 00:00:04:00 01:00:11:22 01:00:15:22
+* FROM CLIP NAME: S06.mp4
+* COMMENT: S06 gen v001 generated
+
+007  S07V001  V     C        00:00:00:00 00:00:02:12 01:00:15:22 01:00:18:10
+* FROM CLIP NAME: S07.mp4
+* COMMENT: S07 gen v001 generated
+
+008  S08      V     C        00:00:00:00 00:00:03:00 01:00:18:10 01:00:21:10
+* FROM CLIP NAME: S08.mp4
+* COMMENT: S08 mograph placeholder
+
+009  S09V002  V     C        00:00:00:00 00:00:06:15 01:00:21:10 01:00:28:01
+* FROM CLIP NAME: S09.mp4
+* COMMENT: S09 presenter v002 lipsync
+
+010  S10V002  V     C        00:00:00:00 00:00:02:21 01:00:28:01 01:00:30:22
+* FROM CLIP NAME: S10.mp4
+* COMMENT: S10 gen v002 generated
+
+011  S11      V     C        00:00:00:00 00:00:02:21 01:00:30:22 01:00:33:19
+* FROM CLIP NAME: S11.mp4
+* COMMENT: S11 mograph placeholder
+
+012  S12V001  V     C        00:00:00:00 00:00:07:16 01:00:33:19 01:00:41:11
+* FROM CLIP NAME: S12.mp4
+* COMMENT: S12 presenter v001 lipsync
+
+013  S13V001  V     C        00:00:00:00 00:00:04:20 01:00:41:11 01:00:46:07
+* FROM CLIP NAME: S13.mp4
+* COMMENT: S13 presenter v001 lipsync
+
+014  S14V001  V     C        00:00:00:00 00:00:05:14 01:00:46:07 01:00:51:21
+* FROM CLIP NAME: S14.mp4
+* COMMENT: S14 presenter v001 lipsync
+
+015  S15V001  V     C        00:00:00:00 00:00:11:10 01:00:51:21 01:01:03:07
+* FROM CLIP NAME: S15.mp4
+* COMMENT: S15 presenter v001 lipsync
+
+016  S16V001  V     C        00:00:00:00 00:00:02:18 01:01:03:07 01:01:06:01
+* FROM CLIP NAME: S16.mp4
+* COMMENT: S16 gen v001 generated
+
+017  S17V001  V     C        00:00:00:00 00:00:02:18 01:01:06:01 01:01:08:19
+* FROM CLIP NAME: S17.mp4
+* COMMENT: S17 gen v001 generated
+
+018  S18V001  V     C        00:00:00:00 00:00:02:16 01:01:08:19 01:01:11:11
+* FROM CLIP NAME: S18.mp4
+* COMMENT: S18 presenter v001 lipsync
+
+019  S19      V     C        00:00:00:00 00:00:05:08 01:01:11:11 01:01:16:19
+* FROM CLIP NAME: S19.mp4
+* COMMENT: S19 mograph placeholder
+
+020  S20V001  V     C        00:00:00:00 00:00:06:02 01:01:16:19 01:01:22:21
+* FROM CLIP NAME: S20.mp4
+* COMMENT: S20 presenter v001 lipsync
+
+021  S21V001  V     C        00:00:00:00 00:00:05:00 01:01:22:21 01:01:27:21
+* FROM CLIP NAME: S21.mp4
+* COMMENT: S21 gen v001 generated

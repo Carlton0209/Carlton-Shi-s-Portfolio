@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Shot list and VO script — The Glow in the Shed</title>
+<meta name="description" content="Shot list (21 shots) and VO script (13 lines) for The Glow in the Shed, from the lessonforge lesson files.">
+<link rel="icon" href="../../favicon.png">
+<style>@font-face{font-family:"Inter";src:url("../../fonts/off-hours/Inter-Variable.ttf") format("truetype");font-weight:100 900;font-style:normal;font-display:swap}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;color-scheme:dark}
+body{margin:0;background:#000;color:rgba(255,255,255,.84);font:400 16px/1.7 "Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-feature-settings:"cv02","cv03","cv04","cv11";-webkit-font-smoothing:antialiased}
+a{color:#fff;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:rgba(255,255,255,.38);
+text-underline-offset:3px}
+a:hover{text-decoration-color:#fff}
+a:focus-visible,[tabindex="0"]:focus-visible{outline:2px solid #0071e3;outline-offset:3px;border-radius:4px}
+a.ext::after{content:"\2197" / "";margin-left:.15em;font-size:.82em;color:rgba(255,255,255,.55)}
+.doc{padding:40px 16px 72px}
+.doc>*{max-width:46rem;margin-left:auto;margin-right:auto}
+.doc>.table-wrap,.doc>pre{max-width:min(100%,1148px)}
+.doc>.table-wrap.sheet{max-width:min(100%,1400px)}
+.doc h1{font-size:clamp(2rem,1.45rem + 2.2vw,2.9rem);line-height:1.08;font-weight:400;letter-spacing:-.025em;color:#fff;
+margin-top:0;margin-bottom:.7em;text-wrap:balance}
+.doc h2{font-size:1.5rem;line-height:1.25;font-weight:400;letter-spacing:-.015em;color:#fff;margin-top:3rem;
+margin-bottom:1rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.14)}
+.doc h3{font-size:1.15rem;font-weight:500;color:#fff;margin-top:2rem;margin-bottom:.6rem}
+.doc h1,.doc h2,.doc h3{scroll-margin-top:16px}
+.doc p{margin-top:0;margin-bottom:1em;overflow-wrap:break-word}
+.doc ul,.doc ol{padding-left:1.4em;margin-top:0;margin-bottom:1.2em}
+.doc li{margin:.35em 0;overflow-wrap:break-word}
+.doc li::marker{color:rgba(255,255,255,.45)}
+.doc strong{color:#fff;font-weight:600}
+.doc em{color:#fff}
+.doc code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.86em;background:rgba(255,255,255,.08);border-radius:6px;padding:.12em .38em;
+white-space:nowrap}
+.doc code.wrap{white-space:normal;overflow-wrap:break-word}
+.doc pre{background:#0b0b0c;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:16px 18px;overflow-x:auto;
+font-size:13px;line-height:1.65;margin-top:1.2em;margin-bottom:1.6em}
+.doc pre code{background:none;padding:0;border-radius:0;font-size:inherit;white-space:pre;overflow-wrap:normal}
+.lede{font-size:1.08rem;color:rgba(255,255,255,.78)}
+.table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#0b0b0c;
+margin-top:1.2em;margin-bottom:1.8em;width:fit-content;min-width:min(46rem,100%)}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.6}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(255,255,255,.08)}
+thead th{font-size:11px;line-height:1.5;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+color:rgba(255,255,255,.58);background:#141416}
+tbody tr:last-child>*{border-bottom:0}
+tbody th{color:#fff;font-weight:600}
+.c-short{white-space:nowrap}
+td.c-mid{min-width:7rem}
+td.c-long{min-width:10rem}
+.sheet{max-height:min(78vh,60rem);overflow:auto;background:#0b0b0c}
+.sheet table{font-size:13px;line-height:1.55}
+.sheet thead th{position:sticky;top:0;z-index:2;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12px;letter-spacing:0;text-transform:none;
+color:rgba(255,255,255,.72);white-space:nowrap;box-shadow:inset 0 -1px 0 rgba(255,255,255,.14)}
+.sheet tbody th{position:sticky;left:0;z-index:1;background:#101012;white-space:nowrap;box-shadow:inset -1px 0 0 rgba(255,255,255,.14)}
+.sheet thead th:first-child{left:0;z-index:3;box-shadow:inset -1px -1px 0 rgba(255,255,255,.14)}
+.sheet tbody th{scroll-margin-top:52px}.vo tbody th{scroll-margin-top:24px}
+.w-prompt{min-width:22rem}.w-motion{min-width:18rem}.w-mid{min-width:13rem}.w-text{min-width:16rem}
+.legend{padding-left:1.2em}
+.legend li{margin:.3em 0}
+.vo td:nth-child(3),.vo td:nth-child(4){min-width:15rem}
+.lf-foot{border-top:1px solid rgba(255,255,255,.14);padding:24px 16px 40px;font-size:13px;color:rgba(255,255,255,.55)}
+.lf-foot-in{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.lf-foot a{color:rgba(255,255,255,.75)}
+@media (min-width:768px){.doc{padding:56px 24px 96px}.lf-bar-in{padding:16px 24px 20px}td.c-long{min-width:14rem}}
+
+.lf-skip{position:absolute;left:16px;top:-60px;z-index:10;padding:10px 16px;border-radius:999px;background:#fff;color:#000;
+font:500 14px/1.2 "Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;text-decoration:none}.lf-skip:focus{top:12px}
+.lf-bar{background:#050505;border-bottom:1px solid rgba(255,255,255,.14);font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-feature-settings:"cv02","cv03","cv04","cv11"}
+.lf-bar-in{max-width:1180px;margin:0 auto;padding:14px 16px 18px}
+.lf-bar a{text-decoration:none}
+.lf-bar a:focus-visible{outline:2px solid #0071e3;outline-offset:3px}
+.lf-back{display:inline-flex;align-items:center;gap:8px;min-height:40px;font-size:14px;line-height:1.3;color:rgba(255,255,255,.62)}
+.lf-back:hover{color:#fff}.lf-back svg{flex:none}
+.lf-set{margin:4px 0 0;font-size:17px;line-height:1.35;font-weight:400;letter-spacing:-.01em;color:#fff}
+.lf-nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.lf-nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:1px solid rgba(255,255,255,.18);
+border-radius:999px;font-size:14px;line-height:1.2;color:rgba(255,255,255,.82)}
+.lf-nav a:hover{border-color:rgba(255,255,255,.45);color:#fff}
+.lf-nav a[aria-current="page"]{background:#fff;border-color:#fff;color:#000}
+.lf-note{margin:12px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+<a class="lf-skip" href="#main">Skip to the document</a>
+<header class="lf-bar"><div class="lf-bar-in">
+<a class="lf-back" href="../../works/aigc#workflow-lessonforge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Back to the portfolio card</a>
+<p class="lf-set">The Glow in the Shed — production documents (lessonforge)</p>
+<nav aria-label="Production documents"><ul class="lf-nav"><li><a href="treatment.html">Treatment</a></li><li><a href="style-bible.html">Style bible</a></li><li><a href="shot-list.html" aria-current="page">Shot list + VO script</a></li><li><a href="report.html">QC report</a></li></ul></nav>
+<p class="lf-note">Corrected 2026-11-16; the lesson itself was delivered on 2026-11-07.</p>
+</div></header>
+<main id="main" class="doc">
+<h1 id="shot-list-and-vo-script-the-glow-in-the-shed">Shot list and VO script: The Glow in the Shed</h1>
+<p class="lede">The lesson's 21 shots and 13 voice lines, as they stand in its <code>shotlist.csv</code> and
+<code>vo_lines.csv</code>, every column kept. The VO is the clock: each line's real duration is split across the shots
+that cover it.</p>
+<p><a href="#shot-list">Shot list</a> · <a href="#vo-script">VO script</a></p>
+<h2 id="shot-list">Shot list</h2>
+<ul class="legend">
+<li><code>type</code>: <code>gen</code> is generated B-roll, <code>presenter</code> the lip-synced instructor (<code>setup</code> A or B,
+her two camera setups), <code>mograph</code> a full-frame graphic.</li>
+<li><code>vo_lines</code> link to the VO script below. <code>weight</code> shares a line's duration among the shots that cover it;
+<code>min_dur</code> is the shortest a shot may run, in seconds, and gives S06, the silent beat, its length.</li>
+<li>A row holds one sentence about what happens in the shot; character, location, light and look are pasted in from
+locked blocks in <code>lesson.toml</code>. On this lesson the <code>negative_extra</code> negatives were not evaluated
+(<a href="style-bible.html#6-negative-prompt-strategy">style bible §6</a>).</li>
+<li>Empty <code>seed</code> and <code>engine</code> mean the derived seed and the lesson's default engine;
+<code>qc_skip</code> lists the QC checks a shot is exempt from.</li>
+</ul>
+<div class="table-wrap sheet" role="region" aria-label="Shot list: 21 shots, 20 columns; scrolls both ways" tabindex="0">
+<table>
+<thead><tr><th scope="col">shot_id</th><th scope="col">type</th><th scope="col">vo_lines</th><th scope="col">weight</th><th scope="col">min_dur</th><th scope="col">setup</th><th scope="col">shot_size</th><th scope="col">lens_mm</th><th scope="col">camera</th><th scope="col">characters</th><th scope="col">location</th><th scope="col">keyframe_prompt</th><th scope="col">motion_prompt</th><th scope="col">negative_extra</th><th scope="col">seed</th><th scope="col">engine</th><th scope="col">qc_skip</th><th scope="col">continuity</th><th scope="col">risk</th><th scope="col">notes</th></tr></thead>
+<tbody>
+<tr><th scope="row" id="S01">S01</th><td class="c-short">gen</td><td class="c-short"><a href="#L01">L01</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">EWS</td><td class="c-short">24</td><td class="c-short">slow push-in</td><td class="c-short"></td><td class="c-short">shed_ext_night</td><td class="w-prompt">A wide establishing view across the empty courtyard toward the glowing shed, rain streaks catching the light, no people.</td><td class="w-motion">Light rain falls steadily, raindrops ripple the puddles between the cobblestones and a thin mist drifts past the shed.</td><td class="w-mid">people, street lamps, signage, cars, power lines</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">face</td><td class="w-text">Only exterior night shot. Shed glow is warm amber.</td><td class="w-text">Modern street furniture and signage creep in; keep facades blank.</td><td class="w-text">Location super G10: Paris, 1902.</td></tr>
+<tr><th scope="row" id="S02">S02</th><td class="c-short">gen</td><td class="c-short"><a href="#L02">L02</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">WS</td><td class="c-short">28</td><td class="c-short">static</td><td class="c-short">marie</td><td class="c-short">shed_night</td><td class="w-prompt">Marie Curie stands alone at a long pine table in the middle of the shed, three-quarter view facing camera right, her eyes on her work, pouring a clear liquid from a glass flask into a porcelain evaporating dish; the oil lamp sits on the table at camera left.</td><td class="w-motion">She pours slowly and steadily, a thin wisp of steam rises from the dish, and the lamp flame flickers gently.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Lamp camera left = key from camera left in every interior shot. Marie faces camera right.</td><td class="w-text">Pouring liquid physics; keep the pour slow.</td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S03">S03</th><td class="c-short">gen</td><td class="c-short"><a href="#L02">L02</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">MCU</td><td class="c-short">50</td><td class="c-short">slow push-in</td><td class="c-short">marie</td><td class="c-short">shed_night</td><td class="w-prompt">Side profile of Marie Curie facing camera right, her eyes cast down at the porcelain dish on the table in front of her, tired concentration on her face, warm lamplight from camera left modelling her face, loose strands of hair catching the light.</td><td class="w-motion">She studies the dish, blinks and exhales slowly; a loose strand of hair stirs slightly.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Eyeline down and camera right, toward the dish.</td><td class="w-text">Identity drift in close shots; face QC gate applies.</td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S04">S04</th><td class="c-short">gen</td><td class="c-short"><a href="#L02">L02</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">ECU</td><td class="c-short">100</td><td class="c-short">static</td><td class="c-short"></td><td class="c-short">shed_night</td><td class="w-prompt">Extreme close-up of a woman&#x27;s bare hands, fingertips slightly reddened and cracked, tipping fine white crystals from a porcelain dish into a small stoppered glass vial, dark navy wool cuff at the wrist, warm lamplight.</td><td class="w-motion">The crystals slide slowly into the vial while her fingers steady the glass.</td><td class="w-mid">face, rings, nail polish</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">face</td><td class="w-text">Same navy cuff as S02. This vial joins the shelf seen glowing in S06.</td><td class="w-text">Hands. Generate four keyframes and select the anatomically clean one.</td><td class="w-text">Marie&#x27;s hands only; no face in frame.</td></tr>
+<tr><th scope="row" id="S05">S05</th><td class="c-short">gen</td><td class="c-short"><a href="#L03">L03</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">MS</td><td class="c-short">35</td><td class="c-short">static</td><td class="c-short">marie</td><td class="c-short">shed_night</td><td class="w-prompt">Marie Curie straightens up from the table and reaches toward the brass oil lamp at camera left, her fingers on its small wick knob.</td><td class="w-motion">She turns the wick knob, the flame shrinks, and the room sinks into darkness around her.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Same lamp and table position as S02.</td><td class="w-text">A lighting change inside one shot fights I2V models. Use first-last-frame (lit to dark) or cut on the action.</td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S06">S06</th><td class="c-short">gen</td><td class="c-short"></td><td class="c-short">1</td><td class="c-short">4.0</td><td class="c-short"></td><td class="c-short">WS</td><td class="c-short">28</td><td class="c-short">locked-off</td><td class="c-short">marie</td><td class="c-short">shed_dark</td><td class="w-prompt">Near darkness: the frame is almost entirely black. Dozens of small glass vials and porcelain capsules on the shelves and tables glow with a faint pale blue light; Marie Curie stands among them, seen from behind and to the side as a dim silhouette, looking at the shelves, her face turned away from the camera.</td><td class="w-motion">Almost nothing moves except a slow, faint shimmer in the blue glow; Marie stands still, then turns her head slightly toward the shelves.</td><td class="w-mid">bright light, lamp flame, green light</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">black;face;freeze</td><td class="w-text">Vial positions match the S04 shelf. Silent beat: let it breathe.</td><td class="w-text">Models push &#x27;glow&#x27; to neon green and add smoke. Near-black and nearly still by design, so the black and freeze checks are exempted and it is reviewed by eye.</td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S07">S07</th><td class="c-short">gen</td><td class="c-short"><a href="#L04">L04</a></td><td class="c-short">1</td><td class="c-short">2.5</td><td class="c-short"></td><td class="c-short">CU</td><td class="c-short">85</td><td class="c-short">very slow push-in</td><td class="c-short">marie</td><td class="c-short">shed_dark</td><td class="w-prompt">Close-up of Marie Curie&#x27;s face in near darkness, lit only from below and from camera right by the faint pale blue glow of the vials, tiny points of blue light reflected in her eyes; she looks past the camera toward the glowing vials at camera right, not at the lens, with an expression of quiet wonder.</td><td class="w-motion">Her eyes move slowly across the glowing vials and the corner of her mouth lifts into a small smile.</td><td class="w-mid">green light, bright light</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">black</td><td class="w-text">Eyeline camera right, matching S03.</td><td class="w-text">Low light plus a face is where identity drifts most; review face score by hand.</td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S08">S08</th><td class="c-short">mograph</td><td class="c-short"></td><td class="c-short">1</td><td class="c-short">3.0</td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-prompt"></td><td class="w-motion"></td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Hold on the S07 frame underneath.</td><td class="w-text"></td><td class="w-text">Title card G01.</td></tr>
+<tr><th scope="row" id="S09">S09</th><td class="c-short">presenter</td><td class="c-short"><a href="#L05">L05</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">A</td><td class="c-short">MS</td><td class="c-short">35</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">She opens the explanation with a small, welcoming nod, then speaks with calm, engaged expressions, natural blinks and relaxed shoulders.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Key from camera left, lamp practical in background: the same light logic as the shed.</td><td class="w-text">First time we see her: identity and lip sync both have to hold.</td><td class="w-text">Lower third G02.</td></tr>
+<tr><th scope="row" id="S10">S10</th><td class="c-short">gen</td><td class="c-short"><a href="#L06">L06</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">ECU</td><td class="c-short">100</td><td class="c-short">static</td><td class="c-short"></td><td class="c-short">shed_night</td><td class="w-prompt">Extreme close-up of a woman&#x27;s bare hand placing a tiny brass weight onto the small pan of a brass-and-glass laboratory electrometer, dark navy wool cuff at the wrist, warm lamplight.</td><td class="w-motion">Her fingers lower the weight gently onto the pan and the pan dips slightly.</td><td class="w-mid">readable dial, numbers, clock face, face</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">face</td><td class="w-text">Same cuff and lamp side as S04.</td><td class="w-text">Dials and stopwatch faces produce garbled numerals: keep them out of focus.</td><td class="w-text">Curie balanced the current from ionized air against charge from a weighted piezoelectric quartz, timed by stopwatch.</td></tr>
+<tr><th scope="row" id="S11">S11</th><td class="c-short">mograph</td><td class="c-short"><a href="#L06">L06</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-prompt"></td><td class="w-motion"></td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text"></td><td class="w-text"></td><td class="w-text">Electrometer schematic G03: rays ionize the air between two plates and a tiny current flows to a meter with no numbers.</td></tr>
+<tr><th scope="row" id="S12">S12</th><td class="c-short">presenter</td><td class="c-short"><a href="#L07">L07</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">A</td><td class="c-short">MS</td><td class="c-short">35</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">She counts through the samples with a small movement of one hand at chest height, then opens both hands slightly on &#x27;it didn&#x27;t matter&#x27;.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Same A setup as S09.</td><td class="w-text">Hands near the face can smear; keep gestures small and low.</td><td class="w-text">In-frame graphic G04 on the empty wall at frame left.</td></tr>
+<tr><th scope="row" id="S13">S13</th><td class="c-short">presenter</td><td class="c-short"><a href="#L08">L08</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">B</td><td class="c-short">MCU</td><td class="c-short">85</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">She leans in very slightly and lands the word &#x27;radioactivity&#x27; with a small, certain nod.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">B setup: tighter and from a second angle, so the cut from S12 is not a jump cut.</td><td class="w-text"></td><td class="w-text">Kinetic type G05 on &#x27;radioactivity&#x27;.</td></tr>
+<tr><th scope="row" id="S14">S14</th><td class="c-short">presenter</td><td class="c-short"><a href="#L09">L09</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">A</td><td class="c-short">MS</td><td class="c-short">35</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">A slight, curious frown on &#x27;more radioactive than its uranium could explain&#x27;.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Back to A: alternating setups hides the join between takes.</td><td class="w-text"></td><td class="w-text">In-frame graphic G06 (the pitchblende puzzle).</td></tr>
+<tr><th scope="row" id="S15">S15</th><td class="c-short">presenter</td><td class="c-short"><a href="#L10">L10</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">B</td><td class="c-short">MCU</td><td class="c-short">85</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">She brightens on &#x27;two new elements&#x27; and gives a small nod for each element as she names it.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">B setup again.</td><td class="w-text">Longest take (about 12 s): watch for identity drift late in the clip.</td><td class="w-text">In-frame graphic G07 (element tiles), each tile on its word.</td></tr>
+<tr><th scope="row" id="S16">S16</th><td class="c-short">gen</td><td class="c-short"><a href="#L11">L11</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">WS</td><td class="c-short">28</td><td class="c-short">static</td><td class="c-short">marie;pierre</td><td class="c-short">courtyard_day</td><td class="w-prompt">Marie Curie stands at a large iron cauldron over a brick fire, her eyes on the cauldron as she stirs a thick dark mass with a long iron rod nearly as tall as she is; Pierre Curie works at a barrel in the soft-focus background, his face turned away.</td><td class="w-motion">She leans into the rod and stirs with slow, heavy strokes while pale smoke rolls across the courtyard.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Pierre stays in the background, back or profile only.</td><td class="w-text">Second identity in frame; keeping Pierre soft and turned away keeps him out of the consistency budget.</td><td class="w-text">Stirring with a rod &#x27;almost as tall as herself&#x27; is from Curie&#x27;s autobiographical notes.</td></tr>
+<tr><th scope="row" id="S17">S17</th><td class="c-short">gen</td><td class="c-short"><a href="#L11">L11</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">CU</td><td class="c-short">85</td><td class="c-short">static</td><td class="c-short"></td><td class="c-short">courtyard_day</td><td class="w-prompt">Close-up of a long iron rod churning a bubbling dark brown slurry inside a black iron cauldron, steam and smoke rising.</td><td class="w-motion">The rod sweeps through the thick slurry, bubbles burst slowly and steam curls upward.</td><td class="w-mid">face, hands, green</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">face</td><td class="w-text">Rod enters from camera left, matching S16.</td><td class="w-text"></td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S18">S18</th><td class="c-short">presenter</td><td class="c-short"><a href="#L12">L12</a></td><td class="c-short">1</td><td class="c-short"></td><td class="c-short">A</td><td class="c-short">MS</td><td class="c-short">35</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">She speaks with quiet emphasis, then glances briefly toward frame left, as if handing over to the diagram.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Same A setup as S09.</td><td class="w-text"></td><td class="w-text">Hands off to the S19 diagram mid-sentence; her voice carries over the cut.</td></tr>
+<tr><th scope="row" id="S19">S19</th><td class="c-short">mograph</td><td class="c-short"><a href="#L12">L12</a></td><td class="c-short">2</td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-prompt"></td><td class="w-motion"></td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text"></td><td class="w-text"></td><td class="w-text">Modern understanding G08. The nucleus was discovered in 1911, after this story.</td></tr>
+<tr><th scope="row" id="S20">S20</th><td class="c-short">presenter</td><td class="c-short"><a href="#L13">L13</a></td><td class="c-short">2</td><td class="c-short"></td><td class="c-short">B</td><td class="c-short">MCU</td><td class="c-short">85</td><td class="c-short">static</td><td class="c-short">instructor</td><td class="c-short">studio</td><td class="w-prompt"></td><td class="w-motion">A warm, direct summary to the lens, with a small smile on &#x27;two different sciences&#x27;.</td><td class="w-mid"></td><td class="c-short"></td><td class="c-short"></td><td class="c-short"></td><td class="w-text">Closing on the B close-up.</td><td class="w-text"></td><td class="w-text"></td></tr>
+<tr><th scope="row" id="S21">S21</th><td class="c-short">gen</td><td class="c-short"><a href="#L13">L13</a></td><td class="c-short">1</td><td class="c-short">5.0</td><td class="c-short"></td><td class="c-short">MS</td><td class="c-short">50</td><td class="c-short">very slow push-in</td><td class="c-short"></td><td class="c-short">shed_dark</td><td class="w-prompt">Small glass vials on a pine shelf in the dark shed, glowing with a faint pale blue light, no people, shallow depth of field.</td><td class="w-motion">A very slow push-in along the shelf while the faint blue glow shimmers.</td><td class="w-mid">people, green light, smoke</td><td class="c-short"></td><td class="c-short"></td><td class="c-short">black;face</td><td class="w-text">Same vials as S06.</td><td class="w-text"></td><td class="w-text">End card G09 overlays this shot.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="vo-script">VO script</h2>
+<p>All 13 lines are read by the presenter in one locked voice, <code>clara_v1</code>. <code>text_en</code> is the
+script as captioned. Where <code>tts_en</code> is filled, the voice is rendered from that spelling instead (the years
+written out as words); where it is empty, from <code>text_en</code>. Either way, the pronunciation lexicon is applied
+before the line is voiced.</p>
+<div class="table-wrap vo" role="region" aria-label="VO script: 13 lines" tabindex="0">
+<table>
+<thead><tr><th scope="col">line_id</th><th scope="col">speaker</th><th scope="col">text_en</th><th scope="col">tts_en</th></tr></thead>
+<tbody>
+<tr><th scope="row" id="L01">L01</th><td class="c-short">presenter</td><td>1902. A leaky shed at a Paris science school.</td><td>Nineteen oh two. A leaky shed at a Paris science school.</td></tr>
+<tr><th scope="row" id="L02">L02</th><td class="c-short">presenter</td><td>For nearly four years, Marie Curie has been processing tons of ore here, by hand.</td><td></td></tr>
+<tr><th scope="row" id="L03">L03</th><td class="c-short">presenter</td><td>One night, she turns down the lamp.</td><td></td></tr>
+<tr><th scope="row" id="L04">L04</th><td class="c-short">presenter</td><td>Her radium is glowing.</td><td></td></tr>
+<tr><th scope="row" id="L05">L05</th><td class="c-short">presenter</td><td>It began in 1896, when Henri Becquerel found that uranium gives off invisible rays.</td><td>It began in eighteen ninety-six, when Henri Becquerel found that uranium gives off invisible rays.</td></tr>
+<tr><th scope="row" id="L06">L06</th><td class="c-short">presenter</td><td>Curie measured them with an electrometer, which detects the tiny current the rays create in air.</td><td></td></tr>
+<tr><th scope="row" id="L07">L07</th><td class="c-short">presenter</td><td>The strength depended only on how much uranium was present. Wet or dry, powder or solid, it didn&#x27;t matter.</td><td></td></tr>
+<tr><th scope="row" id="L08">L08</th><td class="c-short">presenter</td><td>So the rays came from the atoms themselves. She named it radioactivity.</td><td></td></tr>
+<tr><th scope="row" id="L09">L09</th><td class="c-short">presenter</td><td>But pitchblende, a uranium ore, was more radioactive than its uranium could explain.</td><td></td></tr>
+<tr><th scope="row" id="L10">L10</th><td class="c-short">presenter</td><td>Something else was inside. In 1898, the Curies announced two new elements: polonium, for Marie&#x27;s homeland, Poland, and radium, from the Latin for ray.</td><td>Something else was inside. In eighteen ninety-eight, the Curies announced two new elements: polonium, for Marie&#x27;s homeland, Poland, and radium, from the Latin for ray.</td></tr>
+<tr><th scope="row" id="L11">L11</th><td class="c-short">presenter</td><td>Proving radium was real meant extracting it from the ore. That&#x27;s the work we saw in the shed.</td><td></td></tr>
+<tr><th scope="row" id="L12">L12</th><td class="c-short">presenter</td><td>Today we know why it happens: atoms like radium have unstable nuclei, and as they decay, they release radiation.</td><td></td></tr>
+<tr><th scope="row" id="L13">L13</th><td class="c-short">presenter</td><td>Radioactivity comes from inside the atom. Curie proved it by measuring carefully, and it earned her Nobel Prizes in two different sciences.</td><td></td></tr>
+</tbody>
+</table>
+</div>
+</main>
+<footer class="lf-foot"><div class="lf-foot-in"><span>The Glow in the Shed · production documents from lessonforge</span><span><a href="#main">Top</a> · <a href="../../works/aigc#workflow-lessonforge">Back to the portfolio card</a></span></div></footer>
+</body>
+</html>

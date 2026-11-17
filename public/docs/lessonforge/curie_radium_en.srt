@@ -1,0 +1,111 @@
+1
+00:00:00,000 --> 00:00:00,420
+1902.
+
+2
+00:00:00,420 --> 00:00:03,698
+A leaky shed at a Paris science school.
+
+3
+00:00:03,917 --> 00:00:09,480
+For nearly four years, Marie Curie has
+been processing tons of ore here, by hand.
+
+4
+00:00:09,667 --> 00:00:11,738
+One night, she turns down the lamp.
+
+5
+00:00:15,917 --> 00:00:17,318
+Her radium is glowing.
+
+6
+00:00:21,417 --> 00:00:27,437
+It began in 1896, when Henri Becquerel
+found that uranium gives off invisible
+
+7
+00:00:27,437 --> 00:00:27,828
+rays.
+
+8
+00:00:28,042 --> 00:00:32,772
+Curie measured them with an electrometer,
+which detects the tiny current the rays
+
+9
+00:00:32,772 --> 00:00:33,590
+create in air.
+
+10
+00:00:33,792 --> 00:00:37,980
+The strength depended only on how much
+uranium was present.
+
+11
+00:00:37,980 --> 00:00:41,245
+Wet or dry, powder or solid, it didn't
+matter.
+
+12
+00:00:41,458 --> 00:00:44,296
+So the rays came from the atoms
+themselves.
+
+13
+00:00:44,296 --> 00:00:46,078
+She named it radioactivity.
+
+14
+00:00:46,292 --> 00:00:51,169
+But pitchblende, a uranium ore, was more
+radioactive than its uranium could
+
+15
+00:00:51,169 --> 00:00:51,690
+explain.
+
+16
+00:00:51,875 --> 00:00:53,844
+Something else was inside.
+
+17
+00:00:53,844 --> 00:00:57,403
+In 1898, the Curies announced two new
+elements:
+
+18
+00:00:57,403 --> 00:01:03,082
+polonium, for Marie's homeland, Poland,
+and radium, from the Latin for ray.
+
+19
+00:01:03,292 --> 00:01:06,573
+Proving radium was real meant extracting
+it from the ore.
+
+20
+00:01:06,573 --> 00:01:08,588
+That's the work we saw in the shed.
+
+21
+00:01:08,792 --> 00:01:10,828
+Today we know why it happens:
+
+22
+00:01:10,828 --> 00:01:16,585
+atoms like radium have unstable nuclei,
+and as they decay, they release radiation.
+
+23
+00:01:16,792 --> 00:01:19,454
+Radioactivity comes from inside the atom.
+
+24
+00:01:19,454 --> 00:01:24,454
+Curie proved it by measuring carefully,
+and it earned her Nobel Prizes in two
+
+25
+00:01:24,454 --> 00:01:25,687
+different sciences.

@@ -366,6 +366,22 @@ function ExhibitionChrome({
 export function AigcExhibitionPage() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
 
+  // The browser's own fragment scroll can run before React has rendered the target, so deep links such as
+  // #workflow-lessonforge are scrolled here, and again once the web fonts have settled the layout.
+  useEffect(() => {
+    let cancelled = false
+    const hash = window.location.hash
+    const target = document.getElementById(hash.slice(1))
+    if (!target) return undefined
+    target.scrollIntoView({ behavior: 'instant' })
+    void document.fonts.ready.then(() => {
+      if (!cancelled && window.location.hash === hash) target.scrollIntoView({ behavior: 'instant' })
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   useEffect(() => {
     if (!selectedImage) return undefined
 

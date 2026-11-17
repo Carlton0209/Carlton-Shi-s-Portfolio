@@ -21,13 +21,15 @@ type Workflow = {
   media: Media
   graphs: Preview[]
   links?: { href: string; label: string }[]
+  // Pages under public/, opened in a new tab
+  documents?: { file: string; label: string }[]
   note?: string
 }
 
 const workflows: Workflow[] = [
   {
     id: 'lessonforge', short: 'Lip-synced lesson', category: 'Video', title: 'An 88-second lesson, from script to master',
-    summary: 'A ComfyUI and Python pipeline turns a script and shot list into an 88-second Marie Curie lesson, led by a fictional instructor lip-synced to a generated voice.',
+    summary: 'lessonforge, a ComfyUI and Python pipeline, turns a script and shot list into The Glow in the Shed, an 88-second Marie Curie lesson led by a fictional instructor lip-synced to a generated voice.',
     tools: ['MiniMax H3', 'Qwen3-TTS', 'Six custom LessonForge nodes'],
     steps: [
       'Qwen3-TTS clones all 13 lines from one designed voice; Whisper checks each line, and the voice sets the timeline.',
@@ -47,7 +49,13 @@ const workflows: Workflow[] = [
       { file: 'lessonforge-presenter-workflow', label: '01 / Presenter stage in the editor' },
       { file: 'lessonforge-nodes-workflow', label: '02 / The six LessonForge nodes' },
     ],
-    note: 'By the pipeline’s own check, all 7 presenter shots land within 2 frames of the voice. The instructor and the historical scenes are AI-generated.',
+    documents: [
+      { file: 'docs/lessonforge/treatment.html', label: 'Treatment' },
+      { file: 'docs/lessonforge/style-bible.html', label: 'Style bible' },
+      { file: 'docs/lessonforge/shot-list.html', label: 'Shot list + VO script' },
+      { file: 'docs/lessonforge/report.html', label: 'QC report' },
+    ],
+    note: 'By the pipeline’s own check, all 7 presenter shots land within 2 frames of the voice. About 3.8 GPU-hours on one laptop GPU. The instructor and the historical scenes are AI-generated.',
   },
   {
     id: 'angles', short: 'Camera angles', category: 'Image editing', title: 'One character, four camera angles',
@@ -91,7 +99,7 @@ const workflows: Workflow[] = [
   {
     id: 'leather', short: 'Logo on leather', category: 'Image editing', title: 'A logo stitched into the leather',
     summary: 'The S logo is added to both shoes in a supplied photograph, built from the same cream leather and stitching as the upper instead of being pasted on top.',
-    tools: ['Krea2 edit', 'Manual masks', 'Two-pass local refinement'],
+    tools: ['Krea-2 edit', 'Manual masks', 'Two-pass local refinement'],
     steps: [
       'Hand-drawn masks mark the logo area on the front and rear shoe; each area runs as its own branch.',
       'Each area is cropped to 768 px. Pass 1 places the outline, using only the S mark from the brand artwork as a second reference.',
@@ -351,6 +359,22 @@ export default function WorkflowShowcase() {
                       </button>
                     ))}
                   </>
+                )}
+                {workflow.documents && (
+                  <div className={workflow.graphs.length > 0 ? 'mt-5' : ''}>
+                    <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-white/50">Production documents</p>
+                    <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                      {workflow.documents.map(doc => (
+                        <li key={doc.file}>
+                          <a href={withBase(doc.file)} target="_blank" rel="noopener noreferrer"
+                            className="flex min-h-11 items-center justify-between gap-2 rounded-[18px] border border-white/15 px-4 py-2 text-sm text-white/80 transition-colors hover:border-white/40 hover:text-white">
+                            {doc.label}<span className="sr-only"> (opens in a new tab)</span>
+                            <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
                 {workflow.links && (
                   <>

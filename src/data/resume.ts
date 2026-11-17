@@ -101,8 +101,8 @@ export const resume = {
   ],
   "workflows": [
     {
-      "name": "Footwear product fidelity",
-      "text": "MiniMax H3 shots from source footage and product photos; malformed side logos removed with reviewed motion tracks and the original artwork composited back in perspective (1080 × 1920, 24 fps)."
+      "name": "Instructor-led lesson pipeline (lessonforge)",
+      "text": "ComfyUI and Python turn a script and shot list into an 88-second Marie Curie lesson with 21 shots, 13 voice lines cloned from one designed voice, 7 presenter shots lip-synced within 2 frames, and a −16 LUFS master."
     },
     {
       "name": "Identity consistency",
