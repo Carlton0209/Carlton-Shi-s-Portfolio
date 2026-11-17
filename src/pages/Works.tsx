@@ -109,11 +109,11 @@ const poster = (name: string) => withBase(`images/posters/${name}.webp`)
 
 const wesVideo = withBase('images/Wes/7月22日.mp4')
 const wesPoster = poster('wes-film')
-const featuredVideo = {
-  src: withBase('videos/Resonance.mp4'),
-  poster: poster('resonance'),
-  title: 'Resonance',
-}
+// The short films each get a full-width frame; the studies below share a two-column grid.
+const featuredVideos = [
+  { src: withBase('videos/Resonance.mp4'), poster: poster('resonance'), title: 'Resonance' },
+  { src: withBase('videos/Above the water.mp4'), poster: poster('above-the-water'), title: 'Above the water' },
+]
 
 const videoWorks = [
   { src: withBase('videos/music.mp4'), poster: poster('music'), title: 'MV Demo' },
@@ -415,21 +415,28 @@ export function AigcExhibitionPage() {
             <h2 id="videos-title" className="text-balance text-3xl font-normal tracking-tight md:text-5xl">
               Videos
             </h2>
-            <div className="exhibition-glass-frame mt-6 overflow-hidden rounded-[26px] p-2 md:mt-8 md:rounded-[36px] md:p-3">
-              <video
-                src={featuredVideo.src}
-                poster={featuredVideo.poster}
-                controls
-                playsInline
-                preload="none"
-                className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
-                aria-label={`${featuredVideo.title} video`}
-              >
-                Your browser does not support the video tag.
-              </video>
-              <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62 md:px-4">
-                {featuredVideo.title}
-              </p>
+            <div className="mt-6 space-y-5 md:mt-8">
+              {featuredVideos.map(video => (
+                <div
+                  key={video.src}
+                  className="exhibition-glass-frame overflow-hidden rounded-[26px] p-2 md:rounded-[36px] md:p-3"
+                >
+                  <video
+                    src={video.src}
+                    poster={video.poster}
+                    controls
+                    playsInline
+                    preload="none"
+                    className="aspect-video w-full rounded-[20px] bg-black object-contain md:rounded-[28px]"
+                    aria-label={`${video.title} video`}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                  <p className="px-3 pb-2 pt-4 text-sm uppercase tracking-[0.18em] text-white/62 md:px-4">
+                    {video.title}
+                  </p>
+                </div>
+              ))}
             </div>
 
             <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
