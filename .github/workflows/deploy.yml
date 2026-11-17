@@ -39,6 +39,11 @@ jobs:
       - name: Exclude unused legacy homepage video from Pages
         run: rm -f dist/videos/hero.mp4
 
+      # The gallery loads the WebP copy of each PNG (see galleryImage in src/pages/Works.tsx), so the
+      # PNG originals are never requested. Leaving them out keeps the site under the 1 GB Pages limit.
+      - name: Exclude PNG originals that ship as WebP
+        run: find dist/images -type f -name '*.png' -exec sh -c '[ -f "${1%.png}.webp" ]' sh {} \; -print -delete
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
