@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fan Gear Production Line — Carlton Shi</title>
+<meta name="description" content="Case study: a ComfyUI pipeline that turns one licensed artwork and a colourway table into 36 QA-checked production files, with a measured prompt-only comparison.">
+<link rel="icon" href="../../favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a production tech pack. One reading column, wide figure plates, mono spec labels for file names, units and checks. */
+:root {
+  --paper: #F3F5F8;
+  --sheet: #FFFFFF;
+  --plate: #E7EBF0;
+  --ink: #0C1A2C;
+  --ink-2: #4B5869;
+  --rule: #D6DCE4;
+  --link: #1F5FAD;
+  --gold: #F2A900;
+  --pass: #1B7A43;
+  --fail: #B3261E;
+  --s-pipe: #1F5FAD;
+  --s-naive: #C8741F;
+  --check-a: #FFFFFF;
+  --check-b: #DCE1E7;
+  --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --f-body: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0A1420; --sheet: #101C2B; --plate: #172538; --ink: #E6ECF3; --ink-2: #A2AEBE; --rule: #26364C;
+    --link: #86B4EE; --pass: #53C48A; --fail: #F08A80; --s-pipe: #5B93DC; --s-naive: #C97824;
+    --check-a: #1C2A3D; --check-b: #26364C; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0A1420; --sheet: #101C2B; --plate: #172538; --ink: #E6ECF3; --ink-2: #A2AEBE; --rule: #26364C;
+  --link: #86B4EE; --pass: #53C48A; --fail: #F08A80; --s-pipe: #5B93DC; --s-naive: #C97824;
+  --check-a: #1C2A3D; --check-b: #26364C; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper); color: var(--ink);
+  font: 400 17px/1.62 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 56px 72px;
+  display: grid; gap: 88px;
+}
+@media (min-width: 720px) { .wrap { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
+section, header, footer { display: grid; gap: 28px; min-width: 0; }
+.col { max-width: 700px; display: grid; gap: 18px; min-width: 0; }
+p { margin: 0; }
+a { color: var(--link); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+.label {
+  font: 500 12px/1.3 var(--f-mono); letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+}
+h1, h2 {
+  font-family: var(--f-display); font-weight: 800; text-transform: uppercase;
+  line-height: .95; letter-spacing: .005em; margin: 0; text-wrap: balance;
+}
+h1 { font-size: clamp(52px, 9vw, 104px); }
+h2 { font-size: clamp(34px, 5vw, 48px); }
+h3 { font: 600 19px/1.35 var(--f-body); margin: 0; text-wrap: balance; }
+.lede { font-size: clamp(19px, 2.2vw, 23px); line-height: 1.45; max-width: 760px; text-wrap: pretty; }
+.thesis { font: 600 clamp(20px, 2.4vw, 26px)/1.35 var(--f-body); max-width: 780px; text-wrap: balance; }
+.thesis .mark { box-shadow: inset 0 -0.32em 0 color-mix(in srgb, var(--gold) 45%, transparent); }
+code, .mono { font-family: var(--f-mono); font-size: .86em; }
+.muted { color: var(--ink-2); }
+
+/* header */
+.meta {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px 32px;
+  border-top: 1px solid var(--rule); padding-top: 20px; margin: 0;
+}
+.meta div { display: grid; gap: 4px; min-width: 0; }
+.meta dt { margin: 0; }
+.meta dd { margin: 0; font-size: 15px; line-height: 1.5; }
+
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+figure img { display: block; width: 100%; height: auto; border-radius: 4px; }
+figcaption { font-size: 14px; line-height: 1.5; color: var(--ink-2); max-width: 760px; }
+figcaption .file { font-family: var(--f-mono); font-size: 12px; color: var(--ink); word-break: break-all; }
+.framed img { border: 1px solid var(--rule); }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.stat { background: var(--sheet); padding: 20px 22px; display: grid; gap: 6px; align-content: start; }
+.stat .v { font: 600 40px/1 var(--f-body); letter-spacing: -.01em; }
+.stat .v small { font-size: 18px; font-weight: 500; color: var(--ink-2); }
+.stat p { font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+
+/* tables */
+.table-scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; line-height: 1.45; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+tr:last-child td { border-bottom: 0; }
+th { font: 500 11.5px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); background: var(--plate); white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.code { font-family: var(--f-mono); font-size: 13.5px; white-space: nowrap; }
+.map td:first-child { width: 38%; color: var(--ink-2); }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--f-mono); letter-spacing: .05em; padding: 5px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.ok { color: var(--pass); }
+.pill.bad { color: var(--fail); }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* colorway chips */
+.chips { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font: 400 12.5px/1 var(--f-mono); white-space: nowrap; }
+.chip i { width: 16px; height: 16px; border-radius: 3px; border: 1px solid var(--rule); display: inline-block; }
+
+/* split: generated vs computed */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.side { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 22px 24px; display: grid; gap: 12px; align-content: start; }
+.side ul { margin: 0; padding-left: 18px; display: grid; gap: 7px; font-size: 15.5px; }
+.side .label b { color: var(--ink); font-weight: 500; }
+
+/* pipeline steps */
+.steps { display: grid; gap: 72px; }
+.step { display: grid; gap: 24px; min-width: 0; }
+.step-head { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; align-items: baseline; }
+.step-no { font: 800 44px/0.9 var(--f-display); color: var(--gold); grid-row: span 2; }
+.step-head .label { grid-column: 2; }
+.step-head h3 { grid-column: 2; font-size: 22px; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; align-items: start; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pdp { display: grid; gap: 8px; }
+.pdp img { border: 1px solid var(--rule); border-radius: 4px; width: 100%; height: auto; display: block; }
+.pdp .chips { font-size: 12px; }
+.pdp .name { font: 500 12.5px/1.3 var(--f-mono); letter-spacing: .04em; }
+.formula { font: 500 15px/1.5 var(--f-mono); background: var(--sheet); border: 1px solid var(--rule); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 4px; overflow-x: auto; white-space: nowrap; }
+.checker { background-color: var(--check-a); background-image: conic-gradient(var(--check-b) 25%, transparent 0 50%, var(--check-b) 0 75%, transparent 0); background-size: 22px 22px; border: 1px solid var(--rule); border-radius: 4px; padding: 18px; }
+.checker img { border-radius: 0; }
+.film { background: #FFFFFF; border: 1px solid var(--rule); border-radius: 4px; padding: 10px; }
+.film img { border-radius: 0; }
+pre { margin: 0; font: 400 12.5px/1.6 var(--f-mono); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; overflow-x: auto; color: var(--ink); }
+.prompt { font: 400 14px/1.55 var(--f-mono); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; color: var(--ink-2); }
+.prompt b { color: var(--ink); font-weight: 500; background: color-mix(in srgb, var(--gold) 28%, transparent); padding: 0 3px; border-radius: 2px; }
+
+/* experiment */
+.switch { display: flex; flex-wrap: wrap; gap: 8px; }
+.switch button {
+  font: 500 13px/1 var(--f-mono); letter-spacing: .04em; color: var(--ink); background: var(--sheet);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px;
+}
+.switch button i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--rule); }
+.switch button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.switch button:hover { border-color: var(--ink-2); }
+.compare-img { background: #FFFFFF; border: 1px solid var(--rule); border-radius: 6px; padding: 10px; }
+.compare-img img { border-radius: 0; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+.chart { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 18px 10px; display: grid; gap: 10px; min-width: 0; }
+.chart h3 { font-size: 16px; }
+.chart .sub { font-size: 13.5px; color: var(--ink-2); line-height: 1.45; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 400 12.5px/1.2 var(--f-mono); color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.svg-scroll { overflow-x: auto; }
+.svg-scroll svg { display: block; width: 100%; min-width: 440px; height: auto; }
+svg text { font-family: var(--f-mono); }
+.callout { border-left: 3px solid var(--gold); padding: 4px 0 4px 18px; display: grid; gap: 10px; max-width: 760px; }
+.callout p { font-size: 18px; line-height: 1.55; }
+
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px 40px; }
+.note { display: grid; gap: 8px; align-content: start; }
+.note p { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.limits { margin: 0; padding-left: 20px; display: grid; gap: 10px; max-width: 760px; font-size: 16px; }
+.limits b { font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+footer { font-size: 14px; color: var(--ink-2); gap: 14px; }
+footer ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+footer code { color: var(--ink); }
+.site-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 14px; }
+.site-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-2); text-decoration: none; }
+.site-nav a:hover { color: var(--ink); }
+.skip { position: fixed; left: 16px; top: -80px; z-index: 10; padding: 12px 16px; background: var(--sheet); color: var(--ink); }
+.skip:focus { top: 12px; }
+img { max-width: 100%; }
+@media (prefers-reduced-motion: no-preference) { .switch button { transition: border-color .15s ease, box-shadow .15s ease; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the case study</a>
+<div class="wrap">
+  <nav class="site-nav" aria-label="Site">
+    <a href="../../works/aigc#workflow-fan-gear">&larr; ComfyUI workflows</a>
+    <a href="../../">Carlton Shi</a>
+  </nav>
+
+  <header id="main">
+    <p class="label">Portfolio case study · ComfyUI production pipeline · November 2026</p>
+    <h1>Fan Gear Production Line</h1>
+    <p class="thesis">AI shoots the product. <span class="mark">The licensed artwork and the colour standards never pass through the diffusion model.</span></p>
+    <p class="lede">One approved artwork, a four-row colourway table and a set of channel specs go in. One ComfyUI queue returns 36 production files: e-commerce images, social posts, localized banners, 300 dpi print files, ink separations and a spec sheet for each colourway. Every file is read back from disk and checked against 15 rules before the batch is signed off.</p>
+    <dl class="meta">
+      <div><dt class="label">Role</dt><dd>Workflow design, custom nodes, QA rules, artwork and spec sheets</dd></div>
+      <div><dt class="label">Stack</dt><dd>ComfyUI, Krea2 Turbo, SeedVR2 3B, BiRefNet, Qwen3-VL 4B, 8 custom Python nodes</dd></div>
+      <div><dt class="label">Hardware</dt><dd>One laptop RTX 4080 (12 GB). All models run locally, no cloud APIs</dd></div>
+      <div><dt class="label">Run time</dt><dd>276, 309 and 339 s for three cold runs of the full batch, model loading included</dd></div>
+    </dl>
+  </header>
+
+  <figure>
+    <img src="img/hero_banner.jpg" width="1920" height="800" alt="Web banner: a navy HALYARDS tee floats beside a floodlit stadium tunnel, with the headline NEW SEASON. SAME HARBOR. and the subline Shop the Navy Home collection.">
+    <figcaption><span class="file">HCH-26-TEE-001_NVY-HOME_BANNER-EN-US_1920x800_v01.jpg</span><br>Background plate generated by Krea2. Product composite, logo, type, colour choice for contrast and the file name all come from the pipeline. HARBOR CITY HALYARDS is a fictional team I made for this project.</figcaption>
+  </figure>
+
+  <section aria-labelledby="h-results">
+    <p class="label" id="h-results">Results from one queue</p>
+    <div class="stats">
+      <div class="stat"><span class="label">Files delivered</span><span class="v">36</span><p>9 per colourway across 4 colourways, plus QA reports, a contact sheet and a manifest</p></div>
+      <div class="stat"><span class="label">QA checks passed</span><span class="v">60<small>/60</small></span><p>15 checks per colourway, measured on the saved files</p></div>
+      <div class="stat"><span class="label">Worst garment colour error</span><span class="v">1.08 <small>ΔE00</small></span><p>Limit 2.0. A prompt-only shot of the same tee measured 3.50 to 4.80</p></div>
+      <div class="stat"><span class="label">Match to approved artwork</span><span class="v">0.96<small>+</small></span><p>Pipeline 0.96 to 0.99. Prompt-only 0.37 to 0.51. Pass line 0.80</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-brief">
+    <div class="col">
+      <p class="label">The brief</p>
+      <h2 id="h-brief">Production work, not concept art</h2>
+      <p>I built this against a real job description for an AI Production Designer in licensed sports e-commerce. The role takes designs that a league or team has already approved and turns them into every file the business needs: each product, colourway, channel, size and language. It has to be fast, and it can never bend the licensor's brand standards.</p>
+      <p>So I treated the job description as a spec and built a workflow where each requirement has a concrete place in the graph.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="map">
+        <thead><tr><th>The job asks for</th><th>Where it lives in the workflow</th></tr></thead>
+        <tbody>
+          <tr><td>Node-based workflows such as ComfyUI, prompt design, batch generation</td><td>The whole graph. Prompt templates are filled from the colourway table, and one queue runs every colourway</td></tr>
+          <tr><td>Image refinement</td><td>SeedVR2 refines the 1 MP blank to 1920×2400. BiRefNet cuts the garment out</td></tr>
+          <tr><td>Protect team, league and partner brand standards</td><td>The logo never goes through diffusion. A control experiment measures what goes wrong when it does</td></tr>
+          <tr><td>Adapt work across products, channels, sizes, colourways and localizations</td><td>One table row per colourway. PDP, social 4:5 and banner specs. One banner per locale (EN-US, ES-US, JA-JP)</td></tr>
+          <tr><td>Production-ready files: formats, resolution, colour spaces, print requirements</td><td>sRGB ICC, DPI metadata and 4:4:4 JPEG. Print PNG at true size and 300 dpi. One film positive per spot ink</td></tr>
+          <tr><td>Clear production specs: dimensions, placement, typography, colours</td><td>A PDF spec sheet per colourway with placement from HPS, colour standards in HEX, RGB and Lab, and print order</td></tr>
+          <tr><td>Detailed quality reviews, accessibility</td><td>15 checks on files read back from disk, including ΔE00 colour error and WCAG text contrast</td></tr>
+          <tr><td>Templates, asset libraries, naming conventions, versions</td><td>A placement template, <code>STYLE_COLORWAY_CHANNEL_SIZE_vNN</code> file names, and a manifest with one row per file</td></tr>
+          <tr><td>Automation: actions, scripts, plugins</td><td>A custom node pack that turns recolour, placement, layout, export and QA into reusable nodes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-rule">
+    <div class="col">
+      <p class="label">The rule</p>
+      <h2 id="h-rule">Generate the photography. Compute the brand.</h2>
+      <p>A licensor approves a specific piece of artwork in specific inks. If an image model redraws that mark, even a good redraw is a new design that needs a new approval. So I split the work by what can be allowed to vary.</p>
+    </div>
+    <div class="split">
+      <div class="side">
+        <p class="label"><b>Generated</b> · allowed to vary</p>
+        <ul>
+          <li>The blank tee photograph (Krea2 Turbo), shot once per batch</li>
+          <li>Detail refinement and upscale (SeedVR2)</li>
+          <li>The garment cut-out mask (BiRefNet)</li>
+          <li>Background plates for social and banners, one per colourway</li>
+          <li>A text read-back for the control experiment (Qwen3-VL)</li>
+        </ul>
+      </div>
+      <div class="side">
+        <p class="label"><b>Computed</b> · must not vary</p>
+        <ul>
+          <li>Artwork pixels, taken from the approved separations</li>
+          <li>Spot ink colours and print order</li>
+          <li>Garment colour, matched to the colour standard</li>
+          <li>Print placement in inches from the high point shoulder (HPS)</li>
+          <li>Layouts, type size and text colour for contrast</li>
+          <li>File specs, naming, spec sheets and QA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-pipeline">
+    <div class="col">
+      <p class="label">The pipeline</p>
+      <h2 id="h-pipeline">One graph, five stages</h2>
+      <p>The workflow has 51 nodes in seven labelled groups. The colourway table outputs a list, so ComfyUI runs every node after it once per colourway, and a batch report node collects the results at the end. The blank tee is shot once and cached, so adding a colourway does not reshoot it.</p>
+    </div>
+    <figure class="framed">
+      <img src="img/workflow_graph.jpg" width="2284" height="972" loading="lazy" alt="Screenshot of the ComfyUI graph: model loaders on the left, then the master-blank group with Krea2 sampling, SeedVR2 and the placement template, then two background-plate sampling chains, then the purple colourway proof node.">
+      <figcaption>The middle of the real graph: model loaders, the master blank, the background plates and the colourway proof. Group labels are in Chinese and custom node names are bilingual, because I wrote the workflow for my own use first.</figcaption>
+    </figure>
+
+    <div class="steps">
+
+      <article class="step">
+        <div class="step-head"><span class="step-no">01</span><span class="label">Inputs</span><h3>Approved art, a colourway table, a placement spec</h3></div>
+        <div class="col">
+          <p>The artwork arrives as separations in a single RGB file: the red channel is ink 1 (the fill) and the green channel is ink 2 (the outline and underlay). That keeps the inks independent, so every colourway is a recolour of the same approved shapes. The table holds one row per colourway. HEX values are the standards used for colour and QA. The last column holds plain colour words for prompts, because diffusion models cannot read HEX.</p>
+        </div>
+        <div class="grid-2">
+          <figure>
+            <div class="film"><img src="img/art_separations.png" width="900" height="480" loading="lazy" alt="Separation file: the HALYARDS arched wordmark with HARBOR CITY and an EST. 1998 bar, with the fill in red and the outline in green."></div>
+            <figcaption><span class="file">fan_gear_halyards_separations.png</span> · red = ink 1, green = ink 2</figcaption>
+          </figure>
+          <figure>
+            <div class="checker"><img src="img/art_reference.png" width="900" height="525" loading="lazy" alt="Reference render of the same artwork in gold with a white outline."></div>
+            <figcaption>Reference render. The separations are drawn by a script, so the artwork is reproducible</figcaption>
+          </figure>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Code</th><th>Name</th><th>Garment</th><th>Ink 1</th><th>Ink 2</th><th>Prompt words</th></tr></thead>
+            <tbody>
+              <tr><td class="code">NVY-HOME</td><td>Navy Home</td><td><span class="chip"><i style="background:#0B2545"></i>#0B2545</span></td><td><span class="chip"><i style="background:#F2A900"></i>#F2A900</span></td><td><span class="chip"><i style="background:#FFFFFF"></i>#FFFFFF</span></td><td class="muted">deep navy blue ; bright gold ; white</td></tr>
+              <tr><td class="code">WHT-AWAY</td><td>White Away</td><td><span class="chip"><i style="background:#F2F1EC"></i>#F2F1EC</span></td><td><span class="chip"><i style="background:#0B2545"></i>#0B2545</span></td><td><span class="chip"><i style="background:#F2A900"></i>#F2A900</span></td><td class="muted">off-white ; deep navy blue ; bright gold</td></tr>
+              <tr><td class="code">GLD-ALT</td><td>Gold Alternate</td><td><span class="chip"><i style="background:#F2A900"></i>#F2A900</span></td><td><span class="chip"><i style="background:#0B2545"></i>#0B2545</span></td><td><span class="chip"><i style="background:#FFFFFF"></i>#FFFFFF</span></td><td class="muted">bright golden yellow ; deep navy blue ; white</td></tr>
+              <tr><td class="code">BLK-CITY</td><td>Black City Edition</td><td><span class="chip"><i style="background:#17171B"></i>#17171B</span></td><td><span class="chip"><i style="background:#E9E3D3"></i>#E9E3D3</span></td><td><span class="chip"><i style="background:#F2A900"></i>#F2A900</span></td><td class="muted">charcoal black ; bone white ; bright gold</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-head"><span class="step-no">02</span><span class="label">Master blank · runs once per batch</span><h3>Shoot a blank tee, then measure it in inches</h3></div>
+        <div class="col">
+          <p>Krea2 Turbo shoots a plain white ghost-mannequin tee at 960×1200 in 8 steps. SeedVR2 refines it to 1920×2400, and BiRefNet cuts out the garment. The placement node then turns the photo into a measured template. The top of the mask is the HPS. The garment's width between 55% and 72% of its height is the body width, which I set to 21 in for a size L laid flat. That gives a pixels-per-inch scale, and the print box follows from the spec: 11 in wide, top edge 5.5 in below HPS, centred.</p>
+        </div>
+        <div class="grid-2">
+          <figure>
+            <img class="framed" src="img/master_blank.jpg" width="720" height="900" loading="lazy" alt="AI-generated white ghost-mannequin crew-neck tee on a light grey background." style="border:1px solid var(--rule)">
+            <figcaption>AI blank after SeedVR2. Fixed seed, so the whole batch shares one garment</figcaption>
+          </figure>
+          <figure>
+            <img src="img/placement_template.jpg" width="720" height="900" loading="lazy" alt="The same tee annotated with the HPS line, a body width of 21.00 inches equal to 1038 pixels, and a dashed print box 11.00 inches wide set 5.50 inches below HPS." style="border:1px solid var(--rule)">
+            <figcaption>Placement template: body 21.00 in = 1038 px (49.4 px/in). The print box sits 100% inside the garment</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-head"><span class="step-no">03</span><span class="label">Background plates · per colourway</span><h3>Prompt templates filled from the table</h3></div>
+        <div class="col">
+          <p>Two prompt templates, one for social 4:5 and one for 2.4:1 banners, take their colour words from the colourway row. Seeds are fixed, so the whole series shares one composition and only the light colour changes. The banner prompt asks for a calm, dark left half to leave room for type. Both prompts forbid people, text and logos, so nothing in the background competes with the licensed mark.</p>
+        </div>
+        <p class="prompt">Cinematic wide panoramic advertising backdrop photograph. The mouth of an empty stadium players' tunnel opening onto a floodlit pitch at dusk, very shallow depth of field so everything is soft, glowing <b>{garment}</b> and <b>{ink1}</b> light from the floodlights, gentle haze. The left half of the frame is darker and calm with open negative space for text. No people, no text, no logos, no signage.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-head"><span class="step-no">04</span><span class="label">Colourway proof · deterministic</span><h3>Recolour in linear light, print in ink order</h3></div>
+        <div class="col">
+          <p>The garment is recoloured as an albedo swap in linear light. The median luminance of the blank maps exactly onto the colour standard, and every fold keeps its shading from the photo, so the fabric looks the same in every colourway.</p>
+          <p class="formula">garment_lin = standard_lin × (Y / median(Y))</p>
+          <p>The two inks are then composited in print order: ink 2 underlay first, ink 1 fill on top. The artwork is scaled into the print box, multiplied by the fabric shading and displaced by up to 4 px along the folds. That is the same job as a Displace plus Multiply pass in Photoshop, run by a node.</p>
+        </div>
+        <div class="grid-4">
+          <div class="pdp"><img src="img/pdp_NVY-HOME.jpg" width="720" height="720" loading="lazy" alt="Navy tee with gold HALYARDS print on white."><span class="name">NVY-HOME</span><span class="chips"><span class="chip"><i style="background:#0B2545"></i>ΔE 0.48</span></span></div>
+          <div class="pdp"><img src="img/pdp_WHT-AWAY.jpg" width="720" height="720" loading="lazy" alt="Off-white tee with navy and gold HALYARDS print on white."><span class="name">WHT-AWAY</span><span class="chips"><span class="chip"><i style="background:#F2F1EC"></i>ΔE 0.00</span></span></div>
+          <div class="pdp"><img src="img/pdp_GLD-ALT.jpg" width="720" height="720" loading="lazy" alt="Gold tee with navy HALYARDS print on white."><span class="name">GLD-ALT</span><span class="chips"><span class="chip"><i style="background:#F2A900"></i>ΔE 0.17</span></span></div>
+          <div class="pdp"><img src="img/pdp_BLK-CITY.jpg" width="720" height="720" loading="lazy" alt="Black tee with bone white and gold HALYARDS print on white."><span class="name">BLK-CITY</span><span class="chips"><span class="chip"><i style="background:#17171B"></i>ΔE 1.08</span></span></div>
+        </div>
+        <p class="muted" style="font-size:14px">PDP files, 2000×2000 on pure white, product at 85% of the frame. ΔE00 is the garment's median colour in the saved JPEG against its standard.</p>
+      </article>
+
+      <article class="step">
+        <div class="step-head"><span class="step-no">05</span><span class="label">Delivery and QA · per colourway, then per batch</span><h3>Every channel, every language, every print file</h3></div>
+        <div class="col">
+          <p>The layout node builds each channel from the same proof. For banners it places the logo and headline in a safe zone on the left, shrinks the type to fit in at most two lines, and breaks Japanese at punctuation first. Text colour is picked from white, ink 1, ink 2 and near-black: the first one that clears 4.5:1 against the brightest and darkest 3% of pixels behind the text. If none does, the node adds a dark gradient behind the text and tries again.</p>
+        </div>
+        <div class="grid-4">
+          <figure><img src="img/social_NVY-HOME.jpg" width="540" height="675" loading="lazy" alt="Social post 4:5, navy tee over stadium bokeh."><figcaption class="mono">SOCIAL-4x5 · NVY</figcaption></figure>
+          <figure><img src="img/social_WHT-AWAY.jpg" width="540" height="675" loading="lazy" alt="Social post 4:5, off-white tee over stadium bokeh."><figcaption class="mono">SOCIAL-4x5 · WHT</figcaption></figure>
+          <figure><img src="img/social_GLD-ALT.jpg" width="540" height="675" loading="lazy" alt="Social post 4:5, gold tee over stadium bokeh."><figcaption class="mono">SOCIAL-4x5 · GLD</figcaption></figure>
+          <figure><img src="img/social_BLK-CITY.jpg" width="540" height="675" loading="lazy" alt="Social post 4:5, black tee over stadium bokeh."><figcaption class="mono">SOCIAL-4x5 · BLK</figcaption></figure>
+        </div>
+        <div class="grid-2">
+          <figure><img src="img/banner_NVY-HOME_ES-US.jpg" width="1200" height="500" loading="lazy" alt="Spanish banner: NUEVA TEMPORADA. EL MISMO PUERTO. Compra la colección Navy Home."><figcaption class="mono">BANNER-ES-US · headline auto-sized to 78 px to fit two lines</figcaption></figure>
+          <figure><img src="img/banner_NVY-HOME_JA-JP.jpg" width="1200" height="500" loading="lazy" alt="Japanese banner reading 新シーズン、変わらぬ港。 with the subline Navy Home コレクション 発売中."><figcaption class="mono">BANNER-JA-JP · line break at the 、 comma</figcaption></figure>
+        </div>
+
+        <div class="col">
+          <h3>Print-ready files</h3>
+          <p>Each colourway gets a print PNG at true size (11.00 × 5.77 in at 300 dpi, 3300×1731 px) and one film positive per spot ink, where black means ink. A spec sheet in PDF and PNG records placement, colour standards and print order. The standards are screen colours. The sheet says physical matching goes through the licensor's lab dip, and I did not make up Pantone numbers.</p>
+        </div>
+        <div class="grid-2">
+          <figure>
+            <div class="checker"><img src="img/print_NVY-HOME.png" width="1100" height="577" loading="lazy" alt="Transparent print file: gold HALYARDS wordmark with white outline."></div>
+            <figcaption><span class="file">HCH-26-TEE-001_NVY-HOME_PRINT-FRONT_11.00x5.77in_300dpi_v01.png</span></figcaption>
+          </figure>
+          <div class="grid-2" style="gap:12px">
+            <figure><div class="film"><img src="img/sep2_NVY-HOME.png" width="700" height="367" loading="lazy" alt="Film positive for ink 2, the white underlay, in black on white."></div><figcaption class="mono">SEP2-FFFFFF · prints 1st</figcaption></figure>
+            <figure><div class="film"><img src="img/sep1_NVY-HOME.png" width="700" height="367" loading="lazy" alt="Film positive for ink 1, the gold fill, in black on white."></div><figcaption class="mono">SEP1-F2A900 · prints 2nd</figcaption></figure>
+          </div>
+        </div>
+        <figure>
+          <img src="img/spec_NVY-HOME.jpg" width="1800" height="1200" loading="lazy" alt="Production spec sheet for NVY-HOME: annotated navy tee with 11.00 in art width and 5.50 in from HPS, the print file on a checkerboard, colour standards with HEX, RGB and Lab values, and a list of passed QA checks." style="border:1px solid var(--rule)">
+          <figcaption><span class="file">HCH-26-TEE-001_NVY-HOME_SPEC_v01.pdf</span> · one per colourway, written by the export node</figcaption>
+        </figure>
+
+        <div class="col">
+          <h3>QA on the files, not on memory</h3>
+          <p>The export node writes every file, then opens it again and measures what a reviewer would. That catches problems that only show up after saving: JPEG compression shifting the garment colour, a missing ICC profile, a PNG without its DPI tag.</p>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Check</th><th>Limit</th><th>Measured on</th></tr></thead>
+            <tbody>
+              <tr><td>PDP size, background, product fill</td><td class="code">2000×2000 · ≥99.5% pure white edge · 80–90%</td><td>Saved JPEG</td></tr>
+              <tr><td>Garment colour vs standard (PDP and social)</td><td class="code">ΔE00 ≤ 2.0</td><td>Median colour of the garment, print area removed</td></tr>
+              <tr><td>Print file resolution and width</td><td class="code">300 dpi · 11.00 in</td><td>PNG pHYs tag and pixel width</td></tr>
+              <tr><td>Ink 1 colour in the print file</td><td class="code">ΔE00 ≤ 1.0</td><td>Saved PNG</td></tr>
+              <tr><td>Artwork inside the garment</td><td class="code">≥ 99%</td><td>Print box against the garment mask</td></tr>
+              <tr><td>Banner text contrast, per locale</td><td class="code">≥ 4.5:1 (WCAG AA)</td><td>Worst case against the text background</td></tr>
+              <tr><td>Banner text inside the safe zone, per locale</td><td class="code">yes</td><td>Text bounding box</td></tr>
+              <tr><td>sRGB ICC profile embedded</td><td class="code">all colour files</td><td>Saved files</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Colourway</th><th class="num">Garment ΔE00</th><th class="num">Ink 1 ΔE00</th><th class="num">Worst banner contrast</th><th>QA</th></tr></thead>
+            <tbody>
+              <tr><td class="code">NVY-HOME</td><td class="num">0.48</td><td class="num">0.00</td><td class="num">11.8:1</td><td><span class="pill ok">PASS 15/15</span></td></tr>
+              <tr><td class="code">WHT-AWAY</td><td class="num">0.00</td><td class="num">0.00</td><td class="num">9.9:1</td><td><span class="pill ok">PASS 15/15</span></td></tr>
+              <tr><td class="code">GLD-ALT</td><td class="num">0.17</td><td class="num">0.00</td><td class="num">8.8:1</td><td><span class="pill ok">PASS 15/15</span></td></tr>
+              <tr><td class="code">BLK-CITY</td><td class="num">1.08</td><td class="num">0.00</td><td class="num">5.8:1</td><td><span class="pill ok">PASS 15/15</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure>
+          <img src="img/contact_sheet.jpg" width="1800" height="1496" loading="lazy" alt="Batch contact sheet: one row per colourway with the colour standards, a PASS 15/15 badge, the PDP image, the social post and the English banner." style="border:1px solid var(--rule)">
+          <figcaption><span class="file">HCH-26-TEE-001_CONTACT-SHEET_v01.jpg</span> · the batch report node also writes a manifest with one row per file:</figcaption>
+        </figure>
+        <pre>colorway,channel,locale,file,width,height,format,dpi,icc_srgb,qa
+NVY-HOME,PDP,,fan_gear/HCH-26-TEE-001/NVY-HOME/HCH-26-TEE-001_NVY-HOME_PDP_2000x2000_v01.jpg,2000,2000,JPEG,72,True,PASS
+NVY-HOME,SOCIAL,,fan_gear/HCH-26-TEE-001/NVY-HOME/HCH-26-TEE-001_NVY-HOME_SOCIAL-4x5_1080x1350_v01.jpg,1080,1350,JPEG,72,True,PASS
+NVY-HOME,BANNER,EN-US,fan_gear/HCH-26-TEE-001/NVY-HOME/HCH-26-TEE-001_NVY-HOME_BANNER-EN-US_1920x800_v01.jpg,1920,800,JPEG,72,True,PASS
+…</pre>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-exp">
+    <div class="col">
+      <p class="label">Control experiment</p>
+      <h2 id="h-exp">Could the model just draw the shirt?</h2>
+      <p>The obvious objection to all this machinery is that a modern model can render text now. So the graph includes a control group. The same Krea2 model, on the same canvas size, gets a detailed prompt for each colourway that describes the logo, the exact words and the ink colours. Then each result is scored three ways:</p>
+      <ul style="margin:0;padding-left:20px;display:grid;gap:6px">
+        <li><b>Garment colour:</b> ΔE00 against the standard, measured the same way as the pipeline.</li>
+        <li><b>Match to the approved artwork:</b> the approved separations are rendered in that colourway's inks and searched for in the image with multi-scale normalized cross-correlation. 1.0 means the approved artwork is in the picture. A redrawn logo scores low even if every letter is right.</li>
+        <li><b>Spelling:</b> Qwen3-VL transcribes the text on the chest.</li>
+      </ul>
+    </div>
+
+    <div class="switch" role="group" aria-label="Choose a colourway">
+      <button type="button" id="cw-1" data-i="1" aria-pressed="true"><i style="background:#0B2545"></i>NVY-HOME</button>
+      <button type="button" id="cw-2" data-i="2" aria-pressed="false"><i style="background:#F2F1EC"></i>WHT-AWAY</button>
+      <button type="button" id="cw-3" data-i="3" aria-pressed="false"><i style="background:#F2A900"></i>GLD-ALT</button>
+      <button type="button" id="cw-4" data-i="4" aria-pressed="false"><i style="background:#17171B"></i>BLK-CITY</button>
+    </div>
+    <figure>
+      <div class="compare-img"><img id="cmp-img" src="img/compare_1.jpg" width="1600" height="1171" alt="Side by side for NVY-HOME. Left, prompt-only AI: a navy tee on a mannequin stand with a redrawn HALYARDS logo, garment ΔE00 3.78, artwork match 0.47. Right, production line: the approved artwork on the colour-matched tee, garment ΔE00 0.48, artwork match 0.97."></div>
+      <figcaption id="cmp-cap">NVY-HOME. Prompt-only: garment ΔE00 3.78, artwork match 0.47, spelling correct. Pipeline: ΔE00 0.48, match 0.97. The dashed boxes show where the best match was found.</figcaption>
+    </figure>
+
+    <div class="charts">
+      <div class="chart">
+        <h3>Match to approved artwork</h3>
+        <p class="sub">Normalized cross-correlation, 0 to 1. Pass line 0.80</p>
+        <div class="legend"><span><i style="background:var(--s-naive)"></i>Prompt-only</span><span><i style="background:var(--s-pipe)"></i>Pipeline</span></div>
+        <div class="svg-scroll">
+          <svg viewBox="0 0 640 230" role="img" aria-label="Dot plot. Prompt-only scores 0.47, 0.46, 0.37 and 0.51. Pipeline scores 0.97, 0.99, 0.96 and 0.99. Pass line at 0.80.">
+            <rect x="510" y="30" width="100" height="160" style="fill:var(--pass);opacity:.08"/>
+            <g style="stroke:var(--rule)" stroke-width="1">
+              <line x1="110" y1="30" x2="110" y2="190"/><line x1="210" y1="30" x2="210" y2="190"/><line x1="310" y1="30" x2="310" y2="190"/><line x1="410" y1="30" x2="410" y2="190"/><line x1="610" y1="30" x2="610" y2="190"/>
+              <line x1="110" y1="190" x2="610" y2="190"/>
+            </g>
+            <line x1="510" y1="22" x2="510" y2="190" style="stroke:var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="506" y="18" text-anchor="end" font-size="12" style="fill:var(--ink-2)">pass ≥ 0.80</text>
+            <g font-size="12" text-anchor="middle" style="fill:var(--ink-2)">
+              <text x="110" y="210">0</text><text x="210" y="210">0.2</text><text x="310" y="210">0.4</text><text x="410" y="210">0.6</text><text x="510" y="210">0.8</text><text x="610" y="210">1.0</text>
+            </g>
+            <g font-size="12.5" style="fill:var(--ink)">
+              <text x="0" y="54">NVY-HOME</text><text x="0" y="94">WHT-AWAY</text><text x="0" y="134">GLD-ALT</text><text x="0" y="174">BLK-CITY</text>
+            </g>
+            <g style="stroke:var(--rule)" stroke-width="2" stroke-linecap="round">
+              <line x1="345" y1="50" x2="595" y2="50"/><line x1="340" y1="90" x2="605" y2="90"/><line x1="295" y1="130" x2="590" y2="130"/><line x1="365" y1="170" x2="605" y2="170"/>
+            </g>
+            <g style="fill:var(--s-naive);stroke:var(--sheet)" stroke-width="2">
+              <circle cx="345" cy="50" r="6"><title>NVY-HOME prompt-only 0.47</title></circle>
+              <circle cx="340" cy="90" r="6"><title>WHT-AWAY prompt-only 0.46</title></circle>
+              <circle cx="295" cy="130" r="6"><title>GLD-ALT prompt-only 0.37</title></circle>
+              <circle cx="365" cy="170" r="6"><title>BLK-CITY prompt-only 0.51</title></circle>
+            </g>
+            <g style="fill:var(--s-pipe);stroke:var(--sheet)" stroke-width="2">
+              <circle cx="595" cy="50" r="6"><title>NVY-HOME pipeline 0.97</title></circle>
+              <circle cx="605" cy="90" r="6"><title>WHT-AWAY pipeline 0.99</title></circle>
+              <circle cx="590" cy="130" r="6"><title>GLD-ALT pipeline 0.96</title></circle>
+              <circle cx="605" cy="170" r="6"><title>BLK-CITY pipeline 0.99</title></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="chart">
+        <h3>Garment colour error</h3>
+        <p class="sub">CIEDE2000 against the standard. Limit 2.0</p>
+        <div class="legend"><span><i style="background:var(--s-naive)"></i>Prompt-only</span><span><i style="background:var(--s-pipe)"></i>Pipeline</span></div>
+        <div class="svg-scroll">
+          <svg viewBox="0 0 640 230" role="img" aria-label="Dot plot. Prompt-only colour errors 3.78, 3.78, 3.50 and 4.80. Pipeline colour errors 0.48, 0.00, 0.17 and 1.08. Limit at 2.0.">
+            <rect x="110" y="30" width="200" height="160" style="fill:var(--pass);opacity:.08"/>
+            <g style="stroke:var(--rule)" stroke-width="1">
+              <line x1="110" y1="30" x2="110" y2="190"/><line x1="210" y1="30" x2="210" y2="190"/><line x1="410" y1="30" x2="410" y2="190"/><line x1="510" y1="30" x2="510" y2="190"/><line x1="610" y1="30" x2="610" y2="190"/>
+              <line x1="110" y1="190" x2="610" y2="190"/>
+            </g>
+            <line x1="310" y1="22" x2="310" y2="190" style="stroke:var(--ink-2)" stroke-width="1" stroke-dasharray="4 3"/>
+            <text x="314" y="18" font-size="12" style="fill:var(--ink-2)">limit ≤ 2.0</text>
+            <g font-size="12" text-anchor="middle" style="fill:var(--ink-2)">
+              <text x="110" y="210">0</text><text x="210" y="210">1</text><text x="310" y="210">2</text><text x="410" y="210">3</text><text x="510" y="210">4</text><text x="610" y="210">5</text>
+            </g>
+            <g font-size="12.5" style="fill:var(--ink)">
+              <text x="0" y="54">NVY-HOME</text><text x="0" y="94">WHT-AWAY</text><text x="0" y="134">GLD-ALT</text><text x="0" y="174">BLK-CITY</text>
+            </g>
+            <g style="stroke:var(--rule)" stroke-width="2" stroke-linecap="round">
+              <line x1="158" y1="50" x2="488" y2="50"/><line x1="110" y1="90" x2="488" y2="90"/><line x1="127" y1="130" x2="460" y2="130"/><line x1="218" y1="170" x2="590" y2="170"/>
+            </g>
+            <g style="fill:var(--s-naive);stroke:var(--sheet)" stroke-width="2">
+              <circle cx="488" cy="50" r="6"><title>NVY-HOME prompt-only 3.78</title></circle>
+              <circle cx="488" cy="90" r="6"><title>WHT-AWAY prompt-only 3.78</title></circle>
+              <circle cx="460" cy="130" r="6"><title>GLD-ALT prompt-only 3.50</title></circle>
+              <circle cx="590" cy="170" r="6"><title>BLK-CITY prompt-only 4.80</title></circle>
+            </g>
+            <g style="fill:var(--s-pipe);stroke:var(--sheet)" stroke-width="2">
+              <circle cx="158" cy="50" r="6"><title>NVY-HOME pipeline 0.48</title></circle>
+              <circle cx="110" cy="90" r="6"><title>WHT-AWAY pipeline 0.00</title></circle>
+              <circle cx="127" cy="130" r="6"><title>GLD-ALT pipeline 0.17</title></circle>
+              <circle cx="218" cy="170" r="6"><title>BLK-CITY pipeline 1.08</title></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Colourway</th><th class="num">Garment ΔE00<br>prompt-only / pipeline</th><th class="num">Artwork match<br>prompt-only / pipeline</th><th>Spelling (prompt-only)</th></tr></thead>
+        <tbody>
+          <tr><td class="code">NVY-HOME</td><td class="num">3.78 / 0.48</td><td class="num">0.47 / 0.97</td><td>Correct</td></tr>
+          <tr><td class="code">WHT-AWAY</td><td class="num">3.78 / 0.00</td><td class="num">0.46 / 0.99</td><td>Correct</td></tr>
+          <tr><td class="code">GLD-ALT</td><td class="num">3.50 / 0.17</td><td class="num">0.37 / 0.96</td><td>Correct</td></tr>
+          <tr><td class="code">BLK-CITY</td><td class="num">4.80 / 1.08</td><td class="num">0.51 / 0.99</td><td>Correct</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p class="label">What I took from it</p>
+      <p>The model spelled HARBOR CITY, HALYARDS and EST. 1998 correctly in all four shots, so "AI can't do text" is no longer a reason to keep logos out of the model. The real problems are different. Every prompt-only shirt missed its colour standard by roughly double the limit. Every logo was a new design with a different typeface, arch and bar, and each colourway came out different from the others. The navy shot also put the shirt on a visible mannequin stand, although the prompt asked for a ghost mannequin. A licensor approves the artwork itself, so a correctly spelled redraw still fails approval.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-eng">
+    <div class="col">
+      <p class="label">Engineering notes</p>
+      <h2 id="h-eng">What took the most work</h2>
+    </div>
+    <div class="notes">
+      <div class="note">
+        <h3>Calibrating the artwork match</h3>
+        <p>The first version scored my own pipeline at only 0.59 to 0.84. Correlation is very sensitive to scale: a 2% size error drops the score by about 0.2. I switched to a coarse search in steps of 2% of the frame width, then a fine search in 0.2% steps around the best result. Pipeline scores rose to 0.96 to 0.99 while prompt-only stayed at 0.37 to 0.51, and I set the pass line at 0.80, between the two groups.</p>
+      </div>
+      <div class="note">
+        <h3>Eight custom nodes</h3>
+        <p>Colourway table, colourway prompt, placement template, colourway proof, channel layouts, export and QA, batch report, and the prompt-only audit. Each does one production job a designer would otherwise do by hand in Photoshop, and each one exposes the values a designer changes: inches, thresholds, headlines, versions.</p>
+      </div>
+      <div class="note">
+        <h3>Shipping a workflow that loads correctly</h3>
+        <p>I generate the workflow file from ComfyUI's node definitions. The editor quietly adds a hidden widget to any integer input named <code>seed</code>, which shifted every SeedVR2 setting by one slot when the file was opened. I fixed the generator and then checked the result in the editor: the graph it queued matched the tested graph, and all 50 executable nodes came back from cache.</p>
+      </div>
+      <div class="note">
+        <h3>Type that survives three languages</h3>
+        <p>English, Spanish and Japanese headlines differ a lot in length and break rules. The layout node shrinks the headline until it fits in two lines inside the safe zone, breaks Japanese at 、 and 。 before falling back to single characters, and records the final size and text box in the QA report.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-limits">
+    <div class="col">
+      <p class="label">Known limits</p>
+      <h2 id="h-limits">Where this stops working</h2>
+    </div>
+    <ul class="limits">
+      <li><b>Solid fabrics only.</b> The recolour starts from a white blank, which suits solid cotton tees. Heather, tie-dye or colour-blocked garments need their own blank or a real sample photo.</li>
+      <li><b>Screen colour, not physical colour.</b> The HEX standards are for digital assets. Physical colour is approved against the licensor's lab dip.</li>
+      <li><b>Scale comes from the silhouette.</b> This works for front-view ghost-mannequin shots. Angled or on-model shots need a scale entered by hand.</li>
+      <li><b>2D displacement.</b> Heavy folds, hoodie pockets and cuffs need a real displacement pass in Photoshop or CLO3D.</li>
+      <li><b>The product is not relit.</b> Social and banner composites keep studio light on the product, which suits a floating-product look but not an in-scene one.</li>
+      <li><b>System fonts.</b> The layouts use Segoe UI Black and Yu Gothic. A real project would use the licensor's brand fonts.</li>
+    </ul>
+  </section>
+
+  <hr>
+  <footer>
+    <p class="label">Project files</p>
+    <ul>
+      <li><code>Fan-Gear-Production/Fan-Gear-授权商品批量投产线.json</code>: the ComfyUI workflow</li>
+      <li><code>custom_nodes/comfyui-fan-gear-production/</code>: the 8-node pack</li>
+      <li><code>Fan-Gear-Production/tools/make_team_assets.py</code>: draws the fictional team's artwork and separations</li>
+      <li><code>Fan-Gear-Production/README.md</code>: setup, parameters and the full results (in Chinese)</li>
+    </ul>
+    <p>HARBOR CITY HALYARDS and style HCH-26-TEE-001 are fictional. No real team, league or licensed mark is used. All numbers on this page come from the batch run on 22 November 2026. The custom nodes and scripts were written with AI assistance.</p>
+    <p><a href="HCH-26-TEE-001_NVY-HOME_SPEC_v01.pdf">Open the NVY-HOME spec sheet (PDF)</a></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var data = {
+    1: { code: 'NVY-HOME', de: ['3.78', '0.48'], m: ['0.47', '0.97'] },
+    2: { code: 'WHT-AWAY', de: ['3.78', '0.00'], m: ['0.46', '0.99'] },
+    3: { code: 'GLD-ALT', de: ['3.50', '0.17'], m: ['0.37', '0.96'] },
+    4: { code: 'BLK-CITY', de: ['4.80', '1.08'], m: ['0.51', '0.99'] }
+  };
+  var img = document.getElementById('cmp-img');
+  var cap = document.getElementById('cmp-cap');
+  var buttons = document.querySelectorAll('.switch button');
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var d = data[b.dataset.i];
+      buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      img.src = 'img/compare_' + b.dataset.i + '.jpg';
+      img.alt = 'Side by side for ' + d.code + '. Left, prompt-only AI with a redrawn logo: garment ΔE00 ' + d.de[0] + ', artwork match ' + d.m[0] + '. Right, production line with the approved artwork: garment ΔE00 ' + d.de[1] + ', artwork match ' + d.m[1] + '.';
+      cap.textContent = d.code + '. Prompt-only: garment ΔE00 ' + d.de[0] + ', artwork match ' + d.m[0] + ', spelling correct. Pipeline: ΔE00 ' + d.de[1] + ', match ' + d.m[1] + '. The dashed boxes show where the best match was found.';
+    });
+  });
+})();
+</script>
+</body>
+</html>
