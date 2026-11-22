@@ -4,7 +4,7 @@ export const resume = {
   "name": "Jingchuan (Carlton) Shi",
   "headline": "Creative Technologist · AI Workflows & Generative Production",
   "location": "Syracuse, NY",
-  "relocation": "Open to relocation: Los Angeles",
+  "relocation": "Open to relocation: Anywhere",
   "phone": "315-395-2313",
   "email": "jshi77@syr.edu",
   "linkedIn": "https://www.linkedin.com/in/carltonshi0209",
