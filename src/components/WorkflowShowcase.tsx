@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUpRight, ChevronsLeftRight, Expand } from 'lucide-react
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from './ui/dialog'
 import { withBase } from '../lib/asset'
 
-const categories = ['Production', 'Video', 'Image editing', 'Finishing'] as const
+const categories = ['Video', 'Production', 'Image editing', 'Finishing'] as const
 
 type Preview = { file: string; label: string; aspect?: string; fit?: 'contain'; paper?: boolean }
 type Media =
@@ -26,32 +26,8 @@ type Workflow = {
   note?: string
 }
 
+// lessonforge always stays first; add new workflows after it.
 const workflows: Workflow[] = [
-  {
-    id: 'fan-gear', short: 'Licensed fan gear', category: 'Production', title: 'One licensed artwork, 36 production files',
-    summary: 'A production line for licensed fan merchandise. One approved artwork, a colourway table and channel specs go in; one queue returns e-commerce, social, localized banner and 300 dpi print files for four colourways, each checked against 15 QA rules.',
-    tools: ['Krea2 Turbo', 'SeedVR2 3B', 'BiRefNet', 'Qwen3-VL 4B', 'Eight custom Fan Gear nodes'],
-    steps: [
-      'Krea2 shoots one blank tee, SeedVR2 refines it to 1920 × 2400 and BiRefNet cuts it out; a placement node measures it in inches from the shoulder point.',
-      'Each colourway row recolours the garment to its HEX standard in linear light and prints the approved separations in ink order. The logo never passes through the model.',
-      'Prompt templates filled from the same row generate stadium backdrops; layout nodes build the PDP, social 4:5 and English, Spanish and Japanese banners.',
-      'Every file is read back and checked for ΔE00, 300 dpi, WCAG contrast and ICC; a spec sheet, contact sheet and manifest close the batch.',
-    ],
-    media: {
-      kind: 'row', images: [
-        { file: 'fan-gear-social-nvy-home', label: 'NVY-HOME · social 4:5' },
-        { file: 'fan-gear-social-wht-away', label: 'WHT-AWAY · social 4:5' },
-        { file: 'fan-gear-social-gld-alt', label: 'GLD-ALT · social 4:5' },
-        { file: 'fan-gear-social-blk-city', label: 'BLK-CITY · social 4:5' },
-      ],
-    },
-    graphs: [{ file: 'fan-gear-workflow', label: 'Full graph · 51 nodes in 7 groups' }],
-    documents: [
-      { file: 'docs/fan-gear/case-study.html', label: 'Case study + QA results' },
-      { file: 'docs/fan-gear/HCH-26-TEE-001_NVY-HOME_SPEC_v01.pdf', label: 'Production spec sheet (PDF)' },
-    ],
-    note: 'Final run: 60 of 60 checks passed, garment colour within ΔE00 1.08 of standard, about 5 to 6 minutes cold on one laptop GPU. A prompt-only control spelled the logo right but missed the colour standard and redrew the mark. The team is fictional.',
-  },
   {
     id: 'lessonforge', short: 'Lip-synced lesson', category: 'Video', title: 'An 88-second lesson, from script to master',
     summary: 'lessonforge, a ComfyUI and Python pipeline, turns a script and shot list into The Glow in the Shed, an 88-second Marie Curie lesson led by a fictional instructor lip-synced to a generated voice.',
@@ -81,6 +57,31 @@ const workflows: Workflow[] = [
       { file: 'docs/lessonforge/report.html', label: 'QC report' },
     ],
     note: 'By the pipeline’s own check, all 7 presenter shots land within 2 frames of the voice. About 3.8 GPU-hours on one laptop GPU. The instructor and the historical scenes are AI-generated.',
+  },
+  {
+    id: 'fan-gear', short: 'Licensed fan gear', category: 'Production', title: 'One licensed artwork, 36 production files',
+    summary: 'A production line for licensed fan merchandise. One approved artwork, a colourway table and channel specs go in; one queue returns e-commerce, social, localized banner and 300 dpi print files for four colourways, each checked against 15 QA rules.',
+    tools: ['Krea2 Turbo', 'SeedVR2 3B', 'BiRefNet', 'Qwen3-VL 4B', 'Eight custom Fan Gear nodes'],
+    steps: [
+      'Krea2 shoots one blank tee, SeedVR2 refines it to 1920 × 2400 and BiRefNet cuts it out; a placement node measures it in inches from the shoulder point.',
+      'Each colourway row recolours the garment to its HEX standard in linear light and prints the approved separations in ink order. The logo never passes through the model.',
+      'Prompt templates filled from the same row generate stadium backdrops; layout nodes build the PDP, social 4:5 and English, Spanish and Japanese banners.',
+      'Every file is read back and checked for ΔE00, 300 dpi, WCAG contrast and ICC; a spec sheet, contact sheet and manifest close the batch.',
+    ],
+    media: {
+      kind: 'row', images: [
+        { file: 'fan-gear-social-nvy-home', label: 'NVY-HOME · social 4:5' },
+        { file: 'fan-gear-social-wht-away', label: 'WHT-AWAY · social 4:5' },
+        { file: 'fan-gear-social-gld-alt', label: 'GLD-ALT · social 4:5' },
+        { file: 'fan-gear-social-blk-city', label: 'BLK-CITY · social 4:5' },
+      ],
+    },
+    graphs: [{ file: 'fan-gear-workflow', label: 'Full graph · 51 nodes in 7 groups' }],
+    documents: [
+      { file: 'docs/fan-gear/case-study.html', label: 'Case study + QA results' },
+      { file: 'docs/fan-gear/HCH-26-TEE-001_NVY-HOME_SPEC_v01.pdf', label: 'Production spec sheet (PDF)' },
+    ],
+    note: 'Final run: 60 of 60 checks passed, garment colour within ΔE00 1.08 of standard, about 5 to 6 minutes cold on one laptop GPU. A prompt-only control spelled the logo right but missed the colour standard and redrew the mark. The team is fictional.',
   },
   {
     id: 'angles', short: 'Camera angles', category: 'Image editing', title: 'One character, four camera angles',
@@ -313,7 +314,7 @@ export default function WorkflowShowcase() {
         <p className="text-xs uppercase tracking-[0.24em] text-white/50">Process / Selected local runs</p>
         <h2 id="workflows-title" className="mt-3 text-3xl font-normal tracking-tight md:text-5xl">ComfyUI workflows</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
-          Six local pipelines, from a licensed-merchandise production line and a complete lip-synced lesson to controlled image edits and 4K finishing. Each study leads with the finished output, followed by the steps and, where there is one, the node graph behind it.
+          Six local pipelines, from a complete lip-synced lesson and a licensed-merchandise production line to controlled image edits and 4K finishing. Each study leads with the finished output, followed by the steps and, where there is one, the node graph behind it.
         </p>
         <nav aria-label="Workflow index" className="mt-8 grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-8">
           {categories.map(category => (
